@@ -188,6 +188,68 @@ function updateBuffs() {
   renderBuffLists(mergedBuffs, mergedDebuffs, missingBuffs);
 }
 
+// ---------- Merge helper: รวม Buff/ Debuff ที่เหมือนกัน และบวกค่าตัวเลข ----------
+function mergeBuffsAndDebuffs(allBuffs, allDebuffs) {
+  const merge = (list) => {
+    const map = {};
+    list.forEach(({ buff, charName }) => {
+      const key = buff.toLowerCase().replace(/\s+/g, "").replace(/[0-9.%x×]/g, "");
+      if (!map[key]) map[key] = { text: buff, values: [], sources: new Set() };
+      if (charName) map[key].sources.add(charName);
+      
+      // สกัดค่าตัวเลข (เช่น 20% → 20)
+      const numMatch = buff.match(/(\d+(?:\.\d+)?)\s*(%|x|×)?/);
+      if (numMatch) map[key].values.push(parseFloat(numMatch[1]));
+    });
+    
+    return Object.values(map).map((v) => {
+      let displayName = v.text;
+      // ถ้ามีค่าตัวเลขหลายตัว ให้บวกกัน
+      if (v.values.length > 1) {
+        const sum = v.values.reduce((a, b) => a + b, 0);
+        const suffix = v.text.match(/(%|x|×)\s*$/)?.[1] || '%';
+        displayName = v.text.replace(/(\d+(?:\.\d+)?)\s*(%|x|×)?/, sum + suffix);
+      }
+      return { name: displayName, sources: Array.from(v.sources) };
+    });
+  };
+
+  return { mergedBuffs: merge(allBuffs), mergedDebuffs: merge(allDebuffs) };
+}
+
+// ---------- Render helper: แสดงรายการบนหน้า HTML ----------
+function renderBuffLists(mergedBuffs, mergedDebuffs, missingBuffs) {
+  const buffListEl = document.getElementById("buff-list");
+  const debuffListEl = document.getElementById("debuff-list");
+  const missingListEl = document.getElementById("missing-buff-list");
+
+  if (buffListEl) buffListEl.innerHTML = mergedBuffs.map(b => {
+    return `<li class="text-green-200">${escapeHtml(b.name)}</li>`;
+  }).join('');
+
+  if (debuffListEl) debuffListEl.innerHTML = mergedDebuffs.map(d => {
+    return `<li class="text-pink-200">${escapeHtml(d.name)}</li>`;
+  }).join('');
+
+  if (missingListEl) {
+    if (!missingBuffs || missingBuffs.length === 0) {
+      missingListEl.innerHTML = `<li class="text-yellow-300">ไม่มี Missing Buffs</li>`;
+    } else {
+      missingListEl.innerHTML = missingBuffs.map(m => `<li class="text-yellow-300">${escapeHtml(m)}</li>`).join('');
+    }
+  }
+}
+
+// ---------- Utility: ป้องกัน XSS เบื้องต้น ----------
+function escapeHtml(str) {
+  return String(str)
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&#39;');
+}
+
 // ---------- Buff ของแถวเดียว ----------
 function updateBuffsForRow(rowIndex) {
   const row = partyRows[rowIndex];
