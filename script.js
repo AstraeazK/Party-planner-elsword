@@ -194,32 +194,32 @@ function mergeBuffsAndDebuffs(allBuffs, allDebuffs) {
     const map = {};
     list.forEach(({ buff, charName }) => {
       const key = buff.toLowerCase().replace(/\s+/g, "").replace(/[0-9.%x×]/g, "");
-      if (!map[key]) map[key] = { text: buff, values: [], units: null, sources: new Set() };
+      if (!map[key]) map[key] = { text: buff, entries: [], units: null, sources: new Set() };
       if (charName) map[key].sources.add(charName);
 
-      // สกัดค่าตัวเลขและหน่วย พร้อมเก็บจำนวนจุดทศนิยม
+      // สกัดค่าตัวเลขและหน่วย พร้อมเก็บจำนวนจุดทศนิยม และข้อความดั้งเดิม
       const numMatch = buff.match(/(\d+(?:\.\d+)?)\s*(%|x|×)?/);
-      if (numMatch) {
-        const raw = numMatch[1];
-        const value = parseFloat(raw);
-        const decimals = raw.includes('.') ? raw.split('.')[1].length : 0;
-        map[key].values.push({ value, decimals });
-        if (map[key].units === null) map[key].units = numMatch[2] || '';
-      }
+      const raw = numMatch ? numMatch[1] : null;
+      const value = raw ? parseFloat(raw) : null;
+      const decimals = raw && raw.includes('.') ? raw.split('.')[1].length : 0;
+      if (numMatch && map[key].units === null) map[key].units = numMatch[2] || '';
+
+      map[key].entries.push({ source: charName, text: buff, value, decimals });
     });
 
     return Object.values(map).map((v) => {
       let displayName = v.text;
       // ถ้ามีค่าตัวเลขหลายตัว ให้บวกกัน (และจัดรูปแบบเพื่อเลี่ยงปัญหา floating point)
-      if (v.values.length > 1) {
-        const sum = v.values.reduce((a, b) => a + b.value, 0);
-        const maxDecimals = v.values.reduce((m, b) => Math.max(m, b.decimals), 0);
-        const precision = Math.min(Math.max(maxDecimals, 0), 6); // cap precision to 6
+      const numericEntries = v.entries.filter(e => typeof e.value === 'number');
+      if (numericEntries.length > 1) {
+        const sum = numericEntries.reduce((a, b) => a + b.value, 0);
+        const maxDecimals = numericEntries.reduce((m, b) => Math.max(m, b.decimals || 0), 0);
+        const precision = Math.min(Math.max(maxDecimals, 0), 6);
         const rounded = precision > 0 ? parseFloat(sum.toFixed(precision)) : Math.round(sum);
         const suffix = v.units || '';
         displayName = v.text.replace(/(\d+(?:\.\d+)?)\s*(%|x|×)?/, `${rounded}${suffix}`);
       }
-      return { name: displayName, sources: Array.from(v.sources) };
+      return { name: displayName, sources: Array.from(v.sources), entries: v.entries };
     });
   };
 
@@ -232,13 +232,49 @@ function renderBuffLists(mergedBuffs, mergedDebuffs, missingBuffs) {
   const debuffListEl = document.getElementById("debuff-list");
   const missingListEl = document.getElementById("missing-buff-list");
 
-  if (buffListEl) buffListEl.innerHTML = mergedBuffs.map(b => {
-    return `<li class="text-green-200">${escapeHtml(b.name)}</li>`;
-  }).join('');
+  if (buffListEl) {
+    buffListEl.innerHTML = '';
+    mergedBuffs.forEach(b => {
+      const li = document.createElement('li');
+      li.className = 'text-green-200 relative cursor-default';
+      li.innerText = b.name;
+      li.dataset.entries = encodeURIComponent(JSON.stringify(b.entries || []));
 
-  if (debuffListEl) debuffListEl.innerHTML = mergedDebuffs.map(d => {
-    return `<li class="text-pink-200">${escapeHtml(d.name)}</li>`;
-  }).join('');
+      li.addEventListener('mouseenter', (e) => {
+        const entries = JSON.parse(decodeURIComponent(li.dataset.entries || '[]'));
+        highlightSlotsForEntries(entries, true);
+        showEntriesTooltip(li, entries);
+      });
+      li.addEventListener('mouseleave', () => {
+        highlightSlotsForEntries([], false);
+        removeEntriesTooltip();
+      });
+
+      buffListEl.appendChild(li);
+    });
+  }
+
+  if (debuffListEl) {
+    debuffListEl.innerHTML = '';
+    mergedDebuffs.forEach(d => {
+      const li = document.createElement('li');
+      li.className = 'text-pink-200 relative cursor-default';
+      li.innerText = d.name;
+      li.dataset.entries = encodeURIComponent(JSON.stringify(d.entries || []));
+
+      li.addEventListener('mouseenter', () => {
+        const entries = JSON.parse(decodeURIComponent(li.dataset.entries || '[]'));
+        highlightSlotsForEntries(entries, true);
+        showEntriesTooltip(li, entries);
+      });
+      li.addEventListener('mouseleave', () => {
+        highlightSlotsForEntries([], false);
+        removeEntriesTooltip();
+      });
+
+      debuffListEl.appendChild(li);
+    });
+  }
 
   if (missingListEl) {
     if (!missingBuffs || missingBuffs.length === 0) {
@@ -257,6 +293,96 @@ function escapeHtml(str) {
     .replace(/>/g, '&gt;')
     .replace(/"/g, '&quot;')
     .replace(/'/g, '&#39;');
+}
+
+// ---------- Helpers for hover highlight + tooltip ----------
+function prettifyFileName(filename) {
+  if (!filename) return '';
+  const name = filename.replace(/\.png$|\.jpg$|\.jpeg$/i, '').replace(/Icon_-_/i, '').replace(/_/g, ' ').trim();
+  return name;
+}
+
+function highlightSlotsForEntries(entries, highlight) {
+  // entries[].source contains the charData key like 'pics/Eve/Icon_-_Code_Ultimate.png'
+  const filenames = entries.map(e => e.source ? e.source.split('/').pop() : null).filter(Boolean);
+  document.querySelectorAll('.party-row').forEach(row => {
+    row.querySelectorAll('[data-slot]').forEach(slot => {
+      const img = slot.querySelector('img');
+      if (!img) {
+        slot.classList.remove('ring-4','ring-yellow-400','scale-105','transition-transform');
+        return;
+      }
+      const imgName = img.src.split('/').pop();
+      const matched = filenames.includes(imgName);
+      if (matched && highlight) {
+        slot.classList.add('ring-4','ring-yellow-400','scale-105','transition-transform');
+      } else {
+        slot.classList.remove('ring-4','ring-yellow-400','scale-105','transition-transform');
+      }
+    });
+  });
+}
+
+  let _buffEntriesTooltip = null;
+function showEntriesTooltip(targetEl, entries) {
+  removeEntriesTooltip();
+  const tooltip = document.createElement('div');
+  tooltip.id = 'buff-entries-tooltip';
+  tooltip.className = 'z-50 bg-gray-800 border border-pink-500 p-2 rounded text-sm text-white shadow-lg';
+  tooltip.style.position = 'fixed';
+  tooltip.style.maxWidth = '320px';
+  tooltip.style.wordBreak = 'break-word';
+  tooltip.style.boxSizing = 'border-box';
+  tooltip.style.padding = '8px';
+  tooltip.style.pointerEvents = 'none';
+
+  entries.forEach(e => {
+    const line = document.createElement('div');
+    const file = e.source ? e.source.split('/').pop() : e.source || '';
+    const pretty = prettifyFileName(file);
+    const text = e.text ? e.text : (e.value !== null ? String(e.value) : '');
+    line.innerText = `${pretty}: ${text}`;
+    line.style.marginBottom = '4px';
+    tooltip.appendChild(line);
+  });
+
+  // hide until positioned to avoid flicker
+  tooltip.style.visibility = 'hidden';
+  document.body.appendChild(tooltip);
+  _buffEntriesTooltip = tooltip;
+
+  // position: try to the right of element; if it would overflow, place to the left; clamp vertically
+  const rect = targetEl.getBoundingClientRect();
+  const ttRect = tooltip.getBoundingClientRect();
+  const margin = 8;
+
+  // compute preferred left (right side)
+  let left = rect.right + margin;
+  const rightLimit = window.innerWidth - margin;
+  if (left + ttRect.width > rightLimit) {
+    // try left side
+    left = rect.left - ttRect.width - margin;
+    if (left < margin) {
+      // clamp inside viewport
+      left = Math.max(margin, rightLimit - ttRect.width);
+    }
+  }
+
+  let top = rect.top;
+  const bottomLimit = window.innerHeight - margin;
+  if (top + ttRect.height > bottomLimit) top = bottomLimit - ttRect.height;
+  if (top < margin) top = margin;
+
+  tooltip.style.left = `${left}px`;
+  tooltip.style.top = `${top}px`;
+  tooltip.style.visibility = 'visible';
+}
+
+function removeEntriesTooltip() {
+  if (_buffEntriesTooltip) {
+    _buffEntriesTooltip.remove();
+    _buffEntriesTooltip = null;
+  }
 }
 
 // ---------- Buff ของแถวเดียว ----------
