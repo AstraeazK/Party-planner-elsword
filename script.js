@@ -158,6 +158,9 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
 function updateBuffs() {
+  // update duplicate warnings for all rows first
+  updateDuplicateWarnings();
+
   const selectedRow = document.querySelector(".party-row.party-selected");
   if (!selectedRow) return;
 
@@ -186,6 +189,37 @@ function updateBuffs() {
   const { missingBuffs } = calculateMissingBuffs(allBuffs, allDebuffs);
 
   renderBuffLists(mergedBuffs, mergedDebuffs, missingBuffs);
+}
+
+// ---------- Duplicate warning: แจ้งเตือนถ้ามีตัวละครซ้ำในแต่ละแถว ----------
+function updateDuplicateWarnings() {
+  const rows = document.querySelectorAll('.party-row');
+  rows.forEach(row => {
+    const imgs = Array.from(row.querySelectorAll('[data-slot] img'));
+    const names = imgs.map(img => img.src.split('/').pop()).filter(Boolean);
+    const counts = {};
+    names.forEach(n => counts[n] = (counts[n] || 0) + 1);
+    const hasDup = Object.values(counts).some(c => c > 1);
+
+    let badge = row.querySelector('.duplicate-warning');
+    if (hasDup) {
+      if (!badge) {
+        badge = document.createElement('div');
+        // place badge after the last data-slot so it appears inline with slots
+        badge.className = 'duplicate-warning ml-2 bg-yellow-400 text-black text-xs font-semibold px-2 py-0.5 rounded self-center whitespace-nowrap';
+        badge.innerText = '⚠️มีตัวละครซ้ำกัน';
+        const slots = row.querySelectorAll('[data-slot]');
+        const lastSlot = slots[slots.length - 1];
+        if (lastSlot && lastSlot.parentNode) {
+          lastSlot.insertAdjacentElement('afterend', badge);
+        } else {
+          row.appendChild(badge);
+        }
+      }
+    } else {
+      if (badge) badge.remove();
+    }
+  });
 }
 
 // ---------- Merge helper: รวม Buff/ Debuff ที่เหมือนกัน และบวกค่าตัวเลข ----------
