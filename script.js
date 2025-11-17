@@ -287,6 +287,39 @@ function renderBuffLists(mergedBuffs, mergedDebuffs, missingBuffs) {
       missingListEl.innerHTML = missingBuffs.map(m => `<li class="text-yellow-300">${escapeHtml(m)}</li>`).join('');
     }
   }
+
+  // ---------- Recommended Characters for Missing Buffs ----------
+  const recommendListEl = document.getElementById('recommend-char-list');
+  if (recommendListEl) {
+    recommendListEl.innerHTML = '';
+    if (!missingBuffs || missingBuffs.length === 0) return;
+    // Find all characters not in selected row
+    const selectedRow = document.querySelector('.party-row.party-selected');
+    const partyCharNames = selectedRow ? Array.from(selectedRow.querySelectorAll('img')).map(img => {
+      return Object.keys(charData).find(k => img.src.includes(k.replace('pics/', '')));
+    }).filter(Boolean) : [];
+    // For each missing buff, find characters that have it and are not in party
+    const recommended = [];
+    missingBuffs.forEach(missing => {
+      const keyMissing = missing.toLowerCase().replace(/\s+/g, '').replace(/[0-9.%x×]/g, '');
+      Object.entries(charData).forEach(([charKey, info]) => {
+        if (partyCharNames.includes(charKey)) return;
+        if (info.buffs.some(b => b.toLowerCase().replace(/\s+/g, '').replace(/[0-9.%x×]/g, '') === keyMissing)) {
+          recommended.push({ charKey, buff: missing });
+        }
+      });
+    });
+    // Render recommended characters (unique only)
+    const uniqueChars = Array.from(new Set(recommended.map(r => r.charKey)));
+    uniqueChars.forEach(charKey => {
+      const img = document.createElement('img');
+      img.src = charKey;
+      img.alt = charKey.split('/').pop();
+      img.className = 'w-[48px] h-[48px] object-contain rounded border-2 border-pink-300 shadow hover:scale-110 transition-transform';
+      img.title = charKey.split('/').pop().replace('Icon_-_', '').replace(/_/g, ' ');
+      recommendListEl.appendChild(img);
+    });
+  }
 }
 
 // ---------- Utility: ป้องกัน XSS เบื้องต้น ----------
@@ -493,6 +526,18 @@ function updateBuffsForRow(rowIndex) {
     });
   });
 
+  // Allow clicking a party row anywhere to select it
+  partyRows.forEach((row, index) => {
+    row.addEventListener('click', (e) => {
+      // if click originated from controls inside buff-section or other interactive elements, ignore
+      if (e.target.closest('#buff-section')) return;
+      setRowSelected(row);
+      activeRowIndex = index;
+      updateBuffsForRow(index);
+      e.stopPropagation();
+    });
+  });
+
   document.addEventListener("click", (e) => {
   const isInsidePartyRow = e.target.closest(".party-row");
   const isInsideBuffSection = e.composedPath().some(
@@ -505,6 +550,7 @@ function updateBuffsForRow(rowIndex) {
       const el = document.getElementById(id);
       if (el) el.innerHTML = "";
     });
+    activeRowIndex = null;
   }
 });
 
