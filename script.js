@@ -170,6 +170,8 @@ function updateBuffs() {
       const el = document.getElementById(id);
       if (el) el.innerHTML = "";
     });
+    const recommendEl = document.getElementById('recommend-char-list');
+    if (recommendEl) recommendEl.innerHTML = '';
     return;
   }
 
@@ -502,13 +504,19 @@ function showEntriesTooltip(targetEl, entries) {
 
   tooltip.style.left = `${left}px`;
   tooltip.style.top = `${top}px`;
-  tooltip.style.visibility = 'visible';
+  // use class to trigger fade-in transition defined in CSS
+  tooltip.classList.add('visible');
 }
 
 function removeEntriesTooltip() {
   if (_buffEntriesTooltip) {
-    _buffEntriesTooltip.remove();
+    // remove visible class to trigger fade-out, then remove element after transition
+    _buffEntriesTooltip.classList.remove('visible');
+    const el = _buffEntriesTooltip;
     _buffEntriesTooltip = null;
+    setTimeout(() => {
+      if (el && el.parentNode) el.parentNode.removeChild(el);
+    }, 180);
   }
 }
 
