@@ -194,12 +194,18 @@ function mergeBuffsAndDebuffs(allBuffs, allDebuffs) {
     const map = {};
     list.forEach(({ buff, charName }) => {
       const key = buff.toLowerCase().replace(/\s+/g, "").replace(/[0-9.%x×]/g, "");
-      if (!map[key]) map[key] = { text: buff, values: [], sources: new Set() };
+      if (!map[key]) map[key] = { text: buff, values: [], units: null, sources: new Set() };
       if (charName) map[key].sources.add(charName);
       
-      // สกัดค่าตัวเลข (เช่น 20% → 20)
+      // สกัดค่าตัวเลขและหน่วย (เช่น "20%" → {value: 20, unit: "%"}, "ลดธาตุ 150" → {value: 150, unit: ""})
       const numMatch = buff.match(/(\d+(?:\.\d+)?)\s*(%|x|×)?/);
-      if (numMatch) map[key].values.push(parseFloat(numMatch[1]));
+      if (numMatch) {
+        map[key].values.push(parseFloat(numMatch[1]));
+        // เก็บหน่วยจากครั้งแรก (ถือว่า buff เดียวกันมีหน่วยเดียวกัน)
+        if (map[key].units === null) {
+          map[key].units = numMatch[2] || '';
+        }
+      }
     });
     
     return Object.values(map).map((v) => {
@@ -207,7 +213,7 @@ function mergeBuffsAndDebuffs(allBuffs, allDebuffs) {
       // ถ้ามีค่าตัวเลขหลายตัว ให้บวกกัน
       if (v.values.length > 1) {
         const sum = v.values.reduce((a, b) => a + b, 0);
-        const suffix = v.text.match(/(%|x|×)\s*$/)?.[1] || '%';
+        const suffix = v.units || '';
         displayName = v.text.replace(/(\d+(?:\.\d+)?)\s*(%|x|×)?/, sum + suffix);
       }
       return { name: displayName, sources: Array.from(v.sources) };
