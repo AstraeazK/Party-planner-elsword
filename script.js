@@ -303,23 +303,28 @@ function prettifyFileName(filename) {
 }
 
 function highlightSlotsForEntries(entries, highlight) {
-  // entries[].source contains the charData key like 'pics/Eve/Icon_-_Code_Ultimate.png'
   const filenames = entries.map(e => e.source ? e.source.split('/').pop() : null).filter(Boolean);
-  document.querySelectorAll('.party-row').forEach(row => {
-    row.querySelectorAll('[data-slot]').forEach(slot => {
-      const img = slot.querySelector('img');
-      if (!img) {
-        slot.classList.remove('ring-4','ring-yellow-400','scale-105','transition-transform');
-        return;
-      }
-      const imgName = img.src.split('/').pop();
-      const matched = filenames.includes(imgName);
-      if (matched && highlight) {
+  const selectedRow = document.querySelector('.party-row.party-selected');
+  if (!selectedRow) return;
+  selectedRow.querySelectorAll('[data-slot]').forEach(slot => {
+    const img = slot.querySelector('img');
+    if (!img) {
+      slot.classList.remove('ring-4','ring-yellow-400','scale-105','transition-transform','opacity-40','grayscale');
+      return;
+    }
+    const imgName = img.src.split('/').pop();
+    const matched = filenames.includes(imgName);
+    if (highlight) {
+      if (matched) {
         slot.classList.add('ring-4','ring-yellow-400','scale-105','transition-transform');
+        slot.classList.remove('opacity-40','grayscale');
       } else {
         slot.classList.remove('ring-4','ring-yellow-400','scale-105','transition-transform');
+        slot.classList.add('opacity-40','grayscale');
       }
-    });
+    } else {
+      slot.classList.remove('ring-4','ring-yellow-400','scale-105','transition-transform','opacity-40','grayscale');
+    }
   });
 }
 
