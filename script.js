@@ -277,8 +277,12 @@ function renderBuffLists(mergedBuffs, mergedDebuffs, missingBuffs) {
   }
 
   if (missingListEl) {
+    missingListEl.innerHTML = '';
     if (!missingBuffs || missingBuffs.length === 0) {
-      missingListEl.innerHTML = `<li class="text-yellow-300">ไม่มี Missing Buffs</li>`;
+      const li = document.createElement('li');
+      li.className = 'text-yellow-300';
+      li.innerText = 'ไม่มี Missing Buffs';
+      missingListEl.appendChild(li);
     } else {
       missingListEl.innerHTML = missingBuffs.map(m => `<li class="text-yellow-300">${escapeHtml(m)}</li>`).join('');
     }
@@ -302,30 +306,81 @@ function prettifyFileName(filename) {
   return name;
 }
 
-function highlightSlotsForEntries(entries, highlight) {
+function highlightSlotsForEntries(entries, highlight, isGrayOutMode = false) {
   const filenames = entries.map(e => e.source ? e.source.split('/').pop() : null).filter(Boolean);
   const selectedRow = document.querySelector('.party-row.party-selected');
   if (!selectedRow) return;
   selectedRow.querySelectorAll('[data-slot]').forEach(slot => {
     const img = slot.querySelector('img');
+    const label = slot.querySelector('.buff-label');
     if (!img) {
       slot.classList.remove('ring-4','ring-yellow-400','scale-105','transition-transform','opacity-40','grayscale');
+      if (label) label.remove();
       return;
     }
     const imgName = img.src.split('/').pop();
     const matched = filenames.includes(imgName);
+    
     if (highlight) {
-      if (matched) {
-        slot.classList.add('ring-4','ring-yellow-400','scale-105','transition-transform');
-        slot.classList.remove('opacity-40','grayscale');
+      if (isGrayOutMode) {
+        // Gray-out mode: gray ตัวที่ไม่มี, normal ตัวที่มี (ไม่ highlight)
+        if (matched) {
+          slot.classList.remove('ring-4','ring-yellow-400','scale-105','transition-transform','opacity-40','grayscale');
+          if (label) label.remove();
+        } else {
+          slot.classList.remove('ring-4','ring-yellow-400','scale-105','transition-transform');
+          slot.classList.add('opacity-40','grayscale');
+          if (label) label.remove();
+        }
       } else {
-        slot.classList.remove('ring-4','ring-yellow-400','scale-105','transition-transform');
-        slot.classList.add('opacity-40','grayscale');
+        // Normal highlight mode: highlight ตัวที่มี, gray ตัวที่ไม่มี
+        if (matched) {
+          slot.classList.add('ring-4','ring-yellow-400','scale-105','transition-transform');
+          slot.classList.remove('opacity-40','grayscale');
+          // find matching entry and show value
+          const matchingEntry = entries.find(e => e.source && e.source.split('/').pop() === imgName);
+          if (matchingEntry && matchingEntry.text) {
+            const valMatch = matchingEntry.text.match(/(\d+(?:\.\d+)?)\s*(%|x|×)?/);
+            if (valMatch && !label) {
+              const newLabel = document.createElement('div');
+              newLabel.className = 'buff-label absolute bottom-1 right-1 bg-gradient-to-b from-pink-400 to-pink-500 text-white text-sm font-extrabold px-2 py-1 rounded shadow-lg';
+              newLabel.style.pointerEvents = 'none';
+              newLabel.style.minWidth = '2rem';
+              newLabel.style.textAlign = 'center';
+              newLabel.innerText = valMatch[0];
+              slot.classList.add('relative');
+              slot.appendChild(newLabel);
+            }
+          }
+        } else {
+          slot.classList.remove('ring-4','ring-yellow-400','scale-105','transition-transform');
+          slot.classList.add('opacity-40','grayscale');
+          if (label) label.remove();
+        }
       }
     } else {
       slot.classList.remove('ring-4','ring-yellow-400','scale-105','transition-transform','opacity-40','grayscale');
+      if (label) label.remove();
     }
   });
+
+  // Gray-out ตัวละครใน #char-container ถ้า isGrayOutMode
+  const charContainer = document.getElementById('char-container');
+  if (charContainer) {
+    charContainer.querySelectorAll('img').forEach(img => {
+      const imgName = img.src.split('/').pop();
+      const matched = filenames.includes(imgName);
+      if (highlight && isGrayOutMode) {
+        if (matched) {
+          img.classList.remove('opacity-40', 'grayscale');
+        } else {
+          img.classList.add('opacity-40', 'grayscale');
+        }
+      } else {
+        img.classList.remove('opacity-40', 'grayscale');
+      }
+    });
+  }
 }
 
   let _buffEntriesTooltip = null;
