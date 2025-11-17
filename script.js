@@ -196,25 +196,28 @@ function mergeBuffsAndDebuffs(allBuffs, allDebuffs) {
       const key = buff.toLowerCase().replace(/\s+/g, "").replace(/[0-9.%x×]/g, "");
       if (!map[key]) map[key] = { text: buff, values: [], units: null, sources: new Set() };
       if (charName) map[key].sources.add(charName);
-      
-      // สกัดค่าตัวเลขและหน่วย (เช่น "20%" → {value: 20, unit: "%"}, "ลดธาตุ 150" → {value: 150, unit: ""})
+
+      // สกัดค่าตัวเลขและหน่วย พร้อมเก็บจำนวนจุดทศนิยม
       const numMatch = buff.match(/(\d+(?:\.\d+)?)\s*(%|x|×)?/);
       if (numMatch) {
-        map[key].values.push(parseFloat(numMatch[1]));
-        // เก็บหน่วยจากครั้งแรก (ถือว่า buff เดียวกันมีหน่วยเดียวกัน)
-        if (map[key].units === null) {
-          map[key].units = numMatch[2] || '';
-        }
+        const raw = numMatch[1];
+        const value = parseFloat(raw);
+        const decimals = raw.includes('.') ? raw.split('.')[1].length : 0;
+        map[key].values.push({ value, decimals });
+        if (map[key].units === null) map[key].units = numMatch[2] || '';
       }
     });
-    
+
     return Object.values(map).map((v) => {
       let displayName = v.text;
-      // ถ้ามีค่าตัวเลขหลายตัว ให้บวกกัน
+      // ถ้ามีค่าตัวเลขหลายตัว ให้บวกกัน (และจัดรูปแบบเพื่อเลี่ยงปัญหา floating point)
       if (v.values.length > 1) {
-        const sum = v.values.reduce((a, b) => a + b, 0);
+        const sum = v.values.reduce((a, b) => a + b.value, 0);
+        const maxDecimals = v.values.reduce((m, b) => Math.max(m, b.decimals), 0);
+        const precision = Math.min(Math.max(maxDecimals, 0), 6); // cap precision to 6
+        const rounded = precision > 0 ? parseFloat(sum.toFixed(precision)) : Math.round(sum);
         const suffix = v.units || '';
-        displayName = v.text.replace(/(\d+(?:\.\d+)?)\s*(%|x|×)?/, sum + suffix);
+        displayName = v.text.replace(/(\d+(?:\.\d+)?)\s*(%|x|×)?/, `${rounded}${suffix}`);
       }
       return { name: displayName, sources: Array.from(v.sources) };
     });
