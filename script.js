@@ -334,13 +334,34 @@ function renderBuffLists(mergedBuffs, mergedDebuffs, missingBuffs) {
     const partyCharNames = selectedRow ? Array.from(selectedRow.querySelectorAll('img')).map(img => {
       return Object.keys(charData).find(k => img.src.includes(k.replace('pics/', '')));
     }).filter(Boolean) : [];
-    // For each missing buff, find characters that have it and are not in party
+    // Determine roles currently present in the selected row
+    const rolesInRow = new Set();
+    if (selectedRow) {
+      Array.from(selectedRow.querySelectorAll('img')).forEach(img => {
+        const k = Object.keys(charData).find(k => img.src.includes(k.replace('pics/', '')));
+        if (k && charData[k] && charData[k].role) rolesInRow.add(charData[k].role);
+      });
+    }
+
+    // Role precedence for recommendations:
+    // - If any 'physical' exists in the row, exclude 'magic' recommendations (recommend physical+support)
+    // - Else if any 'magic' exists, recommend magic+support
+    // - Otherwise, no role filter
+    let allowedRoles = null;
+    if (rolesInRow.has('physical')) {
+      allowedRoles = new Set(['physical', 'support']);
+    } else if (rolesInRow.has('magic')) {
+      allowedRoles = new Set(['magic', 'support']);
+    }
+
+    // For each missing buff, find characters that have it and are not in party (and match allowedRoles if set)
     const recommended = [];
     missingBuffs.forEach(missing => {
       const keyMissing = missing.toLowerCase().replace(/\s+/g, '').replace(/[0-9.%x×]/g, '');
       Object.entries(charData).forEach(([charKey, info]) => {
         if (partyCharNames.includes(charKey)) return;
-        if (info.buffs.some(b => b.toLowerCase().replace(/\s+/g, '').replace(/[0-9.%x×]/g, '') === keyMissing)) {
+        if (allowedRoles && (!info.role || !allowedRoles.has(info.role))) return;
+        if ((info.buffs || []).some(b => b.toLowerCase().replace(/\s+/g, '').replace(/[0-9.%x×]/g, '') === keyMissing)) {
           recommended.push({ charKey, buff: missing });
         }
       });
@@ -353,6 +374,41 @@ function renderBuffLists(mergedBuffs, mergedDebuffs, missingBuffs) {
       img.alt = charKey.split('/').pop();
       img.className = 'w-[48px] h-[48px] object-contain rounded border-2 border-pink-300 shadow hover:scale-110 transition-transform';
       img.title = charKey.split('/').pop().replace('Icon_-_', '').replace(/_/g, ' ');
+
+      // Right-click on recommended thumbnail: insert into first empty slot of selected row
+      img.addEventListener('contextmenu', (e) => {
+        e.preventDefault();
+        const selRow = document.querySelector('.party-row.party-selected');
+        if (!selRow) return;
+        const emptySlot = [...selRow.querySelectorAll('[data-slot]')].find(s => s.children.length === 0);
+        if (!emptySlot) return;
+
+        // create the img element for the slot (same behavior as drop)
+        emptySlot.innerHTML = '';
+        const newImg = document.createElement('img');
+        newImg.src = charKey;
+        newImg.className = 'w-full h-full object-contain';
+        newImg.draggable = true;
+
+        // dragstart: include fromRowIndex so dragging back works
+        const rowIndex = [...partyRows].indexOf(selRow);
+        newImg.addEventListener('dragstart', (ev) => {
+          ev.dataTransfer.setData('text/plain', charKey);
+          ev.dataTransfer.setData('fromRowIndex', rowIndex.toString());
+          ev.dataTransfer.effectAllowed = 'move';
+        });
+
+        // contextmenu on the inserted img removes it
+        newImg.addEventListener('contextmenu', (ev) => {
+          ev.preventDefault();
+          newImg.remove();
+          updateBuffs();
+        });
+
+        emptySlot.appendChild(newImg);
+        updateBuffs();
+      });
+
       recommendListEl.appendChild(img);
     });
   }
