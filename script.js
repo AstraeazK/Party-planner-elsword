@@ -653,16 +653,18 @@ function updateBuffsForRow(rowIndex) {
       return;
     }
 
-    let selectHtml = '<select id="swal-compare-select" style="width:100%; padding:6px; background:#2a2a2a; color:#fff; border-radius:6px; border:1px solid #555;">';
+    let selectHtml = '<select id="swal-compare-select" style="width:250px; padding:8px; background:#1a1a1a; color:#ff4da6; border-radius:8px; border:1px solid #ff4da6; box-shadow: 0 0 10px #ff4da6;">';
+
     nameEls.forEach((el, i) => {
       if (i === selectedIndex) return;
       const label = (el && el.innerText && el.innerText.trim()) ? el.innerText.trim() : `แถวที่ ${i + 1}`;
       selectHtml += `<option value="${i}">${escapeHtml(label)}</option>`;
     });
+
     selectHtml += '</select>';
 
     const { value: targetIndex } = await Swal.fire({
-      title: 'เลือกแถวที่จะเปรียบเทียบ',
+      title: '<span style="background: linear-gradient(90deg,#ff8ad4,#ff4da6,#ff8ad4); -webkit-background-clip: text; color: transparent; text-shadow: 0 0 8px #ff4da6;">เลือกแถวที่จะเปรียบเทียบ</span>',
       html: selectHtml,
       showCancelButton: true,
       confirmButtonText: 'เปรียบเทียบ',
@@ -672,8 +674,18 @@ function updateBuffsForRow(rowIndex) {
         return sel ? parseInt(sel.value, 10) : null;
       },
       width: '520px',
-      confirmButtonColor: '#ec4899'
+      background: '#111',
+      confirmButtonColor: '#ff4da6',
+      cancelButtonColor: '#888',
+      customClass: {
+        popup: 'swal2-neon-popup',
+        actions: 'swal2-neon-actions', // กำหนด custom class สำหรับ container ปุ่ม
+        confirmButton: 'swal2-neon-confirm',
+        cancelButton: 'swal2-neon-cancel'
+      }
     });
+
+
 
     if (typeof targetIndex !== 'number' || isNaN(targetIndex)) return;
 

@@ -170,3 +170,51 @@ body { font-family: 'Fredoka', sans-serif; }
   order: -1;
 }
 
+/* --------- pop-up เปรียบเทียบอันแรก ---------*/
+.swal2-neon-popup {
+  border: 2px solid #ff4da6;
+  border-radius: 12px;
+  box-shadow: 0 0 20px #ff4da6;
+}
+
+#swal-compare-select option {
+  background: #1a1a1a;
+  color: #ff4da6;
+}
+
+.swal2-neon-popup {
+  border: 2px solid #ff4da6;
+  border-radius: 12px;
+  box-shadow: 0 0 20px #ff4da6;
+}
+
+#swal-compare-select {
+  width: 250px; /* ลดความกว้าง dropdown */
+  padding: 8px;
+  background:#1a1a1a;
+  color:#ff4da6;
+  border-radius:8px;
+  border:1px solid #ff4da6;
+  box-shadow: 0 0 10px #ff4da6;
+  display: block;
+  margin: 0 auto; /* อยู่ตรงกลาง */
+}
+
+/* จัดปุ่มให้ Cancel อยู่ซ้าย, Confirm อยู่ขวา */
+.swal2-neon-actions {
+  display: flex;
+  justify-content: space-between;
+  gap: 10px;
+  margin-top: 20px;
+}
+
+.swal2-neon-confirm {
+  background: #ff4da6 !important;
+  box-shadow: 0 0 8px #ff4da6;
+}
+
+.swal2-neon-cancel {
+  background: #555 !important;
+  color: #fff !important;
+  box-shadow: 0 0 6px #ff4da6;
+}
