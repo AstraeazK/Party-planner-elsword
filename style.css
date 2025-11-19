@@ -80,64 +80,93 @@ body { font-family: 'Fredoka', sans-serif; }
     50% { transform: translateY(-10px); opacity: 0.3; }
   }
 
-  /* SweetAlert2 compare popup style (pink border + translucent pink background) */
-  .swal2-popup {
-    max-height: none !important;
-  }
+/* Container: scroll เฉพาะตอนสูงเกิน viewport */
+.swal2-container {
+  padding: 2rem !important;
+  align-items: flex-start !important;
+  overflow-y: auto !important;
+  overflow: hidden
+}
 
-  /* ป้องกันไม่ให้ SweetAlert2 ใส่ scroll ภายใน */
-  .swal2-container {
-    align-items: flex-start !important; /* ให้ popup เริ่มบนสุดและโตลงมา */
-    overflow-y: auto !important;        /* scroll ที่ container แทน */
-  }
-  .swal-compare-popup {
-    border: 2px solid rgba(236,72,153,0.95) !important;
-    background: rgba(236,72,153,0.06) !important;
-    backdrop-filter: blur(6px);
-    box-shadow: 0 10px 30px rgba(236,72,153,0.12), 0 0 40px rgba(236,72,153,0.12);
-    position: relative;
-    height: auto !important;
-    max-height: none !important;
-  }
-  .swal-compare-popup .swal2-html-container {
-    color: #fff;
-    text-align: center;
-    max-height: none !important;
-    overflow: visible !important;
-  }
-  /* Glow outline around popup */
-  .swal-compare-popup::after {
-    content: '';
-    position: absolute;
-    inset: -8px;
-    border-radius: 12px;
-    box-shadow: 0 0 40px rgba(236,72,153,0.22);
-    pointer-events: none;
-    filter: blur(6px);
-    opacity: 0.9;
-  }
-  /* Title styling for the compare popup */
-  .swal-compare-title {
-    display: block !important;
-    font-size: 20px !important;
-    font-weight: 900 !important;
-    letter-spacing: 0.6px;
-    color: #fff !important;
-    background: linear-gradient(90deg,#ff80bf,#ff4da6,#ff80bf);
-    -webkit-background-clip: text;
-    background-clip: text;
-    color: transparent;
-    text-align: center !important;
-    margin-bottom: 6px !important;
-    text-shadow: 0 2px 10px rgba(236,72,153,0.25);
-  }
-  /* Ensure action buttons are centered and place cancel on the left */
-  .swal-compare-popup .swal2-actions {
-    justify-content: center !important;
-    gap: 0.6rem;
-    padding-top: 0.6rem;
-  }
-  /* Force the cancel button to appear to the left of the confirm button */
-  .swal-compare-popup .swal2-cancel {
-    order: -1;
-  }
+/* Popup: ต้อง kill max-height ของ inline-style ที่ SweetAlert ใส่เอง */
+.swal2-popup {
+  max-height: none !important;
+  height: auto !important;
+}
+
+/* Content wrapper */
+.swal2-content {
+  max-height: none !important;
+  height: auto !important;
+  overflow: visible !important;
+}
+
+/* HTML content area (ตำแหน่งของ table) */
+.swal2-html-container {
+  max-height: none !important;
+  height: auto !important;
+  overflow: visible !important;
+  margin: 0 !important; /* SweetAlert ชอบใส่ margin */
+}
+
+/* Compare popup custom style */
+.swal-compare-popup {
+  color: #fff !important;
+  border: 2px solid rgba(236,72,153,0.95) !important;
+  background: rgba(236,72,153,0.06) !important;
+  backdrop-filter: blur(6px);
+  box-shadow: 0 10px 30px rgba(236,72,153,0.12), 
+              0 0 40px rgba(236,72,153,0.12);
+  position: relative;
+
+  /* IMPORTANT: allow it to expand */
+  max-height: 90vh !important;
+  height: auto !important;
+  overflow: hidden
+}
+
+/* Table container inside popup — ป้องกันบางกรณีที่ SweetAlert สร้าง wrapper auto-scroll */
+.swal-compare-popup .swal2-html-container > div {
+  max-height: calc(90vh - 100px) !important;
+  overflow: visible !important;
+  overflow-y: auto !important;
+}
+
+/* Title Styling */
+.swal-compare-title {
+  display: block !important;
+  font-size: 20px !important;
+  font-weight: 900 !important;
+  letter-spacing: 0.6px;
+  background: linear-gradient(90deg,#ff80bf,#ff4da6,#ff80bf);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  text-align: center !important;
+  margin-bottom: 6px !important;
+  text-shadow: 0 2px 10px rgba(236,72,153,0.25);
+}
+
+/* Glow outline */
+.swal-compare-popup::after {
+  content: '';
+  position: absolute;
+  inset: -8px;
+  border-radius: 12px;
+  box-shadow: 0 0 40px rgba(236,72,153,0.22);
+  pointer-events: none;
+  filter: blur(6px);
+  opacity: 0.9;
+}
+
+/* Button Area (ถ้ามีปุ่ม) */
+.swal-compare-popup .swal2-actions {
+  justify-content: center !important;
+  gap: 0.6rem;
+  padding-top: 0.6rem;
+}
+
+.swal-compare-popup .swal2-cancel {
+  order: -1;
+}
+

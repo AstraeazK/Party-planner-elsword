@@ -714,14 +714,16 @@ function updateBuffsForRow(rowIndex) {
     await Swal.fire({
       title: 'ผลการเปรียบเทียบ',
       html: table,
+      heightAuto: true,
       width: '42%',
-      showConfirmButton: false,
       showCloseButton: true,
-      customClass: { 
-        popup: 'swal-compare-popup', 
-        title: 'swal-compare-title' 
+      showConfirmButton: false,
+      customClass: {
+        popup: 'swal-compare-popup',
+        title: 'swal-compare-title'
       }
     });
+
 
   }
 
