@@ -6,6 +6,8 @@
   <title>Party Planner</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@500;600;700&display=swap" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.10.5/dist/sweetalert2.all.min.js"></script>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11.10.5/dist/sweetalert2.min.css">
   <style>
     body { font-family: 'Fredoka', sans-serif; }
     /* Glow Effect */
@@ -58,6 +60,55 @@
       0%, 100% { transform: translateY(0); opacity: 0.8; }
       50% { transform: translateY(-10px); opacity: 0.3; }
     }
+
+    /* SweetAlert2 compare popup style (pink border + translucent pink background) */
+    .swal-compare-popup {
+      border: 2px solid rgba(236,72,153,0.95) !important;
+      background: rgba(236,72,153,0.06) !important;
+      backdrop-filter: blur(6px);
+      box-shadow: 0 10px 30px rgba(236,72,153,0.12), 0 0 40px rgba(236,72,153,0.12);
+      position: relative;
+    }
+    .swal-compare-popup .swal2-html-container {
+      color: #fff;
+      text-align: center;
+    }
+    /* Glow outline around popup */
+    .swal-compare-popup::after {
+      content: '';
+      position: absolute;
+      inset: -8px;
+      border-radius: 12px;
+      box-shadow: 0 0 40px rgba(236,72,153,0.22);
+      pointer-events: none;
+      filter: blur(6px);
+      opacity: 0.9;
+    }
+    /* Title styling for the compare popup */
+    .swal-compare-title {
+      display: block !important;
+      font-size: 20px !important;
+      font-weight: 900 !important;
+      letter-spacing: 0.6px;
+      color: #fff !important;
+      background: linear-gradient(90deg,#ff80bf,#ff4da6,#ff80bf);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+      text-align: center !important;
+      margin-bottom: 6px !important;
+      text-shadow: 0 2px 10px rgba(236,72,153,0.25);
+    }
+    /* Ensure action buttons are centered and place cancel on the left */
+    .swal-compare-popup .swal2-actions {
+      justify-content: center !important;
+      gap: 0.6rem;
+      padding-top: 0.6rem;
+    }
+    /* Force the cancel button to appear to the left of the confirm button */
+    .swal-compare-popup .swal2-cancel {
+      order: -1;
+    }
   </style>
 </head>
 <body class="bg-gray-900 text-white">
@@ -91,7 +142,7 @@
       <div id="custom-text-slot"
           class="w-[90px] h-[90px] bg-[#FFE6E6] text-black font-bold text-center p-2 flex items-center justify-center 
           rounded-md cursor-text break-all whitespace-pre-wrap"
-          contenteditable="true">Party</div>
+          contenteditable="true">Party 1</div>
 
       <!-- Slot -->
           <div class="w-[90px] h-[90px] bg-gray-700 border-2 flex items-center justify-center" data-slot="0"></div>
@@ -112,6 +163,13 @@
               class="w-10 h-10 transition-transform active:scale-90"></i>
           </div>
 
+          <!-- Compare Icon -->
+          <div class="w-[90px] h-[90px] bg-gray-800 flex items-center justify-center 
+                      text-pink-400 hover:text-pink-300 cursor-pointer compare-btn" title="เปรียบเทียบกับแถวอื่น">
+            <i data-lucide="columns" 
+              class="w-8 h-8 transition-transform active:scale-90"></i>
+          </div>
+
           <!-- Scroll Icon -->
           <div class="w-[90px] h-[90px] bg-gray-800 flex items-center justify-center 
                       text-pink-400 hover:text-pink-300 cursor-pointer scroll-btn">
@@ -128,7 +186,7 @@
        <div id="custom-text-slot"
           class="w-[90px] h-[90px] bg-[#FFC6C6] text-black font-bold text-center p-2 flex items-center justify-center 
           rounded-md cursor-text break-all whitespace-pre-wrap"
-          contenteditable="true">Party</div>
+          contenteditable="true">Party 2</div>
 
       <!-- Slot -->
           <div class="w-[90px] h-[90px] bg-gray-700 border-2 flex items-center justify-center" data-slot="0"></div>
@@ -147,6 +205,13 @@
                       text-pink-400 hover:text-pink-300 cursor-pointer clear-btn">
             <i data-lucide="brush-cleaning" 
               class="w-10 h-10 transition-transform active:scale-90"></i>
+          </div>
+
+          <!-- Compare Icon -->
+          <div class="w-[90px] h-[90px] bg-gray-800 flex items-center justify-center 
+                      text-pink-400 hover:text-pink-300 cursor-pointer compare-btn" title="เปรียบเทียบกับแถวอื่น">
+            <i data-lucide="columns" 
+              class="w-8 h-8 transition-transform active:scale-90"></i>
           </div>
 
           <!-- Scroll Icon -->
@@ -165,7 +230,7 @@
       <div id="custom-text-slot"
           class="w-[90px] h-[90px] bg-[#F7B5CA] text-black font-bold text-center p-2 flex items-center justify-center 
           rounded-md cursor-text break-all whitespace-pre-wrap"
-          contenteditable="true">Party</div>
+          contenteditable="true">Party 3</div>
 
 
       <!-- Slot -->
@@ -187,6 +252,13 @@
               class="w-10 h-10 transition-transform active:scale-90"></i>
           </div>
 
+          <!-- Compare Icon -->
+          <div class="w-[90px] h-[90px] bg-gray-800 flex items-center justify-center 
+                      text-pink-400 hover:text-pink-300 cursor-pointer compare-btn" title="เปรียบเทียบกับแถวอื่น">
+            <i data-lucide="columns" 
+              class="w-8 h-8 transition-transform active:scale-90"></i>
+          </div>
+
           <!-- Scroll Icon -->
           <div class="w-[90px] h-[90px] bg-gray-800 flex items-center justify-center 
                       text-pink-400 hover:text-pink-300 cursor-pointer scroll-btn">
@@ -203,7 +275,7 @@
       <div id="custom-text-slot"
           class="w-[90px] h-[90px] bg-[#F0A8D0] text-black font-bold text-center p-2 flex items-center justify-center 
           rounded-md cursor-text break-all whitespace-pre-wrap"
-          contenteditable="true">Party</div>
+          contenteditable="true">Party 4</div>
 
       <!-- Slot -->
           <div class="w-[90px] h-[90px] bg-gray-700 border-2 flex items-center justify-center" data-slot="0"></div>
@@ -222,6 +294,13 @@
                       text-pink-400 hover:text-pink-300 cursor-pointer clear-btn">
             <i data-lucide="brush-cleaning" 
               class="w-10 h-10 transition-transform active:scale-90"></i>
+          </div>
+
+          <!-- Compare Icon -->
+          <div class="w-[90px] h-[90px] bg-gray-800 flex items-center justify-center 
+                      text-pink-400 hover:text-pink-300 cursor-pointer compare-btn" title="เปรียบเทียบกับแถวอื่น">
+            <i data-lucide="columns" 
+              class="w-8 h-8 transition-transform active:scale-90"></i>
           </div>
 
           <!-- Scroll Icon -->
@@ -268,6 +347,8 @@
   </div>
 
 </main>
+
+
 
   <script type="module">
     import { createIcons, icons } from "https://cdn.jsdelivr.net/npm/lucide@latest/+esm";

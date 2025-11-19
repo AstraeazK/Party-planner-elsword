@@ -42,7 +42,6 @@ document.addEventListener("DOMContentLoaded", () => {
     newImg.className = "w-full h-full object-contain";
     newImg.draggable = true;
 
-    // 🔹 เพิ่ม dragstart สำหรับลากกลับ
     newImg.addEventListener("dragstart", (e) => {
       e.dataTransfer.setData("text/plain", src);
       e.dataTransfer.setData("fromRowIndex", activeRowIndex.toString());
@@ -158,11 +157,24 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
 function updateBuffs() {
-  // update duplicate warnings for all rows first
   updateDuplicateWarnings();
-
-  const selectedRow = document.querySelector(".party-row.party-selected");
-  if (!selectedRow) return;
+  let selectedRow = document.querySelector(".party-row.party-selected");
+  if (!selectedRow && typeof activeRowIndex === 'number' && activeRowIndex !== null) {
+    const rows = document.querySelectorAll('.party-row');
+    selectedRow = rows[activeRowIndex] || null;
+    if (selectedRow && !selectedRow.classList.contains('party-selected')) {
+      selectedRow.classList.add('party-selected', 'ring-4', 'ring-pink-500');
+    }
+  }
+  if (!selectedRow) {
+    ["buff-list", "debuff-list", "missing-buff-list"].forEach(id => {
+      const el = document.getElementById(id);
+      if (el) el.innerHTML = "";
+    });
+    const recommendEl = document.getElementById('recommend-char-list');
+    if (recommendEl) recommendEl.innerHTML = '';
+    return;
+  }
 
   const imgs = selectedRow.querySelectorAll("img");
   if (imgs.length === 0) {
@@ -207,7 +219,6 @@ function updateDuplicateWarnings() {
     if (hasDup) {
       if (!badge) {
         badge = document.createElement('div');
-        // place badge after the last data-slot so it appears inline with slots
         badge.className = 'duplicate-warning ml-2 bg-yellow-400 text-black text-xs font-semibold px-2 py-0.5 rounded self-center whitespace-nowrap';
         badge.innerText = '⚠️มีตัวละครซ้ำกัน';
         const slots = row.querySelectorAll('[data-slot]');
@@ -233,7 +244,6 @@ function mergeBuffsAndDebuffs(allBuffs, allDebuffs) {
       if (!map[key]) map[key] = { text: buff, entries: [], units: null, sources: new Set() };
       if (charName) map[key].sources.add(charName);
 
-      // สกัดค่าตัวเลขและหน่วย พร้อมเก็บจำนวนจุดทศนิยม และข้อความดั้งเดิม
       const numMatch = buff.match(/(\d+(?:\.\d+)?)\s*(%|x|×)?/);
       const raw = numMatch ? numMatch[1] : null;
       const value = raw ? parseFloat(raw) : null;
@@ -245,7 +255,6 @@ function mergeBuffsAndDebuffs(allBuffs, allDebuffs) {
 
     return Object.values(map).map((v) => {
       let displayName = v.text;
-      // ถ้ามีค่าตัวเลขหลายตัว ให้บวกกัน (และจัดรูปแบบเพื่อเลี่ยงปัญหา floating point)
       const numericEntries = v.entries.filter(e => typeof e.value === 'number');
       if (numericEntries.length > 1) {
         const sum = numericEntries.reduce((a, b) => a + b.value, 0);
@@ -329,12 +338,10 @@ function renderBuffLists(mergedBuffs, mergedDebuffs, missingBuffs) {
   if (recommendListEl) {
     recommendListEl.innerHTML = '';
     if (!missingBuffs || missingBuffs.length === 0) return;
-    // Find all characters not in selected row
     const selectedRow = document.querySelector('.party-row.party-selected');
     const partyCharNames = selectedRow ? Array.from(selectedRow.querySelectorAll('img')).map(img => {
       return Object.keys(charData).find(k => img.src.includes(k.replace('pics/', '')));
     }).filter(Boolean) : [];
-    // Determine roles currently present in the selected row
     const rolesInRow = new Set();
     if (selectedRow) {
       Array.from(selectedRow.querySelectorAll('img')).forEach(img => {
@@ -343,10 +350,6 @@ function renderBuffLists(mergedBuffs, mergedDebuffs, missingBuffs) {
       });
     }
 
-    // Role precedence for recommendations:
-    // - If any 'physical' exists in the row, exclude 'magic' recommendations (recommend physical+support)
-    // - Else if any 'magic' exists, recommend magic+support
-    // - Otherwise, no role filter
     let allowedRoles = null;
     if (rolesInRow.has('physical')) {
       allowedRoles = new Set(['physical', 'support']);
@@ -354,7 +357,6 @@ function renderBuffLists(mergedBuffs, mergedDebuffs, missingBuffs) {
       allowedRoles = new Set(['magic', 'support']);
     }
 
-    // For each missing buff, find characters that have it and are not in party (and match allowedRoles if set)
     const recommended = [];
     missingBuffs.forEach(missing => {
       const keyMissing = missing.toLowerCase().replace(/\s+/g, '').replace(/[0-9.%x×]/g, '');
@@ -366,7 +368,7 @@ function renderBuffLists(mergedBuffs, mergedDebuffs, missingBuffs) {
         }
       });
     });
-    // Render recommended characters (unique only)
+
     const uniqueChars = Array.from(new Set(recommended.map(r => r.charKey)));
     uniqueChars.forEach(charKey => {
       const img = document.createElement('img');
@@ -375,7 +377,6 @@ function renderBuffLists(mergedBuffs, mergedDebuffs, missingBuffs) {
       img.className = 'w-[48px] h-[48px] object-contain rounded border-2 border-pink-300 shadow hover:scale-110 transition-transform';
       img.title = charKey.split('/').pop().replace('Icon_-_', '').replace(/_/g, ' ');
 
-      // Right-click on recommended thumbnail: insert into first empty slot of selected row
       img.addEventListener('contextmenu', (e) => {
         e.preventDefault();
         const selRow = document.querySelector('.party-row.party-selected');
@@ -383,14 +384,12 @@ function renderBuffLists(mergedBuffs, mergedDebuffs, missingBuffs) {
         const emptySlot = [...selRow.querySelectorAll('[data-slot]')].find(s => s.children.length === 0);
         if (!emptySlot) return;
 
-        // create the img element for the slot (same behavior as drop)
         emptySlot.innerHTML = '';
         const newImg = document.createElement('img');
         newImg.src = charKey;
         newImg.className = 'w-full h-full object-contain';
         newImg.draggable = true;
 
-        // dragstart: include fromRowIndex so dragging back works
         const rowIndex = [...partyRows].indexOf(selRow);
         newImg.addEventListener('dragstart', (ev) => {
           ev.dataTransfer.setData('text/plain', charKey);
@@ -398,7 +397,6 @@ function renderBuffLists(mergedBuffs, mergedDebuffs, missingBuffs) {
           ev.dataTransfer.effectAllowed = 'move';
         });
 
-        // contextmenu on the inserted img removes it
         newImg.addEventListener('contextmenu', (ev) => {
           ev.preventDefault();
           newImg.remove();
@@ -413,8 +411,6 @@ function renderBuffLists(mergedBuffs, mergedDebuffs, missingBuffs) {
     });
   }
 }
-
-// ---------- Utility: ป้องกัน XSS เบื้องต้น ----------
 function escapeHtml(str) {
   return String(str)
     .replace(/&/g, '&amp;')
@@ -462,7 +458,6 @@ function highlightSlotsForEntries(entries, highlight, isGrayOutMode = false) {
         if (matched) {
           slot.classList.add('ring-4','ring-yellow-400','scale-105','transition-transform');
           slot.classList.remove('opacity-40','grayscale');
-          // find matching entry and show value
           const matchingEntry = entries.find(e => e.source && e.source.split('/').pop() === imgName);
           if (matchingEntry && matchingEntry.text) {
             const valMatch = matchingEntry.text.match(/(\d+(?:\.\d+)?)\s*(%|x|×)?/);
@@ -531,24 +526,19 @@ function showEntriesTooltip(targetEl, entries) {
     tooltip.appendChild(line);
   });
 
-  // hide until positioned to avoid flicker
   tooltip.style.visibility = 'hidden';
   document.body.appendChild(tooltip);
   _buffEntriesTooltip = tooltip;
 
-  // position: try to the right of element; if it would overflow, place to the left; clamp vertically
   const rect = targetEl.getBoundingClientRect();
   const ttRect = tooltip.getBoundingClientRect();
   const margin = 8;
 
-  // compute preferred left (right side)
   let left = rect.right + margin;
   const rightLimit = window.innerWidth - margin;
   if (left + ttRect.width > rightLimit) {
-    // try left side
     left = rect.left - ttRect.width - margin;
     if (left < margin) {
-      // clamp inside viewport
       left = Math.max(margin, rightLimit - ttRect.width);
     }
   }
@@ -560,13 +550,11 @@ function showEntriesTooltip(targetEl, entries) {
 
   tooltip.style.left = `${left}px`;
   tooltip.style.top = `${top}px`;
-  // use class to trigger fade-in transition defined in CSS
   tooltip.classList.add('visible');
 }
 
 function removeEntriesTooltip() {
   if (_buffEntriesTooltip) {
-    // remove visible class to trigger fade-out, then remove element after transition
     _buffEntriesTooltip.classList.remove('visible');
     const el = _buffEntriesTooltip;
     _buffEntriesTooltip = null;
@@ -588,7 +576,6 @@ function updateBuffsForRow(rowIndex) {
     const srcKey = Object.keys(charData).find(k => img.src.includes(k.replace("pics/", "")));
     const info = srcKey ? charData[srcKey] : null;
     if (info) {
-      // ส่งทั้ง buff/debuff พร้อม charName
       info.buffs.forEach(b => buffList.push({ buff: b, charName: srcKey }));
       info.debuffs.forEach(d => debuffList.push({ buff: d, charName: srcKey }));
     }
@@ -624,15 +611,135 @@ function updateBuffsForRow(rowIndex) {
     });
   });
 
-  // Allow clicking a party row anywhere to select it
   partyRows.forEach((row, index) => {
     row.addEventListener('click', (e) => {
-      // if click originated from controls inside buff-section or other interactive elements, ignore
       if (e.target.closest('#buff-section')) return;
       setRowSelected(row);
       activeRowIndex = index;
       updateBuffsForRow(index);
       e.stopPropagation();
+    });
+  });
+
+  // ---------- Compare modal: SweetAlert2 + render mock comparison ----------
+  function getMergedForRowElement(rowEl) {
+    const imgs = Array.from(rowEl.querySelectorAll('img'));
+    const allBuffs = [];
+    const allDebuffs = [];
+    imgs.forEach(img => {
+      const srcKey = Object.keys(charData).find(k => img.src.includes(k.replace('pics/', '')));
+      const info = srcKey ? charData[srcKey] : null;
+      if (info) {
+        info.buffs.forEach(b => allBuffs.push({ buff: b, charName: srcKey }));
+        info.debuffs.forEach(d => allDebuffs.push({ buff: d, charName: srcKey }));
+      }
+    });
+    return mergeBuffsAndDebuffs(allBuffs, allDebuffs);
+  }
+
+  function normalizeKey(str) {
+    return String(str || '').toLowerCase().replace(/\s+/g, '').replace(/[0-9.%x×]/g, '');
+  }
+
+  async function showCompareModal(selectedIndex) {
+    const selRow = partyRows[selectedIndex];
+    if (!selRow) return;
+
+    const selMerged = getMergedForRowElement(selRow).mergedBuffs || [];
+
+    const nameEls = Array.from(document.querySelectorAll('#custom-text-slot'));
+    if (nameEls.length < 2) {
+      Swal.fire('ข้อมูล', 'ต้องมีแถวอื่นอย่างน้อย 1 แถว', 'info');
+      return;
+    }
+
+    let selectHtml = '<select id="swal-compare-select" style="width:100%; padding:6px; background:#2a2a2a; color:#fff; border-radius:6px; border:1px solid #555;">';
+    nameEls.forEach((el, i) => {
+      if (i === selectedIndex) return;
+      const label = (el && el.innerText && el.innerText.trim()) ? el.innerText.trim() : `แถวที่ ${i + 1}`;
+      selectHtml += `<option value="${i}">${escapeHtml(label)}</option>`;
+    });
+    selectHtml += '</select>';
+
+    const { value: targetIndex } = await Swal.fire({
+      title: 'เลือกแถวที่จะเปรียบเทียบ',
+      html: selectHtml,
+      showCancelButton: true,
+      confirmButtonText: 'เปรียบเทียบ',
+      cancelButtonText: 'ยกเลิก',
+      preConfirm: () => {
+        const sel = document.getElementById('swal-compare-select');
+        return sel ? parseInt(sel.value, 10) : null;
+      },
+      width: '520px',
+      confirmButtonColor: '#ec4899'
+    });
+
+    if (typeof targetIndex !== 'number' || isNaN(targetIndex)) return;
+
+    const textBoxes = Array.from(document.querySelectorAll('#custom-text-slot'));
+    const selLabel = (textBoxes[selectedIndex] && textBoxes[selectedIndex].innerText && textBoxes[selectedIndex].innerText.trim()) ? textBoxes[selectedIndex].innerText.trim() : `แถวที่ ${selectedIndex + 1}`;
+    const tgtLabel = (textBoxes[targetIndex] && textBoxes[targetIndex].innerText && textBoxes[targetIndex].innerText.trim()) ? textBoxes[targetIndex].innerText.trim() : `แถวที่ ${targetIndex + 1}`;
+    const tgtMerged = (partyRows[targetIndex]) ? getMergedForRowElement(partyRows[targetIndex]).mergedBuffs || [] : [];
+    const map = {};
+    selMerged.forEach(b => { map[normalizeKey(b.name)] = map[normalizeKey(b.name)] || {}; map[normalizeKey(b.name)].sel = b; });
+    tgtMerged.forEach(b => { map[normalizeKey(b.name)] = map[normalizeKey(b.name)] || {}; map[normalizeKey(b.name)].tgt = b; });
+
+    function extractNumber(name) {
+      const m = String(name).match(/(\d+(?:\.\d+)?)(\s*[%x×])?/);
+      if (!m) return '';
+      return m[1] + (m[2] || '');
+    }
+
+    function stripNumbersAndPercents(str) {
+      return String(str || '').replace(/(\d+(?:\.\d+)?\s*[%x×]?)/g, '').replace(/\s+/g, ' ').trim();
+    }
+
+    let table = '<div style="overflow:auto; max-height:300px;">';
+    table += '<table style="width:100%; border-collapse:collapse; text-align:left; border-radius:8px; overflow:hidden; font-size:16px;">';
+    table += '<thead><tr style="background: rgba(236,72,153,0.18);"><th style="padding:6px; border-bottom:1px solid rgba(255,255,255,0.06); width:20%; font-weight:800; font-size:14px; color:#fff; text-align:center;">' + escapeHtml(selLabel) + '</th><th style="padding:6px; border-bottom:1px solid rgba(255,255,255,0.06); width:60%; font-weight:800; font-size:14px; color:#fff; text-align:center;">Buff / Debuff</th><th style="padding:6px; border-bottom:1px solid rgba(255,255,255,0.06); width:20%; font-weight:800; font-size:14px; color:#fff; text-align:center;">' + escapeHtml(tgtLabel) + '</th></tr></thead><tbody>';
+
+    Object.keys(map).forEach(k => {
+      const row = map[k];
+      const selName = row.sel ? row.sel.name : '';
+      const tgtName = row.tgt ? row.tgt.name : '';
+      const displayName = stripNumbersAndPercents(row.sel ? row.sel.name : row.tgt.name);
+      const leftVal = row.sel ? escapeHtml(extractNumber(selName)) : '';
+      const rightVal = row.tgt ? escapeHtml(extractNumber(tgtName)) : '';
+      table += `<tr><td style="padding:6px; border-bottom:1px solid rgba(255,255,255,0.04); text-align:center;">${leftVal}</td><td style="padding:6px; border-bottom:1px solid rgba(255,255,255,0.04); text-align:center;">${escapeHtml(displayName)}</td><td style="padding:6px; border-bottom:1px solid rgba(255,255,255,0.04); text-align:center;">${rightVal}</td></tr>`;
+    });
+
+    table += '</tbody></table></div>';
+
+    await Swal.fire({
+      title: 'ผลการเปรียบเทียบ',
+      html: table,
+      width: '42%',
+      showConfirmButton: false,
+      showCloseButton: true,
+      customClass: { 
+        popup: 'swal-compare-popup', 
+        title: 'swal-compare-title' 
+      }
+    });
+
+  }
+
+  // ------------------------ ปุ่มเปรียบเทียบ ------------------------
+  document.querySelectorAll('.compare-btn').forEach((btn) => {
+    btn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      const selectedRow = document.querySelector('.party-row.party-selected');
+      let selectedIdx;
+      if (!selectedRow) {
+        const rowIndex = [...partyRows].indexOf(btn.closest('.party-row'));
+        setRowSelected(partyRows[rowIndex]);
+        activeRowIndex = rowIndex;
+        selectedIdx = rowIndex;
+      } else {
+        selectedIdx = [...partyRows].indexOf(selectedRow);
+      }
+      showCompareModal(selectedIdx);
     });
   });
 

@@ -1,4 +1,3 @@
-// ---------------- Essential Buffs/Debuffs ----------------
 const essentialBuffs = [
   "ดาเมจเวทย์/กายเพิ่มขึ้น",
   "ดาเมจต่อบอส",
@@ -14,7 +13,6 @@ const essentialDebuffs = [
   "รับ Critical Damage เพิ่มขึ้น"
 ];
 
-// ---------------- Aliases ----------------
 const buffAliases = {
   "ดาเมจเวทย์/กายเพิ่มขึ้น": ["ดาเมจเวทย์", "ดาเมจกาย"],
   "ลดดาเมจ": ["ลดดาเมจที่ได้รับ", "ลดดาเมจ", "def กาย/เวทย์เพิ่มขึ้น","ลดดาเมจจากบอส"],
@@ -46,7 +44,6 @@ function calculateMissingBuffs(activeBuffs, activeDebuffs) {
   return { missingBuffs, missingDebuffs };
 }
 
-// ---------------- Export ----------------
 export { 
   calculateMissingBuffs, 
 };
