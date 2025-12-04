@@ -22,7 +22,6 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   pics.forEach((src) => charContainer.appendChild(createCharImage(src)));
-  // ---------- คลิกขวาใส่ char ใน slot ว่างของแถวที่เลือก ----------
   charContainer.addEventListener("contextmenu", (e) => {
     e.preventDefault();
 
@@ -683,9 +682,6 @@ function updateBuffsForRow(rowIndex) {
         }
       });
 
-
-
-
     if (typeof targetIndex !== 'number' || isNaN(targetIndex)) return;
 
     const textBoxes = Array.from(document.querySelectorAll('#custom-text-slot'));
@@ -792,3 +788,4 @@ function createClickEffect(e) {
 
   setTimeout(() => effect.remove(), 900);
 }
+
