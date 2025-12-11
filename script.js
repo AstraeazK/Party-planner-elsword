@@ -1,7 +1,7 @@
 import { calculateMissingBuffs } from "./buffDebuff.js";
 import { charData } from "./charData.js";
 import { pics } from "./pics.js";
-let activeRowIndex = null; // แถวที่เลือกอยู่
+let activeRowIndex = null;
 
 document.addEventListener("DOMContentLoaded", () => {
   const charContainer = document.getElementById("char-container");
@@ -12,16 +12,53 @@ document.addEventListener("DOMContentLoaded", () => {
     const img = document.createElement("img");
     img.src = src;
     img.alt = src.split("/").pop();
+
     img.className = "w-[65px] h-[65px] object-contain bg-gray-700 cursor-pointer";
     img.draggable = true;
+    if (charData[src]) {
+      img.dataset.role = charData[src].role;
+    }
+
     img.addEventListener("dragstart", (e) => {
       e.dataTransfer.setData("text/plain", src);
       e.dataTransfer.effectAllowed = "copy";
     });
+
     return img;
   }
 
+
   pics.forEach((src) => charContainer.appendChild(createCharImage(src)));
+  // ---------- FILTER BUTTONS ----------
+  const filterBtns = document.querySelectorAll("#char-filter-buttons .filter-btn");
+
+  filterBtns.forEach(btn => {
+    btn.addEventListener("click", () => {
+      const role = btn.dataset.role;
+      filterCharacters(role);
+      filterBtns.forEach(b => {
+        b.classList.remove("bg-pink-600");
+        b.classList.add("bg-gray-700");
+      });
+      btn.classList.add("bg-pink-600");
+    });
+  });
+
+  function filterCharacters(role) {
+    const chars = document.querySelectorAll("#char-container img");
+
+    chars.forEach(img => {
+      const imgRole = img.dataset.role;
+
+      if (role === "all" || imgRole === role) {
+        img.classList.remove("hidden");
+      } else {
+        img.classList.add("hidden");
+      }
+    });
+  }
+
+
   charContainer.addEventListener("contextmenu", (e) => {
     e.preventDefault();
 
@@ -47,7 +84,7 @@ document.addEventListener("DOMContentLoaded", () => {
       e.dataTransfer.effectAllowed = "move";
     });
 
-    // 🔹 คลิกขวาเพื่อลบตัวละคร
+    // คลิกขวาเพื่อลบตัวละคร
     newImg.addEventListener("contextmenu", (e) => {
       e.preventDefault();
       newImg.remove();

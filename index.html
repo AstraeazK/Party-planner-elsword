@@ -167,57 +167,23 @@
         </div>
       </div>
 
-      <!-- fourth: Party Slots -->
-      <div class="party-row bg-gray-800 rounded-lg p-2 flex gap-2 overflow-x-auto mb-4">
-
-      <!-- Text Box -->
-      <div id="custom-text-slot"
-          class="w-[90px] h-[90px] bg-[#F0A8D0] text-black font-bold text-center p-2 flex items-center justify-center 
-          rounded-md cursor-text break-all whitespace-pre-wrap"
-          contenteditable="true">Party 4</div>
-
-      <!-- Slot -->
-          <div class="w-[90px] h-[90px] bg-gray-700 border-2 flex items-center justify-center" data-slot="0"></div>
-          <div class="w-[90px] h-[90px] bg-gray-700 border-2 flex items-center justify-center" data-slot="1"></div>
-          <div class="w-[90px] h-[90px] bg-gray-700 border-2 flex items-center justify-center" data-slot="2"></div>
-          <div class="w-[90px] h-[90px] bg-gray-700 border-2 flex items-center justify-center" data-slot="3"></div>
-          <div class="w-[90px] h-[90px] bg-gray-700 border-2 flex items-center justify-center" data-slot="4"></div>
-          <div class="w-[90px] h-[90px] bg-gray-700 border-2 flex items-center justify-center" data-slot="5"></div>
-          <div class="w-[90px] h-[90px] bg-gray-700 border-2 flex items-center justify-center" data-slot="6"></div>
-          <div class="w-[90px] h-[90px] bg-gray-700 border-2 flex items-center justify-center" data-slot="7"></div>
-      
-          <!-- Icons Container -->
-        <div class="ml-auto flex gap-2">
-          <!-- Brush Icon -->
-          <div class="w-[90px] h-[90px] bg-gray-800 flex items-center justify-center 
-                      text-pink-400 hover:text-pink-300 cursor-pointer clear-btn">
-            <i data-lucide="brush-cleaning" 
-              class="w-10 h-10 transition-transform active:scale-90"></i>
-          </div>
-
-          <!-- Compare Icon -->
-          <div class="w-[90px] h-[90px] bg-gray-800 flex items-center justify-center 
-                      text-pink-400 hover:text-pink-300 cursor-pointer compare-btn" title="เปรียบเทียบกับแถวอื่น">
-            <i data-lucide="columns" 
-              class="w-8 h-8 transition-transform active:scale-90"></i>
-          </div>
-
-          <!-- Scroll Icon -->
-          <div class="w-[90px] h-[90px] bg-gray-800 flex items-center justify-center 
-                      text-pink-400 hover:text-pink-300 cursor-pointer scroll-btn">
-            <i data-lucide="scroll-text" 
-              class="w-10 h-10 transition-transform active:scale-90"></i>
-          </div>
-        </div>
+      <!-- Bottom: Characters -->
+      <div id="char-filter-buttons" class="flex justify-end gap-2 mb-1">
+        <button data-role="all" class="filter-btn bg-pink-600 text-white px-2 py-1 rounded">ALL</button>
+        <button data-role="physical" class="filter-btn bg-gray-700 text-white px-2 py-1 rounded">PHY</button>
+        <button data-role="magic" class="filter-btn bg-gray-700 text-white px-2 py-1 rounded">MAG</button>
+        <button data-role="support" class="filter-btn bg-gray-700 text-white px-2 py-1 rounded">SUP</button>
       </div>
 
-      <!-- Bottom: Characters -->
-      <div id="char-container" class="bg-gray-800 p-1 flex flex-wrap gap-x-1 gap-y-0.5"></div>
+
+<!-- Bottom: Characters -->
+<div id="char-container" class="bg-gray-800 p-1 flex flex-wrap gap-x-1 gap-y-0.5"></div>
+
     </div>
 
     <!-- Right Sidebar: Buff / Debuff -->
         <div id="buff-section" 
-            class="w-[30rem] h-[80vh] flex-shrink-0 bg-gray-900/70 p-4 rounded-2xl 
+            class="w-[30rem] h-[75vh] flex-shrink-0 bg-gray-900/70 p-4 rounded-2xl 
                   border border-pink-500/40 shadow-[0_0_15px_rgba(255,20,147,0.25)]
                   overflow-y-auto">
 
