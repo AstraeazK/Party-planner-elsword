@@ -748,8 +748,13 @@ function updateBuffsForRow(rowIndex) {
       const selName = row.sel ? row.sel.name : '';
       const tgtName = row.tgt ? row.tgt.name : '';
       const displayName = stripNumbersAndPercents(row.sel ? row.sel.name : row.tgt.name);
-      const leftVal = row.sel ? escapeHtml(extractNumber(selName)) : '';
-      const rightVal = row.tgt ? escapeHtml(extractNumber(tgtName)) : '';
+      const leftVal = row.sel
+          ? escapeHtml(extractNumber(selName) || '✔️')
+          : '❌';
+
+      const rightVal = row.tgt
+          ? escapeHtml(extractNumber(tgtName) || '✔️')
+          : '❌';
       table += `<tr><td style="padding:6px; border-bottom:1px solid rgba(255,255,255,0.04); text-align:center;">${leftVal}</td><td style="padding:6px; border-bottom:1px solid rgba(255,255,255,0.04); text-align:center;">${escapeHtml(displayName)}</td><td style="padding:6px; border-bottom:1px solid rgba(255,255,255,0.04); text-align:center;">${rightVal}</td></tr>`;
     });
 
