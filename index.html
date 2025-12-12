@@ -167,6 +167,51 @@
         </div>
       </div>
 
+      <!-- Fourth: Party Slots -->
+      <div class="party-row bg-gray-800 rounded-lg p-2 flex gap-2 overflow-x-auto mb-4">
+
+      <!-- Text Box -->
+      <div id="custom-text-slot"
+          class="w-[90px] h-[90px] bg-[#F0A8D0] text-black font-bold text-center p-2 flex items-center justify-center 
+          rounded-md cursor-text break-all whitespace-pre-wrap"
+          contenteditable="true">Party 4</div>
+
+
+      <!-- Slot -->
+          <div class="w-[90px] h-[90px] bg-gray-700 border-2 flex items-center justify-center" data-slot="0"></div>
+          <div class="w-[90px] h-[90px] bg-gray-700 border-2 flex items-center justify-center" data-slot="1"></div>
+          <div class="w-[90px] h-[90px] bg-gray-700 border-2 flex items-center justify-center" data-slot="2"></div>
+          <div class="w-[90px] h-[90px] bg-gray-700 border-2 flex items-center justify-center" data-slot="3"></div>
+          <div class="w-[90px] h-[90px] bg-gray-700 border-2 flex items-center justify-center" data-slot="4"></div>
+          <div class="w-[90px] h-[90px] bg-gray-700 border-2 flex items-center justify-center" data-slot="5"></div>
+          <div class="w-[90px] h-[90px] bg-gray-700 border-2 flex items-center justify-center" data-slot="6"></div>
+          <div class="w-[90px] h-[90px] bg-gray-700 border-2 flex items-center justify-center" data-slot="7"></div>
+      
+      <!-- Icons Container -->
+        <div class="ml-auto flex gap-2">
+          <!-- Brush Icon -->
+          <div class="w-[90px] h-[90px] bg-gray-800 flex items-center justify-center 
+                      text-pink-400 hover:text-pink-300 cursor-pointer clear-btn">
+            <i data-lucide="brush-cleaning" 
+              class="w-10 h-10 transition-transform active:scale-90"></i>
+          </div>
+
+          <!-- Compare Icon -->
+          <div class="w-[90px] h-[90px] bg-gray-800 flex items-center justify-center 
+                      text-pink-400 hover:text-pink-300 cursor-pointer compare-btn" title="เปรียบเทียบกับแถวอื่น">
+            <i data-lucide="columns" 
+              class="w-8 h-8 transition-transform active:scale-90"></i>
+          </div>
+
+          <!-- Scroll Icon -->
+          <div class="w-[90px] h-[90px] bg-gray-800 flex items-center justify-center 
+                      text-pink-400 hover:text-pink-300 cursor-pointer scroll-btn">
+            <i data-lucide="scroll-text" 
+              class="w-10 h-10 transition-transform active:scale-90"></i>
+          </div>
+        </div>
+      </div>
+
       <!-- Bottom: Characters -->
       <div id="char-filter-buttons" class="flex justify-end gap-2 mb-1">
         <button data-role="all" class="filter-btn bg-pink-600 text-white px-2 py-1 rounded">ALL</button>

@@ -679,6 +679,8 @@ function updateBuffsForRow(rowIndex) {
 
   async function showCompareModal(selectedIndex) {
     const selRow = partyRows[selectedIndex];
+    const textBoxes = Array.from(document.querySelectorAll('#custom-text-slot'));
+    const selLabel = (textBoxes[selectedIndex] && textBoxes[selectedIndex].innerText && textBoxes[selectedIndex].innerText.trim()) ? textBoxes[selectedIndex].innerText.trim() : `แถวที่ ${selectedIndex + 1}`;
     if (!selRow) return;
 
     const selMerged = getMergedForRowElement(selRow).mergedBuffs || [];
@@ -690,39 +692,88 @@ function updateBuffsForRow(rowIndex) {
     }
 
     // สร้าง dropdown
-      let selectHtml = '<select id="swal-compare-select">';
+      let optionHtml = '';
       nameEls.forEach((el, i) => {
         if (i === selectedIndex) return;
-        const label = (el && el.innerText && el.innerText.trim()) ? el.innerText.trim() : `แถวที่ ${i + 1}`;
-        selectHtml += `<option value="${i}">${escapeHtml(label)}</option>`;
+        const label = (el && el.innerText && el.innerText.trim())
+          ? el.innerText.trim()
+          : `แถวที่ ${i + 1}`;
+        optionHtml += `<option value="${i}">${escapeHtml(label)}</option>`;
       });
-      selectHtml += '</select>';
 
       // เรียก Swal
       const { value: targetIndex } = await Swal.fire({
-        title: '<span class="swal2-neon-title">เลือกแถวที่จะเปรียบเทียบ</span>',
-        html: selectHtml,
-        showCancelButton: true,
-        confirmButtonText: 'เปรียบเทียบ',
-        cancelButtonText: 'ยกเลิก',
-        preConfirm: () => {
-          const sel = document.getElementById('swal-compare-select');
-          return sel ? parseInt(sel.value, 10) : null;
-        },
-        width: '520px',
-        background: '#111',
-        customClass: {
-          popup: 'swal2-neon-popup',
-          actions: 'swal2-neon-actions',
-          confirmButton: 'swal2-neon-confirm',
-          cancelButton: 'swal2-neon-cancel'
-        }
-      });
+      title: `
+        <span class="text-pink-300 font-bold text-xl tracking-wide
+          drop-shadow-[0_0_8px_#ff4dd4]">เลือกแถวที่ต้องการเปรียบเทียบ
+        </span>
+      `,
+
+      html: `
+        <div class="flex flex-col gap-4 text-left w-full px-1">
+
+          <!-- แถวปัจจุบัน -->
+          <div>
+            <div class="text-pink-200 text-sm mb-1 opacity-90">แถวปัจจุบัน :</div>
+            <div class="
+              w-full px-3 py-2 rounded-xl bg-gray-800 border border-pink-500/30 
+              text-pink-200 opacity-80 cursor-not-allowed select-none
+              shadow-[0_0_10px_rgba(255,20,147,0.25)]
+            ">
+              ${escapeHtml(selLabel)}
+            </div>
+          </div>
+
+          <!-- เส้นคั่น -->
+          <div class="border-b border-pink-500/30 my-1"></div>
+
+          <!-- เลือกแถวเป้าหมาย -->
+          <div>
+            <div class="text-pink-200 text-sm mb-1 opacity-90">
+              เลือกแถวที่ต้องการเปรียบเทียบ :
+            </div>
+
+            <select id="swal-compare-select"
+              class="
+                w-full px-3 py-2 rounded-xl bg-gray-900 text-pink-200 border border-pink-500/40
+                shadow-[0_0_12px_rgba(255,20,147,0.35)]
+                focus:outline-none focus:ring-2 focus:ring-pink-500
+              ">
+              ${optionHtml}
+            </select>
+          </div>
+
+          <!-- เส้นคั่น -->
+          <div class="border-b border-pink-500/30 my-1"></div>
+
+        </div>
+      `,
+
+      width: "520px",
+      background: "#111",
+
+      showCancelButton: true,
+      confirmButtonText: "เปรียบเทียบ",
+      cancelButtonText: "ยกเลิก",
+
+      customClass: {
+        popup: "swal2-neon-popup",
+        actions: "swal2-neon-actions flex justify-center gap-6 mt-2",
+        confirmButton:
+          "bg-pink-600 hover:bg-pink-500 text-white font-bold px-6 py-2 rounded-xl shadow-[0_0_15px_rgba(255,20,147,0.55)]",
+        cancelButton:
+          "bg-gray-600 hover:bg-gray-500 text-white font-bold px-5 py-2 rounded-xl"
+      },
+
+      preConfirm: () => {
+        const sel = document.getElementById("swal-compare-select");
+        return sel ? parseInt(sel.value, 10) : null;
+      }
+    });
+
+
 
     if (typeof targetIndex !== 'number' || isNaN(targetIndex)) return;
-
-    const textBoxes = Array.from(document.querySelectorAll('#custom-text-slot'));
-    const selLabel = (textBoxes[selectedIndex] && textBoxes[selectedIndex].innerText && textBoxes[selectedIndex].innerText.trim()) ? textBoxes[selectedIndex].innerText.trim() : `แถวที่ ${selectedIndex + 1}`;
     const tgtLabel = (textBoxes[targetIndex] && textBoxes[targetIndex].innerText && textBoxes[targetIndex].innerText.trim()) ? textBoxes[targetIndex].innerText.trim() : `แถวที่ ${targetIndex + 1}`;
     const tgtMerged = (partyRows[targetIndex]) ? getMergedForRowElement(partyRows[targetIndex]).mergedBuffs || [] : [];
     const map = {};
@@ -751,7 +802,6 @@ function updateBuffsForRow(rowIndex) {
       const leftVal = row.sel
           ? escapeHtml(extractNumber(selName) || '✔️')
           : '❌';
-
       const rightVal = row.tgt
           ? escapeHtml(extractNumber(tgtName) || '✔️')
           : '❌';

@@ -307,3 +307,23 @@ body { font-family: 'Fredoka', sans-serif; }
     opacity: 0;
   }
 }
+
+.swal2-neon-popup {
+  border: 1px solid rgba(255, 20, 147, 0.35);
+  box-shadow: 0 0 25px rgba(255, 20, 147, 0.25),
+              inset 0 0 12px rgba(255, 20, 147, 0.15);
+  border-radius: 22px;
+}
+
+.swal2-neon-actions button {
+  transition: all .2s ease;
+}
+
+.swal2-neon-confirm:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 0 22px rgba(255, 20, 147, .7);
+}
+
+.swal2-neon-cancel:hover {
+  transform: translateY(-2px);
+}
