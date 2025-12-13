@@ -348,4 +348,12 @@ body { font-family: 'Fredoka', sans-serif; }
   transform: translateY(-1px);
 }
 
+/* ขยับ title ให้ชิดด้านบน */
+.swal2-neon-title {
+  margin: 0 !important;
+  padding-top: 0.4rem !important;   /* เว้นนิดเดียวเพื่อความสวย */
+  padding-bottom: 0.6rem !important;
+}
+
+
 

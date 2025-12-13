@@ -84,7 +84,7 @@ document.addEventListener("DOMContentLoaded", () => {
       e.dataTransfer.effectAllowed = "move";
     });
 
-    // คลิกขวาเพื่อลบตัวละคร
+    // คลิกขวาลบตัวละคร
     newImg.addEventListener("contextmenu", (e) => {
       e.preventDefault();
       newImg.remove();
@@ -95,7 +95,7 @@ document.addEventListener("DOMContentLoaded", () => {
     updateBuffs();
   });
 
-  // ---------- ป้องกันลากไฟล์เข้า text ----------
+  // ---------- กันลากไฟล์เข้า text ----------
   document.querySelectorAll("#custom-text-slot").forEach((slot) => {
     ["dragenter", "dragover", "drop"].forEach((event) => {
       slot.addEventListener(event, (e) => {
@@ -108,7 +108,7 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   });
 
-  // ---------- Drag & Drop ----------
+  // ---------- ลากเข้าช่อง ----------
   partyRows.forEach((row, rowIndex) => {
     const slots = row.querySelectorAll("[data-slot]");
     const clearBtn = row.querySelector(".cursor-pointer");
@@ -271,7 +271,7 @@ function updateDuplicateWarnings() {
   });
 }
 
-// ---------- Merge helper: รวม Buff/ Debuff ที่เหมือนกัน และบวกค่าตัวเลข ----------
+// ---------- รวมบัพ ----------
 function mergeBuffsAndDebuffs(allBuffs, allDebuffs) {
   const merge = (list) => {
     const map = {};
@@ -307,7 +307,7 @@ function mergeBuffsAndDebuffs(allBuffs, allDebuffs) {
   return { mergedBuffs: merge(allBuffs), mergedDebuffs: merge(allDebuffs) };
 }
 
-// ---------- Render helper: แสดงรายการบนหน้า HTML ----------
+// ---------- แสดงบัพด้านขวา ----------
 function renderBuffLists(mergedBuffs, mergedDebuffs, missingBuffs) {
   const buffListEl = document.getElementById("buff-list");
   const debuffListEl = document.getElementById("debuff-list");
@@ -369,7 +369,7 @@ function renderBuffLists(mergedBuffs, mergedDebuffs, missingBuffs) {
     }
   }
 
-  // ---------- Recommended Characters for Missing Buffs ----------
+  // ---------- แนะนำตัวละคร ----------
   const recommendListEl = document.getElementById('recommend-char-list');
   if (recommendListEl) {
     recommendListEl.innerHTML = '';
@@ -480,7 +480,6 @@ function highlightSlotsForEntries(entries, highlight, isGrayOutMode = false) {
     
     if (highlight) {
       if (isGrayOutMode) {
-        // Gray-out mode: gray ตัวที่ไม่มี, normal ตัวที่มี (ไม่ highlight)
         if (matched) {
           slot.classList.remove('ring-4','ring-yellow-400','scale-105','transition-transform','opacity-40','grayscale');
           if (label) label.remove();
@@ -490,7 +489,6 @@ function highlightSlotsForEntries(entries, highlight, isGrayOutMode = false) {
           if (label) label.remove();
         }
       } else {
-        // Normal highlight mode: highlight ตัวที่มี, gray ตัวที่ไม่มี
         if (matched) {
           slot.classList.add('ring-4','ring-yellow-400','scale-105','transition-transform');
           slot.classList.remove('opacity-40','grayscale');
@@ -520,7 +518,6 @@ function highlightSlotsForEntries(entries, highlight, isGrayOutMode = false) {
     }
   });
 
-  // Gray-out ตัวละครใน #char-container ถ้า isGrayOutMode
   const charContainer = document.getElementById('char-container');
   if (charContainer) {
     charContainer.querySelectorAll('img').forEach(img => {
@@ -600,7 +597,6 @@ function removeEntriesTooltip() {
   }
 }
 
-// ---------- Buff ของแถวเดียว ----------
 function updateBuffsForRow(rowIndex) {
   const row = partyRows[rowIndex];
   const imgs = row.querySelectorAll("img");
@@ -657,7 +653,7 @@ function updateBuffsForRow(rowIndex) {
     });
   });
 
-  // ---------- Compare modal: SweetAlert2 + render mock comparison ----------
+  // ---------- Compare modal ----------
   function getMergedForRowElement(rowEl) {
     const imgs = Array.from(rowEl.querySelectorAll('img'));
     const allBuffs = [];
@@ -691,7 +687,6 @@ function updateBuffsForRow(rowIndex) {
       return;
     }
 
-    // สร้าง dropdown
       let optionHtml = '';
       nameEls.forEach((el, i) => {
         if (i === selectedIndex) return;
@@ -700,8 +695,6 @@ function updateBuffsForRow(rowIndex) {
           : `แถวที่ ${i + 1}`;
         optionHtml += `<option value="${i}">${escapeHtml(label)}</option>`;
       });
-
-      // เรียก Swal
       const { value: targetIndex } = await Swal.fire({
       title: `
         <div class="w-full text-center text-pink-300 font-bold text-2xl tracking-wide 
@@ -754,17 +747,12 @@ function updateBuffsForRow(rowIndex) {
       cancelButtonText: "ยกเลิก",
 
       customClass: {
-      popup: "swal2-neon-popup",
-      actions: "swal2-neon-actions flex justify-center gap-6 mt-2",
-
-      confirmButton:
-        "swal2-neon-confirm font-bold px-6 py-2 rounded-xl",
-
-      cancelButton:
-        "swal2-neon-cancel font-bold px-5 py-2 rounded-xl"
-    },
-
-
+        popup: "swal2-neon-popup",
+        title: "swal2-neon-title",
+        actions: "swal2-neon-actions flex justify-center gap-6 mt-2",
+        confirmButton: "swal2-neon-confirm font-bold px-6 py-2 rounded-xl",
+        cancelButton: "swal2-neon-cancel font-bold px-5 py-2 rounded-xl"
+      } ,
 
       preConfirm: () => {
         const sel = document.getElementById("swal-compare-select");
