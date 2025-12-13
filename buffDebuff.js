@@ -44,6 +44,18 @@ function calculateMissingBuffs(activeBuffs, activeDebuffs) {
   return { missingBuffs, missingDebuffs };
 }
 
+export function buildCompareTable({
+  selLabel,
+  tgtLabel,
+  selBuffs,
+  tgtBuffs,
+  selDebuffs,
+  tgtDebuffs
+}) {
+  // return html string
+}
+
+
 export { 
   calculateMissingBuffs, 
 };
