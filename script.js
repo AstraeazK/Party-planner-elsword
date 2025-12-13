@@ -1,6 +1,13 @@
 import { calculateMissingBuffs } from "./buffDebuff.js";
 import { charData } from "./charData.js";
 import { pics } from "./pics.js";
+import {
+  buildCompareMap,
+  normalizeKey,
+  extractNumber,
+  stripNumbersAndPercents
+} from "./buffDebuff.js";
+
 let activeRowIndex = null;
 
 document.addEventListener("DOMContentLoaded", () => {
@@ -669,29 +676,6 @@ function getMergedForRowElement(rowEl) {
   return mergeBuffsAndDebuffs(allBuffs, allDebuffs);
 }
 
-function normalizeKey(str) {
-  return String(str || '').toLowerCase().replace(/\s+/g, '').replace(/[0-9.%x×]/g, '');
-}
-
-function buildCompareMap(selList, tgtList) {
-  const map = {};
-
-  selList.forEach(b => {
-    const key = normalizeKey(b.name);
-    map[key] = map[key] || {};
-    map[key].sel = b;
-  });
-
-  tgtList.forEach(b => {
-    const key = normalizeKey(b.name);
-    map[key] = map[key] || {};
-    map[key].tgt = b;
-  });
-
-  return map;
-}
-
-
 async function showCompareModal(selectedIndex) {
   const selRow = partyRows[selectedIndex];
   if (!selRow) return;
@@ -731,36 +715,36 @@ async function showCompareModal(selectedIndex) {
         <div>
           <div class="text-pink-200 text-sm mb-1 opacity-90 text-center"> แถวปัจจุบัน :</div>
         <div class="w-[85%] mx-auto">
-      <div class="
-        w-full px-3 py-2 rounded-xl bg-gray-800 border border-pink-500/30 
-        text-pink-200 opacity-80 cursor-not-allowed select-none
-        shadow-[0_0_10px_rgba(255,20,147,0.25)] text-center
-      ">
-        ${escapeHtml(selLabel)}
-      </div>
-    </div>
-  </div>
-
-  <!-- เส้นคั่น -->
-  <div class="border-b border-pink-500/30 my-1"></div>
-
-  <!-- เลือกแถวเป้าหมาย -->
-      <div>
-        <div class="text-pink-200 text-sm mb-1 opacity-90 text-center">เลือกแถวที่ต้องการเปรียบเทียบ :</div>
-        <div class="w-[85%] mx-auto">
-          <select id="swal-compare-select"
-            class="
-              w-full px-3 py-2 rounded-xl bg-gray-900 text-pink-200 border border-pink-500/40 text-center 
-              shadow-[0_0_12px_rgba(255,20,147,0.35)]
-              focus:outline-none focus:ring-2 focus:ring-pink-500
-            ">${optionHtml}
-          </select>
+        <div class="
+          w-full px-3 py-2 rounded-xl bg-gray-800 border border-pink-500/30 
+          text-pink-200 opacity-80 cursor-not-allowed select-none
+          shadow-[0_0_10px_rgba(255,20,147,0.25)] text-center
+        ">
+          ${escapeHtml(selLabel)}
         </div>
       </div>
+    </div>
+
       <!-- เส้นคั่น -->
       <div class="border-b border-pink-500/30 my-1"></div>
-    </div>
-    `     ,
+
+      <!-- เลือกแถวเป้าหมาย -->
+        <div>
+          <div class="text-pink-200 text-sm mb-1 opacity-90 text-center">เลือกแถวที่ต้องการเปรียบเทียบ :</div>
+          <div class="w-[85%] mx-auto">
+            <select id="swal-compare-select"
+              class="
+                w-full px-3 py-2 rounded-xl bg-gray-900 text-pink-200 border border-pink-500/40 text-center 
+                shadow-[0_0_12px_rgba(255,20,147,0.35)]
+                focus:outline-none focus:ring-2 focus:ring-pink-500
+              ">${optionHtml}
+            </select>
+          </div>
+        </div>
+        <!-- เส้นคั่น -->
+        <div class="border-b border-pink-500/30 my-1"></div>
+      </div>
+      `     ,
 
     width: "520px",
     background: "#111",
@@ -777,144 +761,133 @@ async function showCompareModal(selectedIndex) {
       cancelButton: "swal2-neon-cancel font-bold px-5 py-2 rounded-xl"
     } ,
 
-    preConfirm: () => {
-      const sel = document.getElementById("swal-compare-select");
-      return sel ? parseInt(sel.value, 10) : null;
+        preConfirm: () => {
+          const sel = document.getElementById("swal-compare-select");
+          return sel ? parseInt(sel.value, 10) : null;
+        }
+      });
+
+
+
+      if (typeof targetIndex !== 'number' || isNaN(targetIndex)) return;
+      const tgtRow = partyRows[targetIndex];
+      const tgtResult = getMergedForRowElement(tgtRow) || {};
+      const tgtBuffs = tgtResult.mergedBuffs || [];
+      const tgtDebuffs = tgtResult.mergedDebuffs || [];
+      const tgtLabel =
+        textBoxes[targetIndex]?.innerText?.trim() ||
+        `แถวที่ ${targetIndex + 1}`;
+      const buffMap = buildCompareMap(selBuffs, tgtBuffs);
+      const debuffMap = buildCompareMap(selDebuffs, tgtDebuffs);
+
+      let table = '<div style="overflow:auto; max-height:300px;">';
+      table += '<table style="width:100%; border-collapse:collapse; text-align:left; border-radius:8px; overflow:hidden; font-size:16px;">';
+      table += '<thead><tr style="background: rgba(236,72,153,0.18);"><th style="padding:6px; border-bottom:1px solid rgba(255,255,255,0.06); width:20%; font-weight:800; font-size:14px; color:#fff; text-align:center;">' + escapeHtml(selLabel) + '</th><th style="padding:6px; border-bottom:1px solid rgba(255,255,255,0.06); width:60%; font-weight:800; font-size:14px; color:#fff; text-align:center;">Buff / Debuff</th><th style="padding:6px; border-bottom:1px solid rgba(255,255,255,0.06); width:20%; font-weight:800; font-size:14px; color:#fff; text-align:center;">' + escapeHtml(tgtLabel) + '</th></tr></thead><tbody>';
+
+        // ---------- Buffs ----------
+      Object.keys(buffMap).forEach(k => {
+        const row = buffMap[k];
+        const selName = row.sel ? row.sel.name : '';
+        const tgtName = row.tgt ? row.tgt.name : '';
+        const displayName = stripNumbersAndPercents(selName || tgtName);
+
+        const leftVal = row.sel
+          ? escapeHtml(extractNumber(selName) || '✔️')
+          : '❌';
+
+        const rightVal = row.tgt
+          ? escapeHtml(extractNumber(tgtName) || '✔️')
+          : '❌';
+
+        table += `<tr>
+          <td style="padding:6px; text-align:center;">${leftVal}</td>
+          <td style="padding:6px; text-align:center;">${escapeHtml(displayName)}</td>
+          <td style="padding:6px; text-align:center;">${rightVal}</td>
+        </tr>`;
+      });
+      // ---------- Divider ----------
+      table += `
+      <tr>
+        <td colspan="3"
+          style="padding:8px; text-align:center; font-weight:700; opacity:.6;">
+          ==== Debuffs ====
+        </td>
+      </tr>
+      `;
+
+      // ---------- Debuffs ----------
+      Object.keys(debuffMap).forEach(k => {
+        const row = debuffMap[k];
+        const selName = row.sel ? row.sel.name : '';
+        const tgtName = row.tgt ? row.tgt.name : '';
+        const displayName = stripNumbersAndPercents(selName || tgtName);
+
+        const leftVal = row.sel
+          ? escapeHtml(extractNumber(selName) || '✔️')
+          : '❌';
+
+        const rightVal = row.tgt
+          ? escapeHtml(extractNumber(tgtName) || '✔️')
+          : '❌';
+
+        table += `<tr>
+          <td style="padding:6px; text-align:center;">${leftVal}</td>
+          <td style="padding:6px; text-align:center;">${escapeHtml(displayName)}</td>
+          <td style="padding:6px; text-align:center;">${rightVal}</td>
+        </tr>`;
+        });
+
+
+      table += '</tbody></table></div>';
+
+      await Swal.fire({
+        title: 'ผลการเปรียบเทียบ',
+        html: table,
+        heightAuto: true,
+        width: '42%',
+        showCloseButton: true,
+        showConfirmButton: false,
+        customClass: {
+          popup: 'swal-compare-popup',
+          title: 'swal-compare-title'
+        }
+      });
+    }
+
+    // ------------------------ ปุ่มเปรียบเทียบ ------------------------
+    document.querySelectorAll('.compare-btn').forEach((btn) => {
+      btn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        const selectedRow = document.querySelector('.party-row.party-selected');
+        let selectedIdx;
+        if (!selectedRow) {
+          const rowIndex = [...partyRows].indexOf(btn.closest('.party-row'));
+          setRowSelected(partyRows[rowIndex]);
+          activeRowIndex = rowIndex;
+          selectedIdx = rowIndex;
+        } else {
+          selectedIdx = [...partyRows].indexOf(selectedRow);
+        }
+        showCompareModal(selectedIdx);
+      });
+    });
+
+    document.addEventListener("click", (e) => {
+    const isInsidePartyRow = e.target.closest(".party-row");
+    const isInsideBuffSection = e.composedPath().some(
+      (el) => el.id === "buff-section"
+    );
+    createClickEffect(e);
+
+    if (!isInsidePartyRow && !isInsideBuffSection) {
+      clearRowSelection();
+      ["buff-list", "debuff-list", "missing-buff-list"].forEach((id) => {
+        const el = document.getElementById(id);
+        if (el) el.innerHTML = "";
+      });
+      activeRowIndex = null;
     }
   });
-
-
-
-  if (typeof targetIndex !== 'number' || isNaN(targetIndex)) return;
-  const tgtRow = partyRows[targetIndex];
-  const tgtResult = getMergedForRowElement(tgtRow) || {};
-  const tgtBuffs = tgtResult.mergedBuffs || [];
-  const tgtDebuffs = tgtResult.mergedDebuffs || [];
-  const tgtLabel =
-    textBoxes[targetIndex]?.innerText?.trim() ||
-    `แถวที่ ${targetIndex + 1}`;
-  const buffMap = buildCompareMap(selBuffs, tgtBuffs);
-  const debuffMap = buildCompareMap(selDebuffs, tgtDebuffs);
-
-  function extractNumber(name) {
-    const m = String(name).match(/(\d+(?:\.\d+)?)(\s*[%x×])?/);
-    if (!m) return '';
-    return m[1] + (m[2] || '');
-  }
-
-  function stripNumbersAndPercents(str) {
-    return String(str || '').replace(/(\d+(?:\.\d+)?\s*[%x×]?)/g, '').replace(/\s+/g, ' ').trim();
-  }
-
-  let table = '<div style="overflow:auto; max-height:300px;">';
-  table += '<table style="width:100%; border-collapse:collapse; text-align:left; border-radius:8px; overflow:hidden; font-size:16px;">';
-  table += '<thead><tr style="background: rgba(236,72,153,0.18);"><th style="padding:6px; border-bottom:1px solid rgba(255,255,255,0.06); width:20%; font-weight:800; font-size:14px; color:#fff; text-align:center;">' + escapeHtml(selLabel) + '</th><th style="padding:6px; border-bottom:1px solid rgba(255,255,255,0.06); width:60%; font-weight:800; font-size:14px; color:#fff; text-align:center;">Buff / Debuff</th><th style="padding:6px; border-bottom:1px solid rgba(255,255,255,0.06); width:20%; font-weight:800; font-size:14px; color:#fff; text-align:center;">' + escapeHtml(tgtLabel) + '</th></tr></thead><tbody>';
-
-  // ---------- Buffs ----------
-Object.keys(buffMap).forEach(k => {
-  const row = buffMap[k];
-  const selName = row.sel ? row.sel.name : '';
-  const tgtName = row.tgt ? row.tgt.name : '';
-  const displayName = stripNumbersAndPercents(selName || tgtName);
-
-  const leftVal = row.sel
-    ? escapeHtml(extractNumber(selName) || '✔️')
-    : '❌';
-
-  const rightVal = row.tgt
-    ? escapeHtml(extractNumber(tgtName) || '✔️')
-    : '❌';
-
-  table += `<tr>
-    <td style="padding:6px; text-align:center;">${leftVal}</td>
-    <td style="padding:6px; text-align:center;">${escapeHtml(displayName)}</td>
-    <td style="padding:6px; text-align:center;">${rightVal}</td>
-  </tr>`;
-});
-
-// ---------- Divider ----------
-table += `
-<tr>
-  <td colspan="3"
-    style="padding:8px; text-align:center; font-weight:700; opacity:.6;">
-    ==== Debuffs ====
-  </td>
-</tr>
-`;
-
-// ---------- Debuffs ----------
-Object.keys(debuffMap).forEach(k => {
-  const row = debuffMap[k];
-  const selName = row.sel ? row.sel.name : '';
-  const tgtName = row.tgt ? row.tgt.name : '';
-  const displayName = stripNumbersAndPercents(selName || tgtName);
-
-  const leftVal = row.sel
-    ? escapeHtml(extractNumber(selName) || '✔️')
-    : '❌';
-
-  const rightVal = row.tgt
-    ? escapeHtml(extractNumber(tgtName) || '✔️')
-    : '❌';
-
-  table += `<tr>
-    <td style="padding:6px; text-align:center;">${leftVal}</td>
-    <td style="padding:6px; text-align:center;">${escapeHtml(displayName)}</td>
-    <td style="padding:6px; text-align:center;">${rightVal}</td>
-  </tr>`;
-});
-
-
-  table += '</tbody></table></div>';
-
-  await Swal.fire({
-    title: 'ผลการเปรียบเทียบ',
-    html: table,
-    heightAuto: true,
-    width: '42%',
-    showCloseButton: true,
-    showConfirmButton: false,
-    customClass: {
-      popup: 'swal-compare-popup',
-      title: 'swal-compare-title'
-    }
-  });
-}
-
-  // ------------------------ ปุ่มเปรียบเทียบ ------------------------
-  document.querySelectorAll('.compare-btn').forEach((btn) => {
-    btn.addEventListener('click', (e) => {
-      e.stopPropagation();
-      const selectedRow = document.querySelector('.party-row.party-selected');
-      let selectedIdx;
-      if (!selectedRow) {
-        const rowIndex = [...partyRows].indexOf(btn.closest('.party-row'));
-        setRowSelected(partyRows[rowIndex]);
-        activeRowIndex = rowIndex;
-        selectedIdx = rowIndex;
-      } else {
-        selectedIdx = [...partyRows].indexOf(selectedRow);
-      }
-      showCompareModal(selectedIdx);
-    });
-  });
-
-  document.addEventListener("click", (e) => {
-  const isInsidePartyRow = e.target.closest(".party-row");
-  const isInsideBuffSection = e.composedPath().some(
-    (el) => el.id === "buff-section"
-  );
-  createClickEffect(e);
-
-  if (!isInsidePartyRow && !isInsideBuffSection) {
-    clearRowSelection();
-    ["buff-list", "debuff-list", "missing-buff-list"].forEach((id) => {
-      const el = document.getElementById(id);
-      if (el) el.innerHTML = "";
-    });
-    activeRowIndex = null;
-  }
-});
 
 
 });

@@ -44,15 +44,44 @@ function calculateMissingBuffs(activeBuffs, activeDebuffs) {
   return { missingBuffs, missingDebuffs };
 }
 
-export function buildCompareTable({
-  selLabel,
-  tgtLabel,
-  selBuffs,
-  tgtBuffs,
-  selDebuffs,
-  tgtDebuffs
-}) {
-  // return html string
+// ---------- utils ----------
+export function normalizeKey(str) {
+  return String(str || '')
+    .toLowerCase()
+    .replace(/\s+/g, '')
+    .replace(/[0-9.%x×]/g, '');
+}
+
+export function extractNumber(name) {
+  const m = String(name).match(/(\d+(?:\.\d+)?)(\s*[%x×])?/);
+  if (!m) return '';
+  return m[1] + (m[2] || '');
+}
+
+export function stripNumbersAndPercents(str) {
+  return String(str || '')
+    .replace(/(\d+(?:\.\d+)?\s*[%x×]?)/g, '')
+    .replace(/\s+/g, ' ')
+    .trim();
+}
+
+// ---------- compare ----------
+export function buildCompareMap(selList = [], tgtList = []) {
+  const map = {};
+
+  selList.forEach(b => {
+    const key = normalizeKey(b.name);
+    map[key] = map[key] || {};
+    map[key].sel = b;
+  });
+
+  tgtList.forEach(b => {
+    const key = normalizeKey(b.name);
+    map[key] = map[key] || {};
+    map[key].tgt = b;
+  });
+
+  return map;
 }
 
 
