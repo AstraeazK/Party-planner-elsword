@@ -308,22 +308,44 @@ body { font-family: 'Fredoka', sans-serif; }
   }
 }
 
+/* popup */
 .swal2-neon-popup {
   border: 1px solid rgba(255, 20, 147, 0.35);
-  box-shadow: 0 0 25px rgba(255, 20, 147, 0.25),
-              inset 0 0 12px rgba(255, 20, 147, 0.15);
   border-radius: 22px;
 }
 
-.swal2-neon-actions button {
-  transition: all .2s ease;
+/* ปิด glow ทุกปุ่ม */
+.swal2-neon-actions button,
+.swal2-neon-actions button:focus,
+.swal2-neon-actions button:focus-visible,
+.swal2-neon-actions button:active {
+  box-shadow: none !important;
+  outline: none !important;
+  transition: background-color .2s ease, transform .15s ease;
+}
+
+/* ===== ปุ่มเปรียบเทียบ ===== */
+.swal2-neon-confirm {
+  background-color: #ec4899 !important; /* pink-500 */
+  color: #ffffff !important;
+  border: none !important;
 }
 
 .swal2-neon-confirm:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 0 22px rgba(255, 20, 147, .7);
+  background-color: #f472b6 !important; /* pink-400 */
+  transform: translateY(-1px);
+}
+
+/* ===== ปุ่มยกเลิก ===== */
+.swal2-neon-cancel {
+  background-color: #374151 !important; /* gray-700 */
+  color: #f9a8d4 !important;            /* pink-300 */
+  border: none !important;
 }
 
 .swal2-neon-cancel:hover {
-  transform: translateY(-2px);
+  background-color: #4b5563 !important; /* gray-600 */
+  transform: translateY(-1px);
 }
+
+

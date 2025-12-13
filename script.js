@@ -704,50 +704,47 @@ function updateBuffsForRow(rowIndex) {
       // เรียก Swal
       const { value: targetIndex } = await Swal.fire({
       title: `
-        <span class="text-pink-300 font-bold text-xl tracking-wide
-          drop-shadow-[0_0_8px_#ff4dd4]">เลือกแถวที่ต้องการเปรียบเทียบ
-        </span>
+        <div class="w-full text-center text-pink-300 font-bold text-2xl tracking-wide 
+                    drop-shadow-[0_0_8px_#ff4dd4] mt-1">เลือกแถวที่ต้องการเปรียบเทียบ
+        </div>
       `,
 
       html: `
-        <div class="flex flex-col gap-4 text-left w-full px-1">
-
+        <div class="flex flex-col gap-4 text-left w-[325px] px-4 mx-auto">
           <!-- แถวปัจจุบัน -->
           <div>
-            <div class="text-pink-200 text-sm mb-1 opacity-90">แถวปัจจุบัน :</div>
-            <div class="
-              w-full px-3 py-2 rounded-xl bg-gray-800 border border-pink-500/30 
-              text-pink-200 opacity-80 cursor-not-allowed select-none
-              shadow-[0_0_10px_rgba(255,20,147,0.25)]
-            ">
-              ${escapeHtml(selLabel)}
-            </div>
-          </div>
-
-          <!-- เส้นคั่น -->
-          <div class="border-b border-pink-500/30 my-1"></div>
-
-          <!-- เลือกแถวเป้าหมาย -->
-          <div>
-            <div class="text-pink-200 text-sm mb-1 opacity-90">
-              เลือกแถวที่ต้องการเปรียบเทียบ :
-            </div>
-
-            <select id="swal-compare-select"
-              class="
-                w-full px-3 py-2 rounded-xl bg-gray-900 text-pink-200 border border-pink-500/40
-                shadow-[0_0_12px_rgba(255,20,147,0.35)]
-                focus:outline-none focus:ring-2 focus:ring-pink-500
-              ">
-              ${optionHtml}
-            </select>
-          </div>
-
-          <!-- เส้นคั่น -->
-          <div class="border-b border-pink-500/30 my-1"></div>
-
+            <div class="text-pink-200 text-sm mb-1 opacity-90 text-center"> แถวปัจจุบัน :</div>
+          <div class="w-[85%] mx-auto">
+        <div class="
+          w-full px-3 py-2 rounded-xl bg-gray-800 border border-pink-500/30 
+          text-pink-200 opacity-80 cursor-not-allowed select-none
+          shadow-[0_0_10px_rgba(255,20,147,0.25)] text-center
+        ">
+          ${escapeHtml(selLabel)}
         </div>
-      `,
+      </div>
+    </div>
+
+    <!-- เส้นคั่น -->
+    <div class="border-b border-pink-500/30 my-1"></div>
+
+    <!-- เลือกแถวเป้าหมาย -->
+    <div>
+      <div class="text-pink-200 text-sm mb-1 opacity-90 text-center">เลือกแถวที่ต้องการเปรียบเทียบ :</div>
+      <div class="w-[85%] mx-auto">
+        <select id="swal-compare-select"
+          class="
+            w-full px-3 py-2 rounded-xl bg-gray-900 text-pink-200 border border-pink-500/40 text-center 
+            shadow-[0_0_12px_rgba(255,20,147,0.35)]
+            focus:outline-none focus:ring-2 focus:ring-pink-500
+          ">${optionHtml}
+        </select>
+      </div>
+    </div>
+    <!-- เส้นคั่น -->
+    <div class="border-b border-pink-500/30 my-1"></div>
+  </div>
+`     ,
 
       width: "520px",
       background: "#111",
@@ -757,13 +754,17 @@ function updateBuffsForRow(rowIndex) {
       cancelButtonText: "ยกเลิก",
 
       customClass: {
-        popup: "swal2-neon-popup",
-        actions: "swal2-neon-actions flex justify-center gap-6 mt-2",
-        confirmButton:
-          "bg-pink-600 hover:bg-pink-500 text-white font-bold px-6 py-2 rounded-xl shadow-[0_0_15px_rgba(255,20,147,0.55)]",
-        cancelButton:
-          "bg-gray-600 hover:bg-gray-500 text-white font-bold px-5 py-2 rounded-xl"
-      },
+      popup: "swal2-neon-popup",
+      actions: "swal2-neon-actions flex justify-center gap-6 mt-2",
+
+      confirmButton:
+        "swal2-neon-confirm font-bold px-6 py-2 rounded-xl",
+
+      cancelButton:
+        "swal2-neon-cancel font-bold px-5 py-2 rounded-xl"
+    },
+
+
 
       preConfirm: () => {
         const sel = document.getElementById("swal-compare-select");
