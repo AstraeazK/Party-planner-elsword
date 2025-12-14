@@ -3,9 +3,9 @@ import { charData } from "./charData.js";
 import { pics } from "./pics.js";
 import {
   buildCompareMap,
-  normalizeKey,
   extractNumber,
-  stripNumbersAndPercents
+  stripNumbersAndPercents,
+  compareValues
 } from "./buffDebuff.js";
 
 let activeRowIndex = null;
@@ -781,8 +781,20 @@ async function showCompareModal(selectedIndex) {
       const debuffMap = buildCompareMap(selDebuffs, tgtDebuffs);
 
       let table = '<div style="overflow:auto; max-height:300px;">';
-      table += '<table style="width:100%; border-collapse:collapse; text-align:left; border-radius:8px; overflow:hidden; font-size:16px;">';
-      table += '<thead><tr style="background: rgba(236,72,153,0.18);"><th style="padding:6px; border-bottom:1px solid rgba(255,255,255,0.06); width:20%; font-weight:800; font-size:14px; color:#fff; text-align:center;">' + escapeHtml(selLabel) + '</th><th style="padding:6px; border-bottom:1px solid rgba(255,255,255,0.06); width:60%; font-weight:800; font-size:14px; color:#fff; text-align:center;">Buff / Debuff</th><th style="padding:6px; border-bottom:1px solid rgba(255,255,255,0.06); width:20%; font-weight:800; font-size:14px; color:#fff; text-align:center;">' + escapeHtml(tgtLabel) + '</th></tr></thead><tbody>';
+        table += `
+        <table style="width:100%; border-collapse:collapse; font-size:16px;">
+        <thead>
+        <tr style="background: rgba(236,72,153,0.18);">
+          <th style="width:20%; text-align:center;">${escapeHtml(selLabel)}</th>
+          <th style="width:6%;"></th>
+          <th style="width:48%; text-align:center;">Buff / Debuff</th>
+          <th style="width:6%;"></th>
+          <th style="width:20%; text-align:center;">${escapeHtml(tgtLabel)}</th>
+        </tr>
+        </thead>
+        <tbody>
+        `;
+
 
         // ---------- Buffs ----------
       Object.keys(buffMap).forEach(k => {
@@ -799,16 +811,28 @@ async function showCompareModal(selectedIndex) {
           ? escapeHtml(extractNumber(tgtName) || '✔️')
           : '❌';
 
-        table += `<tr>
+        const { leftIcon, rightIcon } = compareValues(selName, tgtName);
+
+        table += `
+        <tr>
           <td style="padding:6px; text-align:center;">${leftVal}</td>
+          <td style="padding:6px; text-align:center;">
+            ${leftIcon ? `<img src="${leftIcon}" style="width:14px;">` : ''}
+          </td>
           <td style="padding:6px; text-align:center;">${escapeHtml(displayName)}</td>
+          <td style="padding:6px; text-align:center;">
+            ${rightIcon ? `<img src="${rightIcon}" style="width:14px;">` : ''}
+          </td>
           <td style="padding:6px; text-align:center;">${rightVal}</td>
-        </tr>`;
+        </tr>
+        `;
+
+
       });
       // ---------- Divider ----------
       table += `
       <tr>
-        <td colspan="3"
+        <td colspan="5"
           style="padding:8px; text-align:center; font-weight:700; opacity:.6;">
           ==== Debuffs ====
         </td>
@@ -830,11 +854,22 @@ async function showCompareModal(selectedIndex) {
           ? escapeHtml(extractNumber(tgtName) || '✔️')
           : '❌';
 
-        table += `<tr>
+        const { leftIcon, rightIcon } = compareValues(selName, tgtName);
+
+        table += `
+        <tr>
           <td style="padding:6px; text-align:center;">${leftVal}</td>
+          <td style="padding:6px; text-align:center;">
+            ${leftIcon ? `<img src="${leftIcon}" style="width:14px;">` : ''}
+          </td>
           <td style="padding:6px; text-align:center;">${escapeHtml(displayName)}</td>
+          <td style="padding:6px; text-align:center;">
+            ${rightIcon ? `<img src="${rightIcon}" style="width:14px;">` : ''}
+          </td>
           <td style="padding:6px; text-align:center;">${rightVal}</td>
-        </tr>`;
+        </tr>
+        `;
+
         });
 
 

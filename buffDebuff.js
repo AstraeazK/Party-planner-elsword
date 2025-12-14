@@ -26,6 +26,9 @@ const debuffAliases = {
   "รับดาเมจกาย/เวทย์เพิ่มขึ้น": ["รับดาเมจกายเพิ่มขึ้น", "รับดาเมจเวทย์เพิ่มขึ้น", "รับดาเมจเพิ่มขึ้น"],
 };
 
+const UP_ICON = "assets/up-triangle.png";
+const DOWN_ICON = "assets/down-triangle.png";
+
 // ---------------- Missing Buffs ----------------
 function calculateMissingBuffs(activeBuffs, activeDebuffs) {
   const normalize = str => str.toLowerCase().replace(/\s+/g, "").replace(/[0-9.%x×]/g,"");
@@ -83,6 +86,29 @@ export function buildCompareMap(selList = [], tgtList = []) {
 
   return map;
 }
+
+export function compareValues(leftName, rightName) {
+  const leftMatch = leftName?.match(/\d+(?:\.\d+)?/);
+  const rightMatch = rightName?.match(/\d+(?:\.\d+)?/);
+
+  if (!leftMatch || !rightMatch) {
+    return { leftIcon: '', rightIcon: '' };
+  }
+
+  const left = parseFloat(leftMatch[0]);
+  const right = parseFloat(rightMatch[0]);
+
+  if (left === right) {
+    return { leftIcon: '', rightIcon: '' };
+  }
+
+  if (left > right) {
+    return { leftIcon: UP_ICON, rightIcon: DOWN_ICON };
+  }
+
+  return { leftIcon: DOWN_ICON, rightIcon: UP_ICON };
+}
+
 
 
 export { 

@@ -355,5 +355,12 @@ body { font-family: 'Fredoka', sans-serif; }
   padding-bottom: 0.6rem !important;
 }
 
+.compare-icon {
+  width: 14px;
+  height: 14px;
+  display: inline-block;
+  opacity: 0.85;
+}
+
 
 
