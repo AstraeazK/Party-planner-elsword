@@ -803,6 +803,7 @@ async function showCompareModal(selectedIndex) {
         title: 'ผลการเปรียบเทียบ',
         html: table,
         width: '42%',
+        allowOutsideClick: false,
         showCloseButton: true,
         showConfirmButton: false,
         didOpen: () => {
