@@ -1,12 +1,8 @@
 import { calculateMissingBuffs } from "./buffDebuff.js";
 import { charData } from "./charData.js";
 import { pics } from "./pics.js";
-import {
-  buildCompareMap,
-  extractNumber,
-  stripNumbersAndPercents,
-  compareValues
-} from "./buffDebuff.js";
+import { buildCompareMap } from './buffDebuff.js';
+import { initCompareTable } from './compareTable.js';
 
 let activeRowIndex = null;
 
@@ -454,6 +450,7 @@ function renderBuffLists(mergedBuffs, mergedDebuffs, missingBuffs) {
     });
   }
 }
+
 function escapeHtml(str) {
   return String(str)
     .replace(/&/g, '&amp;')
@@ -780,113 +777,47 @@ async function showCompareModal(selectedIndex) {
       const buffMap = buildCompareMap(selBuffs, tgtBuffs);
       const debuffMap = buildCompareMap(selDebuffs, tgtDebuffs);
 
-      let table = '<div style="overflow:auto; max-height:300px;">';
-        table += `
-        <table style="width:100%; border-collapse:collapse; font-size:16px;">
-        <thead>
-        <tr style="background: rgba(236,72,153,0.18);">
-          <th style="width:20%; text-align:center;">${escapeHtml(selLabel)}</th>
-          <th style="width:6%;"></th>
-          <th style="width:48%; text-align:center;">Buff / Debuff</th>
-          <th style="width:6%;"></th>
-          <th style="width:20%; text-align:center;">${escapeHtml(tgtLabel)}</th>
-        </tr>
-        </thead>
-        <tbody>
+      let table = `
+        <div style="overflow:auto; max-height:300px;">
+          <table id="compare-table" style="width:100%; border-collapse:collapse; font-size:16px;">
+            <thead>
+              <tr style="background: rgba(236,72,153,0.18);">
+                <th style="width:20%; text-align:center;">${escapeHtml(selLabel)}</th>
+                <th style="width:6%;"></th>
+                <th style="width:48%; text-align:center;">
+                  <div class="compare-segment">
+                    <button class="active" data-type="buff">Buffs</button>
+                    <button data-type="debuff">Debuffs</button>
+                  </div>
+                </th>
+                <th style="width:6%;"></th>
+                <th style="width:20%; text-align:center;">${escapeHtml(tgtLabel)}</th>
+              </tr>
+            </thead>
+            <tbody></tbody>
+          </table>
+        </div>
         `;
-
-
-        // ---------- Buffs ----------
-      Object.keys(buffMap).forEach(k => {
-        const row = buffMap[k];
-        const selName = row.sel ? row.sel.name : '';
-        const tgtName = row.tgt ? row.tgt.name : '';
-        const displayName = stripNumbersAndPercents(selName || tgtName);
-
-        const leftVal = row.sel
-          ? escapeHtml(extractNumber(selName) || '✔️')
-          : '❌';
-
-        const rightVal = row.tgt
-          ? escapeHtml(extractNumber(tgtName) || '✔️')
-          : '❌';
-
-        const { leftIcon, rightIcon } = compareValues(selName, tgtName);
-
-        table += `
-        <tr>
-          <td style="padding:6px; text-align:center;">${leftVal}</td>
-          <td style="padding:6px; text-align:center;">
-            ${leftIcon ? `<img src="${leftIcon}" style="width:14px;">` : ''}
-          </td>
-          <td style="padding:6px; text-align:center;">${escapeHtml(displayName)}</td>
-          <td style="padding:6px; text-align:center;">
-            ${rightIcon ? `<img src="${rightIcon}" style="width:14px;">` : ''}
-          </td>
-          <td style="padding:6px; text-align:center;">${rightVal}</td>
-        </tr>
-        `;
-
-
-      });
-      // ---------- Divider ----------
-      table += `
-      <tr>
-        <td colspan="5"
-          style="padding:8px; text-align:center; font-weight:700; opacity:.6;">
-          ==== Debuffs ====
-        </td>
-      </tr>
-      `;
-
-      // ---------- Debuffs ----------
-      Object.keys(debuffMap).forEach(k => {
-        const row = debuffMap[k];
-        const selName = row.sel ? row.sel.name : '';
-        const tgtName = row.tgt ? row.tgt.name : '';
-        const displayName = stripNumbersAndPercents(selName || tgtName);
-
-        const leftVal = row.sel
-          ? escapeHtml(extractNumber(selName) || '✔️')
-          : '❌';
-
-        const rightVal = row.tgt
-          ? escapeHtml(extractNumber(tgtName) || '✔️')
-          : '❌';
-
-        const { leftIcon, rightIcon } = compareValues(selName, tgtName);
-
-        table += `
-        <tr>
-          <td style="padding:6px; text-align:center;">${leftVal}</td>
-          <td style="padding:6px; text-align:center;">
-            ${leftIcon ? `<img src="${leftIcon}" style="width:14px;">` : ''}
-          </td>
-          <td style="padding:6px; text-align:center;">${escapeHtml(displayName)}</td>
-          <td style="padding:6px; text-align:center;">
-            ${rightIcon ? `<img src="${rightIcon}" style="width:14px;">` : ''}
-          </td>
-          <td style="padding:6px; text-align:center;">${rightVal}</td>
-        </tr>
-        `;
-
-        });
-
-
-      table += '</tbody></table></div>';
 
       await Swal.fire({
         title: 'ผลการเปรียบเทียบ',
         html: table,
-        heightAuto: true,
         width: '42%',
         showCloseButton: true,
         showConfirmButton: false,
+        didOpen: () => {
+          initCompareTable({
+            buffMap,
+            debuffMap
+          });
+        },
         customClass: {
           popup: 'swal-compare-popup',
           title: 'swal-compare-title'
         }
       });
+
+
     }
 
     // ------------------------ ปุ่มเปรียบเทียบ ------------------------
@@ -943,4 +874,3 @@ function createClickEffect(e) {
 
   setTimeout(() => effect.remove(), 900);
 }
-
