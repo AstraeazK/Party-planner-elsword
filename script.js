@@ -5,10 +5,24 @@ import { buildCompareMap } from './buffDebuff.js';
 import { initCompareTable } from './compareTable.js';
 
 let activeRowIndex = null;
+let partyRows = null;
+
+function setupDragStart(imgEl, src, rowElement) {
+  imgEl.draggable = true;
+  imgEl.addEventListener("dragstart", (e) => {
+    e.dataTransfer.setData("text/plain", src);
+    const rowSlots = Array.from(rowElement.querySelectorAll('[data-slot]'));
+    const slotIndex = rowSlots.findIndex(slot => slot.contains(imgEl));
+    const rowIndex = Array.from(partyRows).indexOf(rowElement);
+    e.dataTransfer.setData("fromRowIndex", rowIndex.toString());
+    e.dataTransfer.setData("fromSlotIndex", slotIndex.toString());
+    e.dataTransfer.effectAllowed = "move";
+  });
+}
 
 document.addEventListener("DOMContentLoaded", () => {
   const charContainer = document.getElementById("char-container");
-  const partyRows = document.querySelectorAll(".party-row");
+  partyRows = document.querySelectorAll(".party-row");
 
   // ---------- สร้าง <img> ตัวละคร ----------
   function createCharImage(src) {
@@ -79,13 +93,8 @@ document.addEventListener("DOMContentLoaded", () => {
     const newImg = document.createElement("img");
     newImg.src = src;
     newImg.className = "w-full h-full object-contain";
-    newImg.draggable = true;
 
-    newImg.addEventListener("dragstart", (e) => {
-      e.dataTransfer.setData("text/plain", src);
-      e.dataTransfer.setData("fromRowIndex", activeRowIndex.toString());
-      e.dataTransfer.effectAllowed = "move";
-    });
+    setupDragStart(newImg, src, selectedRow);
 
     // คลิกขวาลบตัวละคร
     newImg.addEventListener("contextmenu", (e) => {
@@ -145,29 +154,80 @@ document.addEventListener("DOMContentLoaded", () => {
         const src = e.dataTransfer.getData("text/plain");
         if (!src) return;
 
-        slot.innerHTML = "";
-        const imgEl = document.createElement("img");
-        imgEl.src = src;
-        imgEl.className = "w-full h-full object-contain";
-        imgEl.draggable = true;
-        imgEl.addEventListener("dragstart", (e) => {
-          e.dataTransfer.setData("text/plain", src);
-          e.dataTransfer.setData("fromRowIndex", rowIndex.toString());
-          e.dataTransfer.effectAllowed = "move";
-        });
+        const fromRowIndexStr = e.dataTransfer.getData('fromRowIndex');
+        const fromSlotIndexStr = e.dataTransfer.getData('fromSlotIndex');
+        const fromRowIndexVal = fromRowIndexStr !== "" && fromRowIndexStr !== null ? parseInt(fromRowIndexStr, 10) : null;
+        const fromSlotIndexVal = fromSlotIndexStr !== "" && fromSlotIndexStr !== null ? parseInt(fromSlotIndexStr, 10) : null;
 
-        imgEl.addEventListener("contextmenu", (e) => {
-          e.preventDefault();
+        const targetRowIndex = rowIndex;
+        const targetRow = partyRows[targetRowIndex];
+        const targetSlots = targetRow.querySelectorAll('[data-slot]');
+        const targetImg = slot.querySelector('img');
+
+        // If drag originated from a party row (move/swap)
+        if (fromRowIndexVal !== null && !isNaN(fromRowIndexVal) && partyRows[fromRowIndexVal]) {
+          const sourceRow = partyRows[fromRowIndexVal];
+          const sourceSlots = sourceRow.querySelectorAll('[data-slot]');
+          let sourceSlot = null;
+          
+          if (!isNaN(fromSlotIndexVal) && sourceSlots[fromSlotIndexVal]) {
+            sourceSlot = sourceSlots[fromSlotIndexVal];
+          }
+
+          if (!sourceSlot || sourceSlot === slot && fromRowIndexVal === targetRowIndex) {
+            return;
+          }
+
+          const sourceImg = sourceSlot ? sourceSlot.querySelector('img') : null;
+          if (!sourceImg) {
+            return;
+          }
+
+          sourceSlot.removeChild(sourceImg);
+          
+          if (fromRowIndexVal === targetRowIndex) {
+            if (targetImg) {
+              slot.removeChild(targetImg);
+              slot.appendChild(sourceImg);
+              sourceSlot.appendChild(targetImg);
+              
+              setupDragStart(sourceImg, sourceImg.src, targetRow);
+              setupDragStart(targetImg, targetImg.src, targetRow);
+            } else {
+              slot.appendChild(sourceImg);
+              setupDragStart(sourceImg, sourceImg.src, targetRow);
+            }
+          } else {
+            if (targetImg) {
+              slot.removeChild(targetImg);
+            }
+            slot.appendChild(sourceImg);
+            setupDragStart(sourceImg, sourceImg.src, targetRow);
+          }
+
+          if (!document.querySelector('.party-row.party-selected')) {
+            setRowSelected(targetRow);
+          }
+          updateBuffs();
+          return;
+        }
+        slot.innerHTML = '';
+        const imgEl = document.createElement('img');
+        imgEl.src = src;
+        imgEl.className = 'w-full h-full object-contain';
+
+        setupDragStart(imgEl, src, targetRow);
+
+        imgEl.addEventListener('contextmenu', (ev) => {
+          ev.preventDefault();
           imgEl.remove();
           updateBuffs();
         });
 
         slot.appendChild(imgEl);
-
-        if (!document.querySelector(".party-row.party-selected")) {
-          setRowSelected(partyRows[rowIndex]);
+        if (!document.querySelector('.party-row.party-selected')) {
+          setRowSelected(targetRow);
         }
-
         updateBuffs();
       });
 
@@ -452,14 +512,8 @@ function renderBuffLists(mergedBuffs, mergedDebuffs, missingBuffs) {
         const newImg = document.createElement('img');
         newImg.src = charKey;
         newImg.className = 'w-full h-full object-contain';
-        newImg.draggable = true;
 
-        const rowIndex = [...partyRows].indexOf(selRow);
-        newImg.addEventListener('dragstart', (ev) => {
-          ev.dataTransfer.setData('text/plain', charKey);
-          ev.dataTransfer.setData('fromRowIndex', rowIndex.toString());
-          ev.dataTransfer.effectAllowed = 'move';
-        });
+        setupDragStart(newImg, charKey, selRow);
 
         newImg.addEventListener('contextmenu', (ev) => {
           ev.preventDefault();

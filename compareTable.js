@@ -43,14 +43,12 @@ function renderCompareTable() {
 function buildCompareRows(map) {
   let html = '';
 
-  // เรียงลำดับตามลำดับที่กำหนด
   const displayOrder = currentCompareType === 'buff' ? BUFF_DISPLAY_ORDER : DEBUFF_DISPLAY_ORDER;
   const orderMap = {};
   displayOrder.forEach((name, index) => {
     orderMap[normalizeKey(name)] = index;
   });
 
-  // แยก keys ที่มีในลำดับและที่ไม่มี
   const ordered = [];
   const unordered = [];
 
@@ -64,7 +62,6 @@ function buildCompareRows(map) {
     }
   });
 
-  // เรียงลำดับและเพิ่ม unordered นอกลำดับไปท้าย
   ordered.sort((a, b) => a.order - b.order);
   const sortedKeys = ordered.map(x => x.k).concat(unordered);
 
