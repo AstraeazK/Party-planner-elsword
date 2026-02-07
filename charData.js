@@ -82,10 +82,10 @@ export const charData = {
   "pics/Chung/Icon_-_Comet_Crusader.png": { 
     role: "physical",
     buffs: ["เร่งคูลดาวน์ 1.3x","Action Speed เพิ่มขึ้น 8%","ลดดาเมจ 50%"], 
-    debuffs: ["เจาะกาย 10%","เจาะ 5%","รับดาเมจกายเพิ่มขึ้น 15%","ลดดาเมจ 20%"]},
+    debuffs: ["เจาะกาย 10%","เจาะกาย/เวทย์ 5%","รับดาเมจกายเพิ่มขึ้น 15%","ลดดาเมจ 20%"]},
   "pics/Chung/Icon_-_Fatal_Phantom.png": { 
     role: "magic",
-    buffs: ["ดาเมจเวทย์เพิ่มขึ้น 24%","Action Speed เพิ่มขึ้น 18%","Critical เพิ่มขึ้น 10%"], 
+    buffs: ["ดาเมจเวทย์เพิ่มขึ้น 24%","Action Speed เพิ่มขึ้น 18%","Critical 10%"], 
     debuffs: []},
   "pics/Chung/Icon_-_Centurion.png": { 
     role: "magic",
@@ -125,7 +125,7 @@ export const charData = {
     debuffs: ["รับ Critical Damage เพิ่มขึ้น 30%", "ลดธาตุ 300"]},
   "pics/Elesis/Icon_-_Adrestia.png": { 
     role: "magic",
-    buffs: ["ดาเมจเวทย์เพิ่มขึ้น 10%", "ลดคูลดาวน์ 10%", "ลดดาเมจ 20%", "Action Speed เพิ่มขึ้น 10%", "ดาเมจต่อบอส 10%"], 
+    buffs: ["ดาเมจเวทย์เพิ่มขึ้น 10%", "หั่นคูลดาวน์ 10%", "ลดดาเมจ 20%", "Action Speed เพิ่มขึ้น 10%", "ดาเมจต่อบอส 10%"], 
     debuffs: ["รับดาเมจเวทย์เพิ่มขึ้น 14%", "เจาะเวทย์ 20%", "เจาะกาย/เวทย์ 5%"]},
   "pics/Add/Icon_-_Doom_Bringer.png": { 
     role: "magic",

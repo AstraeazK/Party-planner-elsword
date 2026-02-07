@@ -1,4 +1,4 @@
-import { calculateMissingBuffs } from "./buffDebuff.js";
+import { calculateMissingBuffs, BUFF_DISPLAY_ORDER, DEBUFF_DISPLAY_ORDER, normalizeKey } from "./buffDebuff.js";
 import { charData } from "./charData.js";
 import { pics } from "./pics.js";
 import { buildCompareMap } from './buffDebuff.js';
@@ -316,9 +316,33 @@ function renderBuffLists(mergedBuffs, mergedDebuffs, missingBuffs) {
   const debuffListEl = document.getElementById("debuff-list");
   const missingListEl = document.getElementById("missing-buff-list");
 
+  // ฟังก์ชันเรียงลำดับตามลำดับที่กำหนด
+  const sortByDisplayOrder = (items, displayOrder) => {
+    const orderMap = {};
+    displayOrder.forEach((name, index) => {
+      orderMap[normalizeKey(name)] = index;
+    });
+
+    const ordered = [];
+    const unordered = [];
+
+    items.forEach(item => {
+      const key = normalizeKey(item.name);
+      if (key in orderMap) {
+        ordered.push({ item, order: orderMap[key] });
+      } else {
+        unordered.push(item);
+      }
+    });
+
+    ordered.sort((a, b) => a.order - b.order);
+    return ordered.map(x => x.item).concat(unordered);
+  };
+
   if (buffListEl) {
     buffListEl.innerHTML = '';
-    mergedBuffs.forEach(b => {
+    const sortedBuffs = sortByDisplayOrder(mergedBuffs, BUFF_DISPLAY_ORDER);
+    sortedBuffs.forEach(b => {
       const li = document.createElement('li');
       li.className = 'text-green-200 relative cursor-default';
       li.innerText = b.name;
@@ -340,7 +364,8 @@ function renderBuffLists(mergedBuffs, mergedDebuffs, missingBuffs) {
 
   if (debuffListEl) {
     debuffListEl.innerHTML = '';
-    mergedDebuffs.forEach(d => {
+    const sortedDebuffs = sortByDisplayOrder(mergedDebuffs, DEBUFF_DISPLAY_ORDER);
+    sortedDebuffs.forEach(d => {
       const li = document.createElement('li');
       li.className = 'text-pink-200 relative cursor-default';
       li.innerText = d.name;

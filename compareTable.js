@@ -4,7 +4,10 @@ let _debuffMap = {};
 import {
   stripNumbersAndPercents,
   compareValues,
-  extractNumber
+  extractNumber,
+  BUFF_DISPLAY_ORDER,
+  DEBUFF_DISPLAY_ORDER,
+  normalizeKey
 } from './buffDebuff.js';
 
 export function initCompareTable({ buffMap, debuffMap }) {
@@ -16,7 +19,6 @@ export function initCompareTable({ buffMap, debuffMap }) {
   renderCompareTable();
 }
 
-
 function escapeHtml(str = '') {
   return String(str)
     .replace(/&/g, '&amp;')
@@ -25,7 +27,6 @@ function escapeHtml(str = '') {
     .replace(/"/g, '&quot;')
     .replace(/'/g, '&#039;');
 }
-
 
 function renderCompareTable() {
   const tbody = document.querySelector('#compare-table tbody');
@@ -42,7 +43,32 @@ function renderCompareTable() {
 function buildCompareRows(map) {
   let html = '';
 
+  // เรียงลำดับตามลำดับที่กำหนด
+  const displayOrder = currentCompareType === 'buff' ? BUFF_DISPLAY_ORDER : DEBUFF_DISPLAY_ORDER;
+  const orderMap = {};
+  displayOrder.forEach((name, index) => {
+    orderMap[normalizeKey(name)] = index;
+  });
+
+  // แยก keys ที่มีในลำดับและที่ไม่มี
+  const ordered = [];
+  const unordered = [];
+
   Object.keys(map).forEach(k => {
+    const displayName = stripNumbersAndPercents(map[k].sel?.name || map[k].tgt?.name || '');
+    const key = normalizeKey(displayName);
+    if (key in orderMap) {
+      ordered.push({ k, order: orderMap[key] });
+    } else {
+      unordered.push(k);
+    }
+  });
+
+  // เรียงลำดับและเพิ่ม unordered นอกลำดับไปท้าย
+  ordered.sort((a, b) => a.order - b.order);
+  const sortedKeys = ordered.map(x => x.k).concat(unordered);
+
+  sortedKeys.forEach(k => {
     const row = map[k];
     const selName = row.sel?.name || '';
     const tgtName = row.tgt?.name || '';
