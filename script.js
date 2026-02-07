@@ -289,9 +289,16 @@ function updateBuffs() {
   const allBuffs = [];
   const allDebuffs = [];
 
+  const uniqueCharSources = new Set();
   imgs.forEach(img => {
     const srcKey = Object.keys(charData).find(k => img.src.includes(k.replace("pics/", "")));
-    const info = srcKey ? charData[srcKey] : null;
+    if (srcKey) {
+      uniqueCharSources.add(srcKey);
+    }
+  });
+
+  uniqueCharSources.forEach(srcKey => {
+    const info = charData[srcKey];
     if (info) {
       info.buffs.forEach(b => allBuffs.push({ buff: b, charName: srcKey }));
       info.debuffs.forEach(d => allDebuffs.push({ buff: d, charName: srcKey }));
@@ -499,7 +506,13 @@ function renderBuffLists(mergedBuffs, mergedDebuffs, missingBuffs) {
       img.src = charKey;
       img.alt = charKey.split('/').pop();
       img.className = 'w-[48px] h-[48px] object-contain rounded border-2 border-pink-300 shadow hover:scale-110 transition-transform';
-      img.title = charKey.split('/').pop().replace('Icon_-_', '').replace(/_/g, ' ');
+      const displayName = charKey
+        .split('/').pop()
+        .replace('Icon_-_', '')
+        .replace(/\.png$/i, '')
+        .replace(/_/g, ' ');
+
+      img.title = displayName;
 
       img.addEventListener('contextmenu', (e) => {
         e.preventDefault();
@@ -741,14 +754,23 @@ function getMergedForRowElement(rowEl) {
   const imgs = Array.from(rowEl.querySelectorAll('img'));
   const allBuffs = [];
   const allDebuffs = [];
+  
+  const uniqueCharSources = new Set();
   imgs.forEach(img => {
     const srcKey = Object.keys(charData).find(k => img.src.includes(k.replace('pics/', '')));
-    const info = srcKey ? charData[srcKey] : null;
+    if (srcKey) {
+      uniqueCharSources.add(srcKey);
+    }
+  });
+
+  uniqueCharSources.forEach(srcKey => {
+    const info = charData[srcKey];
     if (info) {
       info.buffs.forEach(b => allBuffs.push({ buff: b, charName: srcKey }));
       info.debuffs.forEach(d => allDebuffs.push({ buff: d, charName: srcKey }));
     }
   });
+  
   return mergeBuffsAndDebuffs(allBuffs, allDebuffs);
 }
 
