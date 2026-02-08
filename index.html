@@ -13,6 +13,117 @@
 <body class="bg-gray-900 text-white">
   <header class="relative overflow-hidden text-center py-8 border-b border-pink-500 bg-gray-950 shadow-[0_0_25px_rgba(255,20,147,0.4)]">
     <div class="absolute inset-0 bg-gradient-to-r from-pink-700/20 via-fuchsia-600/20 to-pink-700/20 blur-2xl"></div>
+    <!-- Help Button -->
+    <button id="help-btn"
+      class="fixed top-4 left-4 z-50
+            w-10 h-10 rounded-full
+            bg-pink-500 text-white
+            flex items-center justify-center
+            hover:bg-pink-400
+            shadow-lg shadow-pink-500/40
+            transition">
+      ?
+    </button>
+
+    <!-- Help Hint Bubble -->
+    <div id="help-hint"
+      class="fixed top-4 left-16 z-40
+            justify-center
+            h-10
+            px-0
+            flex items-center
+            overflow-hidden
+            rounded-full
+            bg-pink-500/70
+            text-white text-sm font-semibold
+            shadow-lg shadow-pink-500/40
+            opacity-0
+            pointer-events-none">
+      <span id="help-hint-text" class="whitespace-nowrap opacity-0">
+        Help!
+      </span>
+
+      <!-- Sparkle -->
+      <span class="absolute inset-0 rounded-full animate-sparkle"></span>
+    </div>
+    <!-- Help Modal Overlay -->
+    <div id="help-modal"
+      class="fixed z-50 hidden
+            top-16 left-4">
+
+
+      <!-- Modal Box -->
+      <div class="bg-gray-900 text-white
+                  w-[420px] max-w-[90%]
+                  rounded-2xl p-5
+                  border border-pink-500/40
+                  shadow-[0_0_25px_rgba(255,20,147,0.35)]">
+
+        <!-- Header -->
+        <div class="flex items-center justify-between mb-4">
+          <h2 class="text-lg font-bold text-pink-300 justify-center">❓ Help</h2>
+          <button id="help-close"
+            class="text-gray-400 hover:text-white text-xl leading-none">✕</button>
+        </div>
+
+        <div class="space-y-4 text-sm">
+
+          <!-- Controls -->
+          <div>
+            <h3 class="text-pink-400 font-semibold mb-2">Controls</h3>
+
+            <div class="space-y-2 text-gray-200">
+
+              <!-- Left Click + Hold -->
+              <div class="grid grid-cols-[28px_120px_1fr] items-center gap-2">
+                <img src="assets/left-click.png" class="w-5 h-5" alt="Left Click">
+                <span class="text-gray-300">คลิกซ้าย + ลาก</span>
+                <span class="text-left">ใส่ตัวละครลงช่อง</span>
+              </div>
+
+              <!-- Right Click -->
+              <div class="grid grid-cols-[28px_120px_1fr] items-center gap-2">
+                <img src="assets/right-click.png" class="w-5 h-5" alt="Right Click">
+                <span class="text-gray-300">คลิกขวา</span>
+                <span class="text-left">ใส่ตัวละครในแถว / ลบตัวละครออกจากช่อง</span>
+              </div>
+
+            </div>
+          </div>
+          
+          <div class="border-b border-pink-500/30 my-1"></div>
+
+          <!-- Row Actions -->
+          <div>
+            <h3 class="text-pink-400 font-semibold mb-1">Actions</h3>
+              <ul class="space-y-2 text-gray-200">
+                <li class="grid grid-cols-[28px_90px_1fr] items-center gap-2">
+                  <i data-lucide="brush-cleaning"
+                    class="w-5 h-5 text-pink-400"></i>
+                  <span class="font-semibold text-gray-300">Brush</span>
+                  <span class="text-left">ลบตัวละครทั้งแถว</span>
+                </li>
+
+                <li class="grid grid-cols-[28px_90px_1fr] items-center gap-2">
+                  <i data-lucide="columns"
+                    class="w-5 h-5 text-pink-400"></i>
+                  <span class="font-semibold text-gray-300">Compare</span>
+                  <span class="text-left">เปรียบเทียบบัพ / ดีบัฟกับแถวอื่น</span>
+                </li>
+
+                <li class="grid grid-cols-[28px_90px_1fr] items-center gap-2">
+                  <i data-lucide="scroll-text"
+                    class="w-5 h-5 text-pink-400"></i>
+                  <span class="font-semibold text-gray-300">Scroll</span>
+                  <span class="text-left">ดูรายละเอียดบัพ / ดีบัฟ</span>
+                </li>
+            </ul>
+
+
+          </div>
+        </div>
+      </div>
+    </div>
 
     <!-- Sparkles -->
     <div class="sparkle top-4 left-1/3"></div>
@@ -64,7 +175,7 @@
 
           <!-- Compare Icon -->
           <div class="w-[90px] h-[90px] bg-gray-800 flex items-center justify-center 
-                      text-pink-400 hover:text-pink-300 cursor-pointer compare-btn" title="เปรียบเทียบกับแถวอื่น">
+                      text-pink-400 hover:text-pink-300 cursor-pointer compare-btn">
             <i data-lucide="columns" 
               class="w-8 h-8 transition-transform active:scale-90"></i>
           </div>

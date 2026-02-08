@@ -21,6 +21,30 @@ function setupDragStart(imgEl, src, rowElement) {
 }
 
 document.addEventListener("DOMContentLoaded", () => {
+   const hint = document.getElementById("help-hint");
+  const text = document.getElementById("help-hint-text");
+
+  // 1. Fade-in + ยืดกล่อง
+  setTimeout(() => {
+    hint.classList.add("animate-expand");
+  }, 400);
+
+  // 2. ข้อความโผล่หลังยืดเสร็จ
+  setTimeout(() => {
+    text.style.animation = "fadeIn 0.3s forwards";
+  }, 800);
+
+  // 3. ค้างไว้แป๊บนึง
+  setTimeout(() => {
+    text.style.animation = "fadeOut 0.3s forwards";
+  }, 2400);
+
+  // 4. หดกล่องกลับ
+  setTimeout(() => {
+    hint.classList.remove("animate-expand");
+    hint.classList.add("animate-collapse");
+  }, 2700);
+
   const charContainer = document.getElementById("char-container");
   partyRows = document.querySelectorAll(".party-row");
 
@@ -976,3 +1000,27 @@ function createClickEffect(e) {
 
   setTimeout(() => effect.remove(), 900);
 }
+
+const helpBtn = document.getElementById('help-btn');
+const helpModal = document.getElementById('help-modal');
+const helpClose = document.getElementById('help-close');
+
+helpBtn.addEventListener('click', () => {
+  helpModal.classList.remove('hidden');
+});
+
+helpClose.addEventListener('click', () => {
+  helpModal.classList.add('hidden');
+});
+
+helpModal.addEventListener('click', (e) => {
+  if (e.target === helpModal) {
+    helpModal.classList.add('hidden');
+  }
+});
+
+document.addEventListener('keydown', (e) => {
+  if (e.key === 'Escape') {
+    helpModal.classList.add('hidden');
+  }
+});
