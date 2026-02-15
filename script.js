@@ -7,6 +7,107 @@ import { initCompareTable } from './compareTable.js';
 let activeRowIndex = null;
 let partyRows = null;
 
+const TEAM_RULES = {
+  6: {
+    cooldown: { min: 1 },
+    speed:    { min: 1 },
+    support:  { min: 2, max: 3 },
+    physical: { min: 2, max: 4 },
+    magic:    { min: 2, max: 4 }
+  },
+  8: {
+    cooldown: { min: 1 },
+    speed:    { min: 2 },
+    support:  { exact: 4 },
+    physical: { exact: 4 },
+    magic:    { exact: 4 }
+  }
+};
+
+const WEIGHTS = {
+  cooldown: 4,
+  speed: 3,
+  support: 2.5,
+  physical: 2,
+  magic: 2
+};
+
+function getTargetSize(count) {
+  if (count <= 5) return 6;
+  if (count <= 7) return 8;
+  return null;
+}
+
+function analyzeTeam(keys) {
+  const state = {
+    cooldown: 0,
+    speed: 0,
+    support: 0,
+    damage: 0
+  };
+
+  keys.forEach(key => {
+    const info = charData[key];
+    if (!info) return;
+
+    if (info.role === 'support') state.support++;
+    if (info.role === 'damage') state.damage++;
+
+    (info.buffs || []).forEach(buff => {
+      const b = buff.toLowerCase();
+      if (b.includes('cool') || b.includes('cdr')) state.cooldown++;
+      if (b.includes('speed')) state.speed++;
+    });
+  });
+
+  return state;
+}
+
+function calculateScore(charKey, teamState, rules) {
+  const info = charData[charKey];
+  if (!info) return -9999;
+
+  let score = 0;
+
+  const categories = {
+    cooldown: false,
+    speed: false,
+    support: info.role === 'support',
+    damage: info.role === 'damage'
+  };
+
+  (info.buffs || []).forEach(buff => {
+    const b = buff.toLowerCase();
+    if (b.includes('cool') || b.includes('cdr')) categories.cooldown = true;
+    if (b.includes('speed')) categories.speed = true;
+  });
+
+  for (const type in rules) {
+    const rule = rules[type];
+    const current = teamState[type];
+    const weight = WEIGHTS[type] || 1;
+
+    if (!categories[type]) continue;
+
+    if (rule.exact !== undefined) {
+      if (current < rule.exact) {
+        score += (rule.exact - current) * weight;
+      } else {
+        score -= 999;
+      }
+    } else {
+      if (rule.min !== undefined && current < rule.min) {
+        score += (rule.min - current) * weight;
+      }
+      if (rule.max !== undefined && current >= rule.max) {
+        score -= 999;
+      }
+    }
+  }
+
+  return score;
+}
+
 function setupDragStart(imgEl, src, rowElement) {
   imgEl.draggable = true;
   imgEl.addEventListener("dragstart", (e) => {
@@ -21,7 +122,7 @@ function setupDragStart(imgEl, src, rowElement) {
 }
 
 document.addEventListener("DOMContentLoaded", () => {
-   const hint = document.getElementById("help-hint");
+  const hint = document.getElementById("help-hint");
   const text = document.getElementById("help-hint-text");
 
   // 1. Fade-in + ยืดกล่อง
@@ -491,80 +592,123 @@ function renderBuffLists(mergedBuffs, mergedDebuffs, missingBuffs) {
   // ---------- แนะนำตัวละคร ----------
   const recommendListEl = document.getElementById('recommend-char-list');
   if (recommendListEl) {
+
     recommendListEl.innerHTML = '';
-    if (!missingBuffs || missingBuffs.length === 0) return;
+
     const selectedRow = document.querySelector('.party-row.party-selected');
-    const partyCharNames = selectedRow ? Array.from(selectedRow.querySelectorAll('img')).map(img => {
-      return Object.keys(charData).find(k => img.src.includes(k.replace('pics/', '')));
-    }).filter(Boolean) : [];
+    if (!selectedRow) return;
+
+    const partyCharNames = Array.from(selectedRow.querySelectorAll('img'))
+      .map(img =>
+        Object.keys(charData).find(k =>
+          img.src.includes(k.replace('pics/', ''))
+        )
+      )
+      .filter(Boolean);
+
+    const targetSize = getTargetSize(partyCharNames.length);
+    if (!targetSize) return;
+
+    const rules = TEAM_RULES[targetSize];
+    const teamState = analyzeTeam(partyCharNames);
+
+    // physical / magical filter เดิม
     const rolesInRow = new Set();
-    if (selectedRow) {
-      Array.from(selectedRow.querySelectorAll('img')).forEach(img => {
-        const k = Object.keys(charData).find(k => img.src.includes(k.replace('pics/', '')));
-        if (k && charData[k] && charData[k].role) rolesInRow.add(charData[k].role);
-      });
-    }
-
-    let allowedRoles = null;
-    if (rolesInRow.has('physical')) {
-      allowedRoles = new Set(['physical', 'support']);
-    } else if (rolesInRow.has('magic')) {
-      allowedRoles = new Set(['magic', 'support']);
-    }
-
-    const recommended = [];
-    missingBuffs.forEach(missing => {
-      const keyMissing = missing.toLowerCase().replace(/\s+/g, '').replace(/[0-9.%x×]/g, '');
-      Object.entries(charData).forEach(([charKey, info]) => {
-        if (partyCharNames.includes(charKey)) return;
-        if (allowedRoles && (!info.role || !allowedRoles.has(info.role))) return;
-        if ((info.buffs || []).some(b => b.toLowerCase().replace(/\s+/g, '').replace(/[0-9.%x×]/g, '') === keyMissing)) {
-          recommended.push({ charKey, buff: missing });
-        }
-      });
+    partyCharNames.forEach(k => {
+      if (charData[k]?.role)
+        rolesInRow.add(charData[k].role);
     });
 
-    const uniqueChars = Array.from(new Set(recommended.map(r => r.charKey)));
-    uniqueChars.forEach(charKey => {
-      const img = document.createElement('img');
-      img.src = charKey;
-      img.alt = charKey.split('/').pop();
-      img.className = 'w-[48px] h-[48px] object-contain rounded border-2 border-pink-300 shadow hover:scale-110 transition-transform';
-      const displayName = charKey
-        .split('/').pop()
-        .replace('Icon_-_', '')
-        .replace(/\.png$/i, '')
-        .replace(/_/g, ' ');
+    let allowedRoles = null;
+    if (rolesInRow.has('physical'))
+      allowedRoles = new Set(['physical', 'support']);
+    else if (rolesInRow.has('magical'))
+      allowedRoles = new Set(['magical', 'support']);
 
-      img.title = displayName;
+    const ranked = [];
 
-      img.addEventListener('contextmenu', (e) => {
-        e.preventDefault();
-        const selRow = document.querySelector('.party-row.party-selected');
-        if (!selRow) return;
-        const emptySlot = [...selRow.querySelectorAll('[data-slot]')].find(s => s.children.length === 0);
-        if (!emptySlot) return;
+    Object.entries(charData).forEach(([charKey, info]) => {
 
-        emptySlot.innerHTML = '';
-        const newImg = document.createElement('img');
-        newImg.src = charKey;
-        newImg.className = 'w-full h-full object-contain';
+      if (partyCharNames.includes(charKey)) return;
+      if (allowedRoles && (!info.role || !allowedRoles.has(info.role))) return;
 
-        setupDragStart(newImg, charKey, selRow);
+      const score = calculateScore(charKey, teamState, rules);
+      if (score > 0)
+        ranked.push({ charKey, score });
+    });
 
-        newImg.addEventListener('contextmenu', (ev) => {
-          ev.preventDefault();
-          newImg.remove();
-          updateBuffs();
-        });
+    ranked.sort((a, b) => b.score - a.score);
 
-        emptySlot.appendChild(newImg);
+    const top3 = ranked.slice(0, 3).map(r => r.charKey);
+
+    ranked.forEach(({ charKey }, index) => {
+
+  // wrapper สำหรับวาง badge
+  const wrapper = document.createElement('div');
+  wrapper.className = 'relative inline-block';
+
+  const img = document.createElement('img');
+  img.src = charKey;
+  img.alt = charKey.split('/').pop();
+  img.className =
+    'w-[48px] h-[48px] object-contain rounded border-2 border-pink-300 shadow hover:scale-110 transition-transform';
+
+  const displayName = charKey
+    .split('/').pop()
+    .replace('Icon_-_', '')
+    .replace(/\.png$/i, '')
+    .replace(/_/g, ' ');
+
+  img.title = displayName;
+
+  // 🌟 ถ้าเป็น Top 3
+  if (index < 3) {
+
+    // ขอบทอง
+    img.style.border = '2px solid gold';
+    img.style.boxShadow = '0 0 12px rgba(255,215,0,0.9)';
+
+    const badge = document.createElement('span');
+    badge.textContent = '✨';
+    badge.className =
+      'absolute -top-1 -right-1 text-[16px] drop-shadow';
+
+    wrapper.appendChild(badge);
+    }
+
+    img.addEventListener('contextmenu', (e) => {
+      e.preventDefault();
+      const selRow = document.querySelector('.party-row.party-selected');
+      if (!selRow) return;
+
+      const emptySlot = [...selRow.querySelectorAll('[data-slot]')]
+        .find(s => s.children.length === 0);
+      if (!emptySlot) return;
+
+      emptySlot.innerHTML = '';
+
+      const newImg = document.createElement('img');
+      newImg.src = charKey;
+      newImg.className = 'w-full h-full object-contain';
+
+      setupDragStart(newImg, charKey, selRow);
+
+      newImg.addEventListener('contextmenu', (ev) => {
+        ev.preventDefault();
+        newImg.remove();
         updateBuffs();
       });
 
-      recommendListEl.appendChild(img);
+      emptySlot.appendChild(newImg);
+      updateBuffs();
     });
+
+    wrapper.appendChild(img);
+    recommendListEl.appendChild(wrapper);
+  });
+
   }
+
 }
 
 function escapeHtml(str) {
