@@ -85,7 +85,15 @@ export const charData = {
     debuffs: ["เจาะกาย 10%","เจาะกาย/เวทย์ 5%","รับดาเมจกายเพิ่มขึ้น 15%","ลดดาเมจ 20%"]},
   "pics/Chung/Icon_-_Fatal_Phantom.png": { 
     role: "magical",
-    buffs: ["ดาเมจเวทย์เพิ่มขึ้น 24%","Action Speed เพิ่มขึ้น 18%","Critical 10%"], 
+    buffs: ["ดาเมจเวทย์เพิ่มขึ้น 24%"],
+    buffGroups: [
+      {
+        groupId: "sharpshooter_syndrome",
+        groupName: "Sharpshooter Syndrome",
+        options: ["Action Speed เพิ่มขึ้น 18%", "Critical 10%"],
+        default: "Action Speed เพิ่มขึ้น 18%"
+      }
+    ],
     debuffs: []},
   "pics/Chung/Icon_-_Centurion.png": { 
     role: "magical",
