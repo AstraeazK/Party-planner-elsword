@@ -6,6 +6,7 @@ import { initCompareTable } from './compareTable.js';
 
 let activeRowIndex = null;
 let partyRows = null;
+let buffGroupSelections = {};
 
 function setupDragStart(imgEl, src, rowElement) {
   imgEl.draggable = true;
@@ -21,6 +22,17 @@ function setupDragStart(imgEl, src, rowElement) {
 }
 
 document.addEventListener("DOMContentLoaded", () => {
+  Object.keys(charData).forEach(srcKey => {
+    const info = charData[srcKey];
+    if (info && info.buffGroups) {
+      info.buffGroups.forEach(group => {
+        if (!buffGroupSelections[group.groupId]) {
+          buffGroupSelections[group.groupId] = group.default;
+        }
+      });
+    }
+  });
+
   const hint = document.getElementById("help-hint");
   const text = document.getElementById("help-hint-text");
 
@@ -278,6 +290,28 @@ document.addEventListener("DOMContentLoaded", () => {
   updateBuffs();
 });
 
+  // ---------- BuffGroup Toggle Buttons Handler ----------
+  document.querySelectorAll('.buffgroup-toggle').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const groupId = btn.dataset.groupId;
+      const value = btn.dataset.value;
+      
+      buffGroupSelections[groupId] = value;
+      
+      document.querySelectorAll(`[data-group-id="${groupId}"]`).forEach(button => {
+        if (button.dataset.value === value) {
+          button.classList.remove('bg-gray-700', 'text-gray-300', 'hover:bg-gray-600');
+          button.classList.add('bg-green-600', 'text-white');
+        } else {
+          button.classList.remove('bg-green-600', 'text-white');
+          button.classList.add('bg-gray-700', 'text-gray-300', 'hover:bg-gray-600');
+        }
+      });
+      
+      updateBuffs();
+    });
+  });
+
 
 function updateBuffs() {
   updateDuplicateWarnings();
@@ -326,6 +360,15 @@ function updateBuffs() {
     if (info) {
       info.buffs.forEach(b => allBuffs.push({ buff: b, charName: srcKey }));
       info.debuffs.forEach(d => allDebuffs.push({ buff: d, charName: srcKey }));
+
+      if (info.buffGroups) {
+        info.buffGroups.forEach(group => {
+          const selectedValue = buffGroupSelections[group.groupId] || group.default;
+          if (selectedValue) {
+            allBuffs.push({ buff: selectedValue, charName: srcKey });
+          }
+        });
+      }
     }
   });
 
