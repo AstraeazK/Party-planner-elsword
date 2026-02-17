@@ -153,7 +153,7 @@ export const charData = {
     debuffs: ["เจาะกาย/เวทย์ 22.5%", "ลดธาตุ 150", "ลดดาเมจ 20%"]},
   "pics/LuCiel/Icon_-_Catastrophe.png": { 
     role: "physical",
-    buffs: ["เร่งคูลดาวน์ 1.3x"], 
+    buffs: ["เร่งคูลดาวน์ 1.3x", "ตัวแดง"], 
     debuffs: ["รับดาเมจกายเพิ่มขึ้น 15%", "รับ Critical Damage เพิ่มขึ้น 12%", "ลดดาเมจ 10%"]},
   "pics/LuCiel/Icon_-_Innocent.png": { 
     role: "magical",

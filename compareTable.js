@@ -72,15 +72,36 @@ function buildCompareRows(map) {
 
     const displayName = stripNumbersAndPercents(selName || tgtName);
 
-    const leftVal = row.sel
-      ? escapeHtml(extractNumber(selName) || '✔️')
-      : '❌';
+    const showNumbers = window.__SHOW_BUFF_NUMBERS === true;
 
-    const rightVal = row.tgt
-      ? escapeHtml(extractNumber(tgtName) || '✔️')
-      : '❌';
+    let leftVal = '';
+    let rightVal = '';
+    let leftIcon = '';
+    let rightIcon = '';
 
-    const { leftIcon, rightIcon } = compareValues(selName, tgtName);
+    if (showNumbers) {
+      leftVal = row.sel ? escapeHtml(extractNumber(selName) || '✔️') : '❌';
+      rightVal = row.tgt ? escapeHtml(extractNumber(tgtName) || '✔️') : '❌';
+      ({ leftIcon, rightIcon } = compareValues(selName, tgtName));
+    } else {
+      const selPresent = !!row.sel;
+      const tgtPresent = !!row.tgt;
+      if (selPresent && tgtPresent) {
+        leftVal = '';
+        rightVal = '';
+      } else if (selPresent && !tgtPresent) {
+        leftVal = '✔️';
+        rightVal = '❌';
+      } else if (!selPresent && tgtPresent) {
+        leftVal = '❌';
+        rightVal = '✔️';
+      } else {
+        leftVal = '';
+        rightVal = '';
+      }
+      leftIcon = '';
+      rightIcon = '';
+    }
 
     html += `
       <tr>

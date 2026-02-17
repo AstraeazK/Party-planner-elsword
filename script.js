@@ -1,4 +1,4 @@
-import { calculateMissingBuffs, BUFF_DISPLAY_ORDER, DEBUFF_DISPLAY_ORDER, normalizeKey } from "./buffDebuff.js";
+import { calculateMissingBuffs, BUFF_DISPLAY_ORDER, DEBUFF_DISPLAY_ORDER, normalizeKey, stripNumbersAndPercents } from "./buffDebuff.js";
 import { charData } from "./charData.js";
 import { pics } from "./pics.js";
 import { buildCompareMap } from './buffDebuff.js';
@@ -32,6 +32,13 @@ document.addEventListener("DOMContentLoaded", () => {
       });
     }
   });
+
+  // Ensure the show-numbers toggle defaults to 'close'
+  if (!buffGroupSelections["Show_buff"]) {
+    buffGroupSelections["Show_buff"] = 'close';
+  }
+  // expose as global so compare table can read it
+  window.__SHOW_BUFF_NUMBERS = buffGroupSelections["Show_buff"] === 'open';
 
   const hint = document.getElementById("help-hint");
   const text = document.getElementById("help-hint-text");
@@ -308,8 +315,22 @@ document.addEventListener("DOMContentLoaded", () => {
         }
       });
       
+      // update global show-numbers flag
+      window.__SHOW_BUFF_NUMBERS = buffGroupSelections["Show_buff"] === 'open';
+
       updateBuffs();
     });
+  });
+
+  // initialize UI for Show_buff toggle to match default
+  document.querySelectorAll('[data-group-id="Show_buff"]').forEach(button => {
+    if (button.dataset.value === buffGroupSelections['Show_buff']) {
+      button.classList.remove('bg-gray-700', 'text-gray-300', 'hover:bg-gray-600');
+      button.classList.add('bg-green-600', 'text-white');
+    } else {
+      button.classList.remove('bg-green-600', 'text-white');
+      button.classList.add('bg-gray-700', 'text-gray-300', 'hover:bg-gray-600');
+    }
   });
 
 
@@ -479,7 +500,7 @@ function renderBuffLists(mergedBuffs, mergedDebuffs, missingBuffs) {
     sortedBuffs.forEach(b => {
       const li = document.createElement('li');
       li.className = 'text-green-200 relative cursor-default';
-      li.innerText = b.name;
+      li.innerText = window.__SHOW_BUFF_NUMBERS ? b.name : stripNumbersAndPercents(b.name);
       li.dataset.entries = encodeURIComponent(JSON.stringify(b.entries || []));
 
       li.addEventListener('mouseenter', (e) => {
@@ -502,7 +523,7 @@ function renderBuffLists(mergedBuffs, mergedDebuffs, missingBuffs) {
     sortedDebuffs.forEach(d => {
       const li = document.createElement('li');
       li.className = 'text-pink-200 relative cursor-default';
-      li.innerText = d.name;
+      li.innerText = window.__SHOW_BUFF_NUMBERS ? d.name : stripNumbersAndPercents(d.name);
       li.dataset.entries = encodeURIComponent(JSON.stringify(d.entries || []));
 
       li.addEventListener('mouseenter', () => {
@@ -581,7 +602,7 @@ function highlightSlotsForEntries(entries, highlight, isGrayOutMode = false) {
           const matchingEntry = entries.find(e => e.source && e.source.split('/').pop() === imgName);
           if (matchingEntry && matchingEntry.text) {
             const valMatch = matchingEntry.text.match(/(\d+(?:\.\d+)?)\s*(%|x|×)?/);
-            if (valMatch && !label) {
+            if (valMatch && !label && window.__SHOW_BUFF_NUMBERS) {
               const newLabel = document.createElement('div');
               newLabel.className = 'buff-label absolute bottom-1 right-1 bg-gradient-to-b from-pink-400 to-pink-500 text-white text-sm font-extrabold px-2 py-1 rounded shadow-lg';
               newLabel.style.pointerEvents = 'none';

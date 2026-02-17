@@ -120,24 +120,68 @@
             </ul>
           </div>
 
-          <div class="border-b border-pink-500/30 my-1"></div>
-          <h3 class="text-pink-400 font-semibold">Buff</h3>
-            <div class="flex items-center gap-3">
-              <img src="pics/Chung/Icon_-_Fatal_Phantom.png" class="w-10 h-10"alt="Chung">
-              <a href="https://elwiki.net/w/Sharpshooter_Syndrome" target="_blank" rel="noopener noreferrer">
-                <img src="assets/Sharpshooter-Syndrome.png" class="w-10 h-10 hover:scale-110 transition duration-200" alt="Sharpshooter Syndrome">
-              </a>
+          <div class="border-b border-pink-500/30 my-2"></div>
+            <div class="space-y-4">
+              <h3 class="text-pink-400 font-semibold text-lg">Buff</h3>
+                <ul class="space-y-3 text-gray-200">
+                <div class="flex items-center gap-4 bg-gray-700/50 p-3 rounded-lg">
+                  <!-- Toggle Show Buff -->
+                  <li class="grid grid-cols-[32px_1fr_auto] items-center gap-3">
+                    <i data-lucide="maximize"
+                      class="w-6 h-6 text-pink-400"></i>
 
-              <div class="flex border border-gray-600 rounded-md overflow-hidden text-xs">
-                <button class="buffgroup-toggle px-2 py-1 bg-green-600 text-white" data-group-id="sharpshooter_syndrome" data-value="Action Speed เพิ่มขึ้น 18%">
-                  Action Speed 18%
-                </button>
-                <button class="buffgroup-toggle px-2 py-1 bg-gray-700 text-gray-300 hover:bg-gray-600" data-group-id="sharpshooter_syndrome" data-value="Critical 10%">
-                  Critical 10%
-                </button>
+                    <span class="font-semibold text-gray-300">
+                      เปิดปิดตัวเลข Buff/Debuff
+                    </span>
+
+                    <div class="flex h-9 border border-gray-600 rounded-md overflow-hidden text-xs">
+                      <button class="buffgroup-toggle px-4 flex items-center justify-center bg-gray-700 text-gray-300 hover:bg-gray-600"
+                              data-group-id="Show_buff" data-value="close">
+                        Close
+                      </button>
+                      <button class="buffgroup-toggle px-4 flex items-center justify-center bg-green-600 text-white"
+                              data-group-id="Show_buff" data-value="open">
+                        Open
+                      </button>
+                    </div>
+                  </li>
+                </ul>
+              </div>
+              
+              <div class="flex items-center gap-4 bg-gray-700/50 p-3 rounded-lg">
+
+                <!-- Character Icon -->
+                <img src="pics/Chung/Icon_-_Fatal_Phantom.png"
+                    class="w-12 h-12 object-contain rounded-md"
+                    alt="Chung">
+
+                <!-- Skill Icon -->
+                <a href="https://elwiki.net/w/Sharpshooter_Syndrome"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  class="w-12 h-12 flex items-center justify-center">
+                  <img src="assets/Sharpshooter-Syndrome.png"
+                      class="w-12 h-12 object-contain rounded-md hover:scale-110 transition duration-200"
+                      alt="Sharpshooter Syndrome">
+                </a>
+
+                <!-- Buff Buttons -->
+                <div class="flex h-9 border border-gray-600 rounded-md overflow-hidden text-xs ml-auto">
+                  <button class="buffgroup-toggle px-4 flex items-center justify-center bg-green-600 text-white"
+                          data-group-id="sharpshooter_syndrome"
+                          data-value="Action Speed เพิ่มขึ้น 18%">
+                    Action Speed 18%
+                  </button>
+
+                  <button class="buffgroup-toggle px-4 flex items-center justify-center bg-gray-700 text-gray-300 hover:bg-gray-600"
+                          data-group-id="sharpshooter_syndrome"
+                          data-value="Critical 10%">
+                    Critical 10%
+                  </button>
+                </div>
               </div>
             </div>
-        </div>
+          </div>
       </div>
     </div>
 
