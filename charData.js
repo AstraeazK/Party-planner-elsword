@@ -250,16 +250,3 @@ export const charData = {
     buffs: [],
     debuffs: ["เจาะเวทย์ 20%", "รับ Critical Damage เพิ่มขึ้น 20%", "ลดธาตุ 125"]},
   };
-
-export const IGNORE_LIST = [
-  "ดาเมจลดลง",
-  "ดาเมจเลือดต่ำ",
-  "Special Active Damage เพิ่มขึ้น",
-  "เพิ่ม MAX HP",
-  "เพิ่ม MAX MP",
-  "Super Armor",
-  "เพิ่ม Critical Damage",
-  "เติมเกจ",
-  "ลดธาตุ",
-  "เพิ่ม Critical/Maximize"
-];

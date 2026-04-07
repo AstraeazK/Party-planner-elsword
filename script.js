@@ -161,6 +161,12 @@ document.addEventListener("DOMContentLoaded", () => {
     slot.addEventListener("input", () => {
       if (slot.innerText.length > maxLength) slot.innerText = slot.innerText.slice(0, maxLength);
     });
+    // ป้องกันการวาง formatting จาก rich text
+    slot.addEventListener("paste", (e) => {
+      e.preventDefault();
+      const text = e.clipboardData.getData("text/plain");
+      document.execCommand("insertText", false, text);
+    });
   });
 
   // ---------- ลากเข้าช่อง ----------
@@ -451,7 +457,18 @@ function mergeBuffsAndDebuffs(allBuffs, allDebuffs) {
       let displayName = v.text;
       const numericEntries = v.entries.filter(e => typeof e.value === 'number');
       if (numericEntries.length > 1) {
-        const sum = numericEntries.reduce((a, b) => a + b.value, 0);
+        let sum;
+        // สำหรับบัพ "เร่งคูลดาวน์" ให้บวกแค่เลขหลังจุดทศนิยม (Ex. 1.2 + 1.2 = 1 + (0.2 + 0.2) = 1.4)
+        const isSpeedUpCooldown = v.text.toLowerCase().includes('เร่งคูลดาวน์');
+        if (isSpeedUpCooldown) {
+          // สูตร: 1 + ผลรวมของ (ค่า - 1)
+          const decimalSum = numericEntries.reduce((a, b) => a + (b.value - 1), 0);
+          sum = 1 + decimalSum;
+        } else {
+          // สูตรปกติ: บวกค่าทั้งหมด
+          sum = numericEntries.reduce((a, b) => a + b.value, 0);
+        }
+        
         const maxDecimals = numericEntries.reduce((m, b) => Math.max(m, b.decimals || 0), 0);
         const precision = Math.min(Math.max(maxDecimals, 0), 6);
         const rounded = precision > 0 ? parseFloat(sum.toFixed(precision)) : Math.round(sum);
