@@ -9,7 +9,7 @@ export const charData = {
     debuffs: ["ลดธาตุ 160","เจาะกาย/เวทย์ 20%","ลดความเร็ว 50%","รับดาเมจกาย/เวทย์เพิ่มขึ้น 12%"]},
   "pics/Elsword/Icon_-_Immortal.png": {
     role: "physical",
-    buffs: ["วิ่งเร็วขึ้น 30%", "เร่งคูลดาวน์ 1.3x"], 
+    buffs: ["วิ่งเร็วขึ้น 30%"], 
     debuffs: ["รับดาเมจกาย/เวทย์เพิ่มขึ้น 20%"]},
   "pics/Elsword/Icon_-_Genesis.png": { 
     role: "magical",
