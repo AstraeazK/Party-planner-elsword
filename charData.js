@@ -14,7 +14,7 @@ export const charData = {
   "pics/Elsword/Icon_-_Genesis.png": { 
     role: "magical",
     buffs: ["ลดดาเมจ 8%"], 
-    debuffs: ["เจาะกาย/เวทย์ 20%","รับดาเมจกาย/เวทย์เพิ่มขึ้น 16%","ลดธาตุ 130"]},
+    debuffs: ["เจาะกาย/เวทย์ 20%","รับดาเมจกาย/เวทย์เพิ่มขึ้น 12%","ลดธาตุ 130"]},
   "pics/Aisha/Icon_-_Aether_Sage.png": { 
     role: "magical",
     buffs: ["ดาเมจกาย/เวทย์เพิ่มขึ้น 20%"], 
@@ -29,7 +29,7 @@ export const charData = {
     debuffs: ["เจาะกาย/เวทย์ 21%"]},
   "pics/Aisha/Icon_-_Lord_Azoth.png": { 
     role: "physical",
-    buffs: ["ดาเมจกาย/เวทย์เพิ่มขึ้น 5%","คูลดาวน์ยาเร็วขึ้น","ไซส์ตัวใหญ่ขึ้น 30%","Critical Damage เพิ่มขึ้น 5%","ลดดาเมจ 20%","MAX HP 15%","MAX MP 50"], 
+    buffs: ["All Speed 5%","ดาเมจกาย/เวทย์เพิ่มขึ้น 5%","คูลดาวน์ยาเร็วขึ้น","ไซส์ตัวใหญ่ขึ้น 30%","Critical Damage เพิ่มขึ้น 5%","ลดดาเมจ 20%","MAX HP 15%","MAX MP 50"], 
     debuffs: ["รับดาเมจเพิ่มขึ้น 5%","เจาะกาย/เวทย์ 15%"]},
   "pics/Rena/Icon_-_Anemos.png": { 
     role: "physical",
@@ -38,14 +38,14 @@ export const charData = {
   "pics/Rena/Icon_-_Daybreaker.png": { 
     role: "magical",
     buffs: [], 
-    debuffs: ["รับดาเมจกาย/เวทย์เพิ่มขึ้น 15%","รับ Critical Damage เพิ่มขึ้น 30%"]},
+    debuffs: ["รับดาเมจกาย/เวทย์เพิ่มขึ้น 15%","รับ Critical Damage เพิ่มขึ้น 20%"]},
   "pics/Rena/Icon_-_Twilight.png": { 
     role: "physical",
     buffs: ["ลดดาเมจ 20%"], 
     debuffs: ["รับดาเมจกาย/เวทย์เพิ่มขึ้น 12%","เจาะกาย/เวทย์ 20%"]},
   "pics/Rena/Icon_-_Prophetess.png": {
     role: "magical", 
-    buffs: ["ดาเมจกาย/เวทย์เพิ่มขึ้น 10%", "ลดดาเมจจากบอส 15%", "All Skill Damage 10%", "โล่ขาว 10%", "ดาเมจต่อบอส 20%", "เติมเกจ", "def กาย/เวทย์เพิ่มขึ้น 15%","All Speed 10%"], 
+    buffs: ["ดาเมจกาย/เวทย์เพิ่มขึ้น 10%", "ลดดาเมจจากบอส 15%", "All Damage 10%", "โล่ขาว 10%", "ดาเมจต่อบอส 20%", "เติมเกจ", "def กาย/เวทย์เพิ่มขึ้น 15%","All Speed 10%"], 
     debuffs: ["เจาะกาย/เวทย์ 10%"]},
   "pics/Raven/Icon_-_Furious_Blade.png": { 
     role: "physical",
@@ -82,7 +82,7 @@ export const charData = {
   "pics/Chung/Icon_-_Comet_Crusader.png": { 
     role: "physical",
     buffs: ["ลดดาเมจ 30%"], 
-    debuffs: ["เจาะกาย/เวทย์ 20%","รับดาเมจกาย/เวทย์เพิ่มขึ้น 12%","ลดดาเมจ 20%"]},
+    debuffs: ["เจาะกาย/เวทย์ 20%","รับดาเมจกาย/เวทย์เพิ่มขึ้น 18%","ลดดาเมจ 50%"]},
   "pics/Chung/Icon_-_Fatal_Phantom.png": { 
     role: "magical",
     buffs: ["ดาเมจกาย/เวทย์เพิ่มขึ้น 20%"],
