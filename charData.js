@@ -148,17 +148,21 @@ export const charData = {
     buffs: ["SoT"], 
     debuffs: ["รับดาเมจกาย/เวทย์เพิ่มขึ้น 12%", "เจาะกาย/เวทย์ 19.6%"]},
   "pics/Add/Icon_-_Overmind.png": { 
-    role: "support",
-    buffs: ["Action Speed เพิ่มขึ้น 15%", "ดาเมจกาย/เวทย์เพิ่มขึ้น 22%", "ลดดาเมจ 20%", "All Skill Damage 12%", "เติมเกจ", "เร่งคูลดาวน์ 1.2x"], 
-    buffGroups: [
-      {
-        groupId: "Hyperactive_OM",
-        groupName: "Hyperactive Overmind",
-        options: ["เร่งHA&Master 1.2x", "MAX HP 1.2x / MAX MP 60 / ลดการใช้มานา 20%"],
-        default: "Action Speed เพิ่มขึ้น 18%"
-      }
-    ],
-    debuffs: ["เจาะกาย/เวทย์ 15%", "ลดธาตุ 150", "ลดดาเมจ 20%"]},
+  role: "support",
+  buffs: ["Action Speed เพิ่มขึ้น 15%","ดาเมจกาย/เวทย์เพิ่มขึ้น 22%","ลดดาเมจ 20%","All Skill Damage 12%","เติมเกจ","เร่งคูลดาวน์ 1.2x"],
+  buffGroups: [
+    {
+      groupId: "Hyperactive_OM",
+      groupName: "Hyperactive Overmind",
+      options: [
+        { label: "Mass Examination", effects: ["เร่งHA&Master 1.2x"]},
+        { label: "Trolley Dilemma",  effects: ["MAX HP เพิ่มขึ้น 1.2x", "MAX MP 60", "ลดการใช้มานา 20%"]}
+      ],
+      defaultOption: 0
+    }
+  ],
+  debuffs: ["เจาะกาย/เวทย์ 15%", "ลดธาตุ 150", "ลดดาเมจ 20%"]
+},
   "pics/LuCiel/Icon_-_Catastrophe.png": { 
     role: "physical",
     buffs: [], 
@@ -213,7 +217,7 @@ export const charData = {
     debuffs: ["รับดาเมจกาย/เวทย์เพิ่มขึ้น 12%", "เจาะกาย/เวทย์ 20%", "ลดธาตุ 100"]},
   "pics/Laby/Icon_-_Radiant_Soul.png": {
     role: "support",
-    buffs: ["เร่งคูลดาวน์ 1.2x","All Skill Damage 12%","ดาเมจกาย/เวทย์เพิ่มขึ้น 12%", "ลดดาเมจ 20%", "วิ่ง/กระโดดเพิ่มขึ้น 20%", "Action Speed เพิ่มขึ้น 15%", "reset skill CD", "ดาเมจต่อบอส 18%"],
+    buffs: ["เร่งคูลดาวน์ 1.2x","All Skill Damage 12%","ดาเมจกาย/เวทย์เพิ่มขึ้น 12%", "ลดดาเมจ 20%", "วิ่ง/กระโดดเพิ่มขึ้น 20%", "Action Speed เพิ่มขึ้น 15%", "reset skill CD"],
     debuffs: ["เจาะกาย/เวทย์ 15%", "ลดธาตุ 150", "ลดดาเมจ 15%"]},
   "pics/Laby/Icon_-_Nisha_Labyrinth.png": {
     role: "physical",

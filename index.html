@@ -48,16 +48,16 @@
     </div>
     <!-- Help Modal Overlay -->
     <div id="help-modal"
-      class="fixed z-50 hidden
-            top-16 left-4">
-
+      class="fixed inset-0 z-50 hidden
+            bg-black/40">
 
       <!-- Modal Box -->
       <div class="bg-gray-900 text-white
                   w-[420px] max-w-[90%]
                   rounded-2xl p-5
                   border border-pink-500/40
-                  shadow-[0_0_25px_rgba(255,20,147,0.35)]">
+                  shadow-[0_0_25px_rgba(255,20,147,0.35)]
+                  absolute top-16 left-4">
 
         <!-- Header -->
         <div class="flex items-center justify-between mb-4">
@@ -160,7 +160,7 @@
                   target="_blank"
                   rel="noopener noreferrer"
                   class="w-12 h-12 flex items-center justify-center">
-                  <img src="assets/Sharpshooter-Syndrome.png"
+                  <img src="assets/skills/Sharpshooter-Syndrome.png"
                       class="w-12 h-12 object-contain rounded-md hover:scale-110 transition duration-200"
                       alt="Sharpshooter Syndrome">
                 </a>
@@ -180,6 +180,46 @@
                   </button>
                 </div>
               </div>
+
+              <div class="flex items-center gap-4 bg-gray-700/50 p-3 rounded-lg">
+
+                <!-- Character Icon -->
+                <img src="pics/Add/Icon_-_Overmind.png"
+                    class="w-12 h-12 object-contain rounded-md"
+                    alt="Add">
+
+                <!-- Skill Icon -->
+                <a class="skill-link w-12 h-12 flex items-center justify-center"
+                  data-group-id="Hyperactive_OM"
+                  href="https://elwiki.net/w/Mass_Examination"
+                  target="_blank"
+                  rel="noopener noreferrer">
+                  <img class="skill-icon w-12 h-12 object-contain rounded-md hover:scale-110 transition duration-200"
+                      data-group-id="Hyperactive_OM"
+                      src="assets/skills/Mass_Examination.png"
+                      alt="Hyperactive Overmind">
+                </a>
+
+                <!-- Buff Buttons -->
+                <div class="flex h-9 border border-gray-600 rounded-md overflow-hidden text-xs ml-auto">
+                  <button class="buffgroup-toggle px-4 flex items-center justify-center bg-green-600 text-white"
+                          data-group-id="Hyperactive_OM"
+                          data-value="Mass Examination"
+                          data-skill-icon="assets/skills/Mass_Examination.png"
+                          data-skill-link="https://elwiki.net/w/Mass_Examination">
+                    Mass Examination
+                  </button>
+
+                  <button class="buffgroup-toggle px-4 flex items-center justify-center bg-gray-700 text-gray-300 hover:bg-gray-600"
+                          data-group-id="Hyperactive_OM"
+                          data-value="Trolley Dilemma"
+                          data-skill-icon="assets/skills/Trolley_Dilemma.png"
+                          data-skill-link="https://elwiki.net/w/Trolley_Dilemma">
+                    Trolley Dilemma
+                  </button>
+                </div>
+              </div>
+
             </div>
           </div>
       </div>

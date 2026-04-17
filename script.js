@@ -27,7 +27,12 @@ document.addEventListener("DOMContentLoaded", () => {
     if (info && info.buffGroups) {
       info.buffGroups.forEach(group => {
         if (!buffGroupSelections[group.groupId]) {
-          buffGroupSelections[group.groupId] = group.default;
+          if (group.default !== undefined) {
+            buffGroupSelections[group.groupId] = group.default;
+          } else if (group.defaultOption !== undefined && Array.isArray(group.options)) {
+            const option = group.options[group.defaultOption];
+            buffGroupSelections[group.groupId] = typeof option === 'string' ? option : option?.label;
+          }
         }
       });
     }
@@ -308,10 +313,23 @@ document.addEventListener("DOMContentLoaded", () => {
     btn.addEventListener('click', () => {
       const groupId = btn.dataset.groupId;
       const value = btn.dataset.value;
+      const skillIcon = btn.dataset.skillIcon;
+      const skillLink = btn.dataset.skillLink;
+
+      if (groupId) {
+        buffGroupSelections[groupId] = value;
+      }
+
+      if (skillIcon || skillLink) {
+        const skillLinkEl = document.querySelector(`.skill-link[data-group-id="${groupId}"]`);
+        const skillIconEl = document.querySelector(`.skill-icon[data-group-id="${groupId}"]`);
+
+        if (skillLinkEl && skillLink) skillLinkEl.href = skillLink;
+        if (skillIconEl && skillIcon) skillIconEl.src = skillIcon;
+        if (skillIconEl && value) skillIconEl.alt = value;
+      }
       
-      buffGroupSelections[groupId] = value;
-      
-      document.querySelectorAll(`[data-group-id="${groupId}"]`).forEach(button => {
+      document.querySelectorAll(`.buffgroup-toggle[data-group-id="${groupId}"]`).forEach(button => {
         if (button.dataset.value === value) {
           button.classList.remove('bg-gray-700', 'text-gray-300', 'hover:bg-gray-600');
           button.classList.add('bg-green-600', 'text-white');
@@ -392,7 +410,32 @@ function updateBuffs() {
         info.buffGroups.forEach(group => {
           const selectedValue = buffGroupSelections[group.groupId] || group.default;
           if (selectedValue) {
-            allBuffs.push({ buff: selectedValue, charName: srcKey });
+            const pushBuff = (buffText) => {
+              if (buffText) allBuffs.push({ buff: buffText, charName: srcKey });
+            };
+
+            if (group.options && Array.isArray(group.options)) {
+              const option = group.options.find(opt => {
+                if (typeof opt === 'string') return opt === selectedValue;
+                return opt.label === selectedValue;
+              });
+
+              if (option) {
+                if (typeof option === 'string') {
+                  pushBuff(option);
+                } else if (Array.isArray(option.effects)) {
+                  option.effects.forEach(pushBuff);
+                } else if (option.effects) {
+                  pushBuff(option.effects);
+                } else {
+                  pushBuff(selectedValue);
+                }
+              } else {
+                pushBuff(selectedValue);
+              }
+            } else {
+              pushBuff(selectedValue);
+            }
           }
         });
       }
