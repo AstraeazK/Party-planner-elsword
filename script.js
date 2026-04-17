@@ -1066,8 +1066,35 @@ helpModal.addEventListener('click', (e) => {
   }
 });
 
+const languageBtn = document.getElementById('language-btn');
+const languageDropdown = document.getElementById('language-dropdown');
+const languageOptions = document.querySelectorAll('.language-option');
+
+languageBtn?.addEventListener('click', (e) => {
+  e.stopPropagation();
+  languageDropdown?.classList.toggle('hidden');
+});
+
+languageOptions.forEach((option) => {
+  option.addEventListener('click', (e) => {
+    const lang = option.dataset.lang;
+    if (!lang) return;
+    languageDropdown?.classList.add('hidden');
+    languageBtn?.setAttribute('aria-label', `Language: ${lang.toUpperCase()}`);
+    console.log(`Language selected: ${lang}`);
+  });
+});
+
+document.addEventListener('click', (e) => {
+  if (!languageDropdown || !languageBtn) return;
+  if (!languageDropdown.contains(e.target) && e.target !== languageBtn) {
+    languageDropdown.classList.add('hidden');
+  }
+});
+
 document.addEventListener('keydown', (e) => {
   if (e.key === 'Escape') {
     helpModal.classList.add('hidden');
+    languageDropdown?.classList.add('hidden');
   }
 });
