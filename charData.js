@@ -156,7 +156,7 @@ export const charData = {
       groupName: "Hyperactive Overmind",
       options: [
         { label: "Mass Examination", effects: ["เร่งHA&Master 1.2x"]},
-        { label: "Trolley Dilemma",  effects: ["MAX HP เพิ่มขึ้น 1.2x", "MAX MP 60", "ลดการใช้มานา 20%"]}
+        { label: "Trolley Dilemma",  effects: ["MAX HP เพิ่มขึ้น (เฉพาะคนผูก) 1.2x ", "MAX MP (เฉพาะคนผูก) 60", "ลดการใช้มานา (เฉพาะคนผูก) 20%"]}
       ],
       defaultOption: 0
     }
