@@ -102,7 +102,7 @@ export const charData = {
   "pics/Chung/Icon_-_Dius_Aer.png": { 
     role: "support",
     buffs: ["ดาเมจกาย/เวทย์เพิ่มขึ้น 12%", "เร่งคูลดาวน์ 1.2x", "ลดดาเมจ 20%", "ตัวแดง" , "All Skill Damage 12%", "All Speed 15%", "เติมเกจ 20%","เจนมานาไว 40%"], 
-    debuffs: ["ลดธาตุ 150","เจาะกาย/เวทย์ 15%"]},
+    debuffs: ["ลดธาตุ 120","เจาะกาย/เวทย์ 15%"]},
   "pics/Ara/Icon_-_Apsara.png": { 
     role: "physical",
     buffs: ["ดาเมจต่อมอนสเตอร์ที่ไม่ใช่บอสหรือมิดบอสเพิ่มขึ้น 10%", "Action Speed เพิ่มขึ้น 10%"], 
