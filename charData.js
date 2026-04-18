@@ -217,7 +217,7 @@ export const charData = {
     debuffs: ["รับดาเมจกาย/เวทย์เพิ่มขึ้น 12%", "เจาะกาย/เวทย์ 20%", "ลดธาตุ 100"]},
   "pics/Laby/Icon_-_Radiant_Soul.png": {
     role: "support",
-    buffs: ["เร่งคูลดาวน์ 1.2x","All Skill Damage 12%","ดาเมจกาย/เวทย์เพิ่มขึ้น 12%", "ลดดาเมจ 20%", "วิ่ง/กระโดดเพิ่มขึ้น 20%", "Action Speed เพิ่มขึ้น 15%", "reset skill CD"],
+    buffs: ["เจนมานาไว 50%","เร่งคูลดาวน์ 1.2x","All Skill Damage 12%","ดาเมจกาย/เวทย์เพิ่มขึ้น 12%", "ลดดาเมจ 20%", "วิ่ง/กระโดดเพิ่มขึ้น 20%", "Action Speed เพิ่มขึ้น 15%", "reset skill CD"],
     debuffs: ["เจาะกาย/เวทย์ 15%", "ลดธาตุ 150", "ลดดาเมจ 15%"]},
   "pics/Laby/Icon_-_Nisha_Labyrinth.png": {
     role: "physical",
