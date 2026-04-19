@@ -144,12 +144,12 @@ export const Char_TH = {
     speed_down_40: "ลดความเร็ว 40%",
     speed_down_50: "ลดความเร็ว 50%",
 
-    damage_reduction_down_10: "ลดดาเมจ 10%",
-    damage_reduction_down_13: "ลดดาเมจ 13%",
-    damage_reduction_down_15: "ลดดาเมจ 15%",
-    damage_reduction_down_20: "ลดดาเมจ 20%",
-    damage_reduction_down_31: "ลดดาเมจ 31%",
-    damage_reduction_down_50: "ลดดาเมจ 50%",
+    damage_reduction_down_10: "ลดดาเมจจากมอน 10%",
+    damage_reduction_down_13: "ลดดาเมจจากมอน 13%",
+    damage_reduction_down_15: "ลดดาเมจจากมอน 15%",
+    damage_reduction_down_20: "ลดดาเมจจากมอน 20%",
+    damage_reduction_down_31: "ลดดาเมจจากมอน 31%",
+    damage_reduction_down_50: "ลดดาเมจจากมอน 50%",
 
     magic_damage_down_20: "ลดดาเมจเวทย์ 20%"
   },

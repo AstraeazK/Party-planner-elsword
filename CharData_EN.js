@@ -144,12 +144,12 @@ export const Char_EN = {
     speed_down_40: "Speed 40%",
     speed_down_50: "Speed 50%",
 
-    damage_reduction_down_10: "Damage Reduction 10%",
-    damage_reduction_down_13: "Damage Reduction 13%",
-    damage_reduction_down_15: "Damage Reduction 15%",
-    damage_reduction_down_20: "Damage Reduction 20%",
-    damage_reduction_down_31: "Damage Reduction 31%",
-    damage_reduction_down_50: "Damage Reduction 50%",
+    damage_reduction_down_10: "Damage Reduction from Monsters 10%",
+    damage_reduction_down_13: "Damage Reduction from Monsters 13%",
+    damage_reduction_down_15: "Damage Reduction from Monsters 15%",
+    damage_reduction_down_20: "Damage Reduction from Monsters 20%",
+    damage_reduction_down_31: "Damage Reduction from Monsters 31%",
+    damage_reduction_down_50: "Damage Reduction from Monsters 50%",
 
     magic_damage_down_20: "Magical Damage 20%"
   },

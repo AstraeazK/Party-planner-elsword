@@ -20,14 +20,14 @@ const essentialDebuffs = [
   "เจาะกาย/เวทย์",
   "รับดาเมจกาย/เวทย์เพิ่มขึ้น",
   "รับ Critical Damage เพิ่มขึ้น",
-  "ลดดาเมจ"
+  "ลดดาเมจจากมอน",
 ];
 
 const essentialDebuffs_EN = [
   "Ignore Physical/Magical Defense",
   "Increase Damage Taken",
   "Increase Critical Damage Taken",
-  "Damage Reduction"
+  "Damage Reduction from Monsters",
 ];
 
 const buffAliases = {
@@ -44,7 +44,7 @@ const debuffAliases = {
   "เจาะกาย/เวทย์": ["เจาะกาย/เวทย์", "เจาะเวทย์", "เจาะกาย", "Ignore Physical/Magical Defense"],
   "รับดาเมจกาย/เวทย์เพิ่มขึ้น": ["รับดาเมจกาย/เวทย์เพิ่มขึ้น", "รับดาเมจเพิ่มขึ้น", "Increase Damage Taken"],
   "รับ Critical Damage เพิ่มขึ้น": ["รับ Critical Damage เพิ่มขึ้น", "Increase Critical Damage Taken"],
-  "ลดดาเมจ": ["ลดดาเมจ", "Damage Reduction"],
+  "ลดดาเมจ": ["ลดดาเมจจากมอน", "Damage Reduction from Monsters"],
 };
 
 export const BUFF_DISPLAY_ORDER = [
