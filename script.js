@@ -11,13 +11,11 @@ let partyRows = null;
 let buffGroupSelections = {};
 let currentLanguage = 'th';
 
-// Language dictionaries
 const translations = {
   th: Char_TH,
   en: Char_EN
 };
 
-// Essential buffs/debuffs mapping
 const essentialBuffsMap = {
   th: essentialBuffs,
   en: essentialBuffs_EN
@@ -39,7 +37,6 @@ function translateBuff(code, type = 'buff') {
   return langData[type][code] || code;
 }
 
-// Function to update UI text based on language
 function updateUILanguage() {
   const langData = translations[currentLanguage];
   if (!langData) {
@@ -113,7 +110,6 @@ document.addEventListener("DOMContentLoaded", () => {
   const hint = document.getElementById("help-hint");
   const text = document.getElementById("help-hint-text");
 
-  // Only run animations if elements exist
   if (hint && text) {
     // 1. Fade-in + ยืดกล่อง
     setTimeout(() => {
@@ -234,7 +230,7 @@ document.addEventListener("DOMContentLoaded", () => {
     slot.addEventListener("input", () => {
       if (slot.innerText.length > maxLength) slot.innerText = slot.innerText.slice(0, maxLength);
     });
-    // ป้องกันการวาง formatting จาก rich text
+
     slot.addEventListener("paste", (e) => {
       e.preventDefault();
       const text = e.clipboardData.getData("text/plain");
@@ -385,7 +381,6 @@ document.addEventListener("DOMContentLoaded", () => {
       const skillLink = btn.dataset.skillLink;
 
       if (groupId) {
-        // Convert comma-separated string to array if contains commas
         if (typeof value === 'string' && value.includes(',')) {
           buffGroupSelections[groupId] = value.split(',');
         } else {
@@ -412,14 +407,12 @@ document.addEventListener("DOMContentLoaded", () => {
         }
       });
       
-      // update global show-numbers flag
       window.__SHOW_BUFF_NUMBERS = buffGroupSelections["Show_buff"] === 'open';
 
       updateBuffs();
     });
   });
 
-  // initialize UI for Show_buff toggle to match default
   document.querySelectorAll('[data-group-id="Show_buff"]').forEach(button => {
     if (button.dataset.value === buffGroupSelections['Show_buff']) {
       button.classList.remove('bg-gray-700', 'text-gray-300', 'hover:bg-gray-600');
@@ -488,13 +481,10 @@ function updateBuffs() {
               if (translatedBuff) allBuffs.push({ buff: translatedBuff, charName: srcKey });
             };
 
-            // Handle array (from Overmind with effects)
             if (Array.isArray(selectedValue)) {
               selectedValue.forEach(pushBuff);
             } else if (typeof selectedValue === 'string') {
-              // Handle string (from Fatal Phantom or other string options)
               if (group.options && Array.isArray(group.options)) {
-                // Check if options contain objects with effects
                 const option = group.options.find(opt => {
                   if (typeof opt === 'string') return opt === selectedValue;
                   return opt.effects === selectedValue || opt.label === selectedValue;
@@ -503,11 +493,9 @@ function updateBuffs() {
                 if (option && typeof option !== 'string' && Array.isArray(option.effects)) {
                   option.effects.forEach(pushBuff);
                 } else {
-                  // Direct string buff code
                   pushBuff(selectedValue);
                 }
               } else {
-                // No options, direct string buff code
                 pushBuff(selectedValue);
               }
             }
@@ -577,7 +565,8 @@ function mergeBuffsAndDebuffs(allBuffs, allDebuffs) {
       if (numericEntries.length > 1) {
         let sum;
         // สำหรับบัพ "เร่งคูลดาวน์" ให้บวกแค่เลขหลังจุดทศนิยม (Ex. 1.2 + 1.2 = 1 + (0.2 + 0.2) = 1.4)
-        const isSpeedUpCooldown = v.text.toLowerCase().includes('เร่งคูลดาวน์');
+        const cooldownText = v.text.toLowerCase();
+        const isSpeedUpCooldown = cooldownText.includes('เร่งคูลดาวน์') || cooldownText.includes('cooldown acceleration');
         if (isSpeedUpCooldown) {
           // สูตร: 1 + ผลรวมของ (ค่า - 1)
           const decimalSum = numericEntries.reduce((a, b) => a + (b.value - 1), 0);
@@ -677,7 +666,6 @@ function renderBuffLists(mergedBuffs, mergedDebuffs, missingBuffs, missingDebuff
 
   if (missingListEl) {
     missingListEl.innerHTML = '';
-    // Combine missing buffs and debuffs
     const allMissing = [...(missingBuffs || []), ...(missingDebuffs || [])];
     
     if (!allMissing || allMissing.length === 0) {
@@ -687,11 +675,9 @@ function renderBuffLists(mergedBuffs, mergedDebuffs, missingBuffs, missingDebuff
       li.innerText = noMissingText;
       missingListEl.appendChild(li);
     } else {
-      // Get appropriate language's essential lists
       const langBuffsList = essentialBuffsMap[currentLanguage] || essentialBuffs;
       const langDebuffsList = essentialDebuffsMap[currentLanguage] || essentialDebuffs;
       
-      // Create translation map from Thai names to current language
       const thToCurrentLang = {};
       essentialBuffs.forEach((thName, idx) => {
         thToCurrentLang[thName] = langBuffsList[idx];
@@ -700,7 +686,7 @@ function renderBuffLists(mergedBuffs, mergedDebuffs, missingBuffs, missingDebuff
         thToCurrentLang[thName] = langDebuffsList[idx];
       });
       
-      // Translate missing items
+      // Translate missing
       const translatedMissing = allMissing.map(m => thToCurrentLang[m] || m);
       missingListEl.innerHTML = translatedMissing.map(m => `<li class="text-yellow-300">${escapeHtml(m)}</li>`).join('');
     }
@@ -1122,7 +1108,6 @@ async function showCompareModal(selectedIndex) {
     }
   });
 
-  // Initialize UI language on page load
   updateUILanguage();
 
   // Setup language selector buttons
@@ -1162,7 +1147,6 @@ async function showCompareModal(selectedIndex) {
       languageDropdown?.classList.add('hidden');
       languageBtn?.setAttribute('aria-label', `Language: ${lang.toUpperCase()}`);
       updateBuffs();
-      // Add a small delay to ensure DOM is ready
       setTimeout(() => {
         updateUILanguage();
       }, 100);
@@ -1170,7 +1154,6 @@ async function showCompareModal(selectedIndex) {
     });
   });
 
-  // Initialize marks on page load
   updateLanguageMarks();
 
   // Setup help modal buttons

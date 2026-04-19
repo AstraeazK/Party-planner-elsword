@@ -8,7 +8,7 @@ const essentialBuffs = [
 ];
 
 const essentialBuffs_EN = [
-  "ATK/MAG Increase",
+  "Physical/Magical Attack",
   "Boss Damage",
   "Damage Reduction",
   "Critical Damage Increase",
@@ -31,15 +31,20 @@ const essentialDebuffs_EN = [
 ];
 
 const buffAliases = {
-  "ลดดาเมจ": ["ลดดาเมจ", "def กาย/เวทย์เพิ่มขึ้น","ลดดาเมจจากบอส"],
-  "เร่งคูลดาวน์": ["เร่งคูลดาวน์", "ลดคูลดาวน์", "reset skill CD","หั่นคูลดาวน์"],
-  "Action speed เพิ่มขึ้น": ["Action speed เพิ่มขึ้น", "All Speed"],
-  "วิ่ง/กระโดดเพิ่มขึ้น": ["วิ่ง/กระโดดเพิ่มขึ้น","วิ่งเร็วขึ้น", "All Speed"],
+  "ดาเมจกาย/เวทย์เพิ่มขึ้น": ["ดาเมจกาย/เวทย์เพิ่มขึ้น", "Physical/Magical Attack"],
+  "ดาเมจต่อบอส": ["ดาเมจต่อบอส", "Boss Damage"],
+  "ลดดาเมจ": ["ลดดาเมจ", "def กาย/เวทย์เพิ่มขึ้น", "ลดดาเมจจากบอส", "Damage Reduction"],
+  "Critical Damage เพิ่มขึ้น": ["Critical Damage เพิ่มขึ้น", "Critical Damage Increase"],
+  "Action speed เพิ่มขึ้น": ["Action speed เพิ่มขึ้น", "Action speed Increase", "All Speed"],
+  "เร่งคูลดาวน์": ["เร่งคูลดาวน์", "ลดคูลดาวน์", "reset skill CD", "หั่นคูลดาวน์", "Cooldown Acceleration"],
+  "วิ่ง/กระโดดเพิ่มขึ้น": ["วิ่ง/กระโดดเพิ่มขึ้น", "วิ่งเร็วขึ้น", "All Speed"],
 };
 
 const debuffAliases = {
-  "เจาะเวทย์/กาย": ["เจาะเวทย์", "เจาะกาย"],
-  "รับดาเมจกาย/เวทย์เพิ่มขึ้น": ["รับดาเมจเพิ่มขึ้น"],
+  "เจาะกาย/เวทย์": ["เจาะกาย/เวทย์", "เจาะเวทย์", "เจาะกาย", "Ignore Physical/Magical Defense"],
+  "รับดาเมจกาย/เวทย์เพิ่มขึ้น": ["รับดาเมจกาย/เวทย์เพิ่มขึ้น", "รับดาเมจเพิ่มขึ้น", "Increase Damage Taken"],
+  "รับ Critical Damage เพิ่มขึ้น": ["รับ Critical Damage เพิ่มขึ้น", "Increase Critical Damage Taken"],
+  "ลดดาเมจ": ["ลดดาเมจ", "Damage Reduction"],
 };
 
 export const BUFF_DISPLAY_ORDER = [
