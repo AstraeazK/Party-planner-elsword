@@ -1,12 +1,73 @@
-import { calculateMissingBuffs, BUFF_DISPLAY_ORDER, DEBUFF_DISPLAY_ORDER, normalizeKey, stripNumbersAndPercents } from "./buffDebuff.js";
+import { calculateMissingBuffs, essentialBuffs, essentialBuffs_EN, essentialDebuffs, essentialDebuffs_EN, BUFF_DISPLAY_ORDER, DEBUFF_DISPLAY_ORDER, normalizeKey, stripNumbersAndPercents } from "./buffDebuff.js";
 import { charData } from "./charData.js";
 import { pics } from "./pics.js";
 import { buildCompareMap } from './buffDebuff.js';
 import { initCompareTable } from './compareTable.js';
+import { Char_TH } from './CharData_TH.js';
+import { Char_EN } from './CharData_EN.js';
 
 let activeRowIndex = null;
 let partyRows = null;
 let buffGroupSelections = {};
+let currentLanguage = 'th';
+
+// Language dictionaries
+const translations = {
+  th: Char_TH,
+  en: Char_EN
+};
+
+// Essential buffs/debuffs mapping
+const essentialBuffsMap = {
+  th: essentialBuffs,
+  en: essentialBuffs_EN
+};
+
+const essentialDebuffsMap = {
+  th: essentialDebuffs,
+  en: essentialDebuffs_EN
+};
+
+console.log('Translation data loaded:', {
+  th: Char_TH?.ui ? '✓' : '✗',
+  en: Char_EN?.ui ? '✓' : '✗'
+});
+
+function translateBuff(code, type = 'buff') {
+  const langData = translations[currentLanguage];
+  if (!langData || !langData[type]) return code;
+  return langData[type][code] || code;
+}
+
+// Function to update UI text based on language
+function updateUILanguage() {
+  const langData = translations[currentLanguage];
+  if (!langData) {
+    console.warn(`Language data not found for: ${currentLanguage}`);
+    return;
+  }
+
+  document.querySelectorAll('[data-i18n]').forEach(el => {
+    const key = el.dataset.i18n;
+    if (!key) return;
+    
+    const keys = key.split('.');
+    let value = langData;
+    
+    for (const k of keys) {
+      if (value && typeof value === 'object') {
+        value = value[k];
+      } else {
+        value = undefined;
+        break;
+      }
+    }
+    
+    if (value && value !== langData) {
+      el.textContent = value;
+    }
+  });
+}
 
 function setupDragStart(imgEl, src, rowElement) {
   imgEl.draggable = true;
@@ -31,43 +92,50 @@ document.addEventListener("DOMContentLoaded", () => {
             buffGroupSelections[group.groupId] = group.default;
           } else if (group.defaultOption !== undefined && Array.isArray(group.options)) {
             const option = group.options[group.defaultOption];
-            buffGroupSelections[group.groupId] = typeof option === 'string' ? option : option?.label;
+            if (typeof option === 'string') {
+              buffGroupSelections[group.groupId] = option;
+            } else if (option && Array.isArray(option.effects)) {
+              buffGroupSelections[group.groupId] = option.effects;
+            } else if (option && option.effects) {
+              buffGroupSelections[group.groupId] = option.effects;
+            }
           }
         }
       });
     }
   });
 
-  // Ensure the show-numbers toggle defaults to 'close'
   if (!buffGroupSelections["Show_buff"]) {
     buffGroupSelections["Show_buff"] = 'close';
   }
-  // expose as global so compare table can read it
   window.__SHOW_BUFF_NUMBERS = buffGroupSelections["Show_buff"] === 'open';
 
   const hint = document.getElementById("help-hint");
   const text = document.getElementById("help-hint-text");
 
-  // 1. Fade-in + ยืดกล่อง
-  setTimeout(() => {
-    hint.classList.add("animate-expand");
-  }, 400);
+  // Only run animations if elements exist
+  if (hint && text) {
+    // 1. Fade-in + ยืดกล่อง
+    setTimeout(() => {
+      hint.classList.add("animate-expand");
+    }, 400);
 
-  // 2. ข้อความโผล่หลังยืดเสร็จ
-  setTimeout(() => {
-    text.style.animation = "fadeIn 0.3s forwards";
-  }, 800);
+    // 2. ข้อความโผล่หลังยืดเสร็จ
+    setTimeout(() => {
+      text.style.animation = "fadeIn 0.3s forwards";
+    }, 800);
 
-  // 3. ค้างไว้แป๊บนึง
-  setTimeout(() => {
-    text.style.animation = "fadeOut 0.3s forwards";
-  }, 2400);
+    // 3. ค้างไว้แป๊บนึง
+    setTimeout(() => {
+      text.style.animation = "fadeOut 0.3s forwards";
+    }, 2400);
 
-  // 4. หดกล่องกลับ
-  setTimeout(() => {
-    hint.classList.remove("animate-expand");
-    hint.classList.add("animate-collapse");
-  }, 2700);
+    // 4. หดกล่องกลับ
+    setTimeout(() => {
+      hint.classList.remove("animate-expand");
+      hint.classList.add("animate-collapse");
+    }, 2700);
+  }
 
   const charContainer = document.getElementById("char-container");
   partyRows = document.querySelectorAll(".party-row");
@@ -312,12 +380,17 @@ document.addEventListener("DOMContentLoaded", () => {
   document.querySelectorAll('.buffgroup-toggle').forEach(btn => {
     btn.addEventListener('click', () => {
       const groupId = btn.dataset.groupId;
-      const value = btn.dataset.value;
+      let value = btn.dataset.value;
       const skillIcon = btn.dataset.skillIcon;
       const skillLink = btn.dataset.skillLink;
 
       if (groupId) {
-        buffGroupSelections[groupId] = value;
+        // Convert comma-separated string to array if contains commas
+        if (typeof value === 'string' && value.includes(',')) {
+          buffGroupSelections[groupId] = value.split(',');
+        } else {
+          buffGroupSelections[groupId] = value;
+        }
       }
 
       if (skillIcon || skillLink) {
@@ -403,38 +476,40 @@ function updateBuffs() {
   uniqueCharSources.forEach(srcKey => {
     const info = charData[srcKey];
     if (info) {
-      info.buffs.forEach(b => allBuffs.push({ buff: b, charName: srcKey }));
-      info.debuffs.forEach(d => allDebuffs.push({ buff: d, charName: srcKey }));
+      info.buffs.forEach(b => allBuffs.push({ buff: translateBuff(b, 'buff'), charName: srcKey }));
+      info.debuffs.forEach(d => allDebuffs.push({ buff: translateBuff(d, 'debuff'), charName: srcKey }));
 
       if (info.buffGroups) {
         info.buffGroups.forEach(group => {
           const selectedValue = buffGroupSelections[group.groupId] || group.default;
           if (selectedValue) {
-            const pushBuff = (buffText) => {
-              if (buffText) allBuffs.push({ buff: buffText, charName: srcKey });
+            const pushBuff = (buffCode) => {
+              const translatedBuff = translateBuff(buffCode, 'buff');
+              if (translatedBuff) allBuffs.push({ buff: translatedBuff, charName: srcKey });
             };
 
-            if (group.options && Array.isArray(group.options)) {
-              const option = group.options.find(opt => {
-                if (typeof opt === 'string') return opt === selectedValue;
-                return opt.label === selectedValue;
-              });
+            // Handle array (from Overmind with effects)
+            if (Array.isArray(selectedValue)) {
+              selectedValue.forEach(pushBuff);
+            } else if (typeof selectedValue === 'string') {
+              // Handle string (from Fatal Phantom or other string options)
+              if (group.options && Array.isArray(group.options)) {
+                // Check if options contain objects with effects
+                const option = group.options.find(opt => {
+                  if (typeof opt === 'string') return opt === selectedValue;
+                  return opt.effects === selectedValue || opt.label === selectedValue;
+                });
 
-              if (option) {
-                if (typeof option === 'string') {
-                  pushBuff(option);
-                } else if (Array.isArray(option.effects)) {
+                if (option && typeof option !== 'string' && Array.isArray(option.effects)) {
                   option.effects.forEach(pushBuff);
-                } else if (option.effects) {
-                  pushBuff(option.effects);
                 } else {
+                  // Direct string buff code
                   pushBuff(selectedValue);
                 }
               } else {
+                // No options, direct string buff code
                 pushBuff(selectedValue);
               }
-            } else {
-              pushBuff(selectedValue);
             }
           }
         });
@@ -443,9 +518,9 @@ function updateBuffs() {
   });
 
   const { mergedBuffs, mergedDebuffs } = mergeBuffsAndDebuffs(allBuffs, allDebuffs);
-  const { missingBuffs } = calculateMissingBuffs(allBuffs, allDebuffs);
+  const { missingBuffs, missingDebuffs } = calculateMissingBuffs(allBuffs, allDebuffs);
 
-  renderBuffLists(mergedBuffs, mergedDebuffs, missingBuffs);
+  renderBuffLists(mergedBuffs, mergedDebuffs, missingBuffs, missingDebuffs);
 }
 
 // ---------- Duplicate warning: แจ้งเตือนถ้ามีตัวละครซ้ำในแต่ละแถว ----------
@@ -526,7 +601,7 @@ function mergeBuffsAndDebuffs(allBuffs, allDebuffs) {
 }
 
 // ---------- แสดงบัพด้านขวา ----------
-function renderBuffLists(mergedBuffs, mergedDebuffs, missingBuffs) {
+function renderBuffLists(mergedBuffs, mergedDebuffs, missingBuffs, missingDebuffs) {
   const buffListEl = document.getElementById("buff-list");
   const debuffListEl = document.getElementById("debuff-list");
   const missingListEl = document.getElementById("missing-buff-list");
@@ -602,13 +677,32 @@ function renderBuffLists(mergedBuffs, mergedDebuffs, missingBuffs) {
 
   if (missingListEl) {
     missingListEl.innerHTML = '';
-    if (!missingBuffs || missingBuffs.length === 0) {
+    // Combine missing buffs and debuffs
+    const allMissing = [...(missingBuffs || []), ...(missingDebuffs || [])];
+    
+    if (!allMissing || allMissing.length === 0) {
       const li = document.createElement('li');
       li.className = 'text-yellow-300';
-      li.innerText = 'ไม่มี Missing Buffs';
+      const noMissingText = translations[currentLanguage]?.ui?.no_missing_buffs || 'ไม่มี Missing Buffs';
+      li.innerText = noMissingText;
       missingListEl.appendChild(li);
     } else {
-      missingListEl.innerHTML = missingBuffs.map(m => `<li class="text-yellow-300">${escapeHtml(m)}</li>`).join('');
+      // Get appropriate language's essential lists
+      const langBuffsList = essentialBuffsMap[currentLanguage] || essentialBuffs;
+      const langDebuffsList = essentialDebuffsMap[currentLanguage] || essentialDebuffs;
+      
+      // Create translation map from Thai names to current language
+      const thToCurrentLang = {};
+      essentialBuffs.forEach((thName, idx) => {
+        thToCurrentLang[thName] = langBuffsList[idx];
+      });
+      essentialDebuffs.forEach((thName, idx) => {
+        thToCurrentLang[thName] = langDebuffsList[idx];
+      });
+      
+      // Translate missing items
+      const translatedMissing = allMissing.map(m => thToCurrentLang[m] || m);
+      missingListEl.innerHTML = translatedMissing.map(m => `<li class="text-yellow-300">${escapeHtml(m)}</li>`).join('');
     }
   }
 
@@ -1028,6 +1122,89 @@ async function showCompareModal(selectedIndex) {
     }
   });
 
+  // Initialize UI language on page load
+  updateUILanguage();
+
+  // Setup language selector buttons
+  const languageBtn = document.getElementById('language-btn');
+  const languageDropdown = document.getElementById('language-dropdown');
+  const languageOptions = document.querySelectorAll('.language-option');
+
+  const updateLanguageMarks = () => {
+    languageOptions.forEach((option) => {
+      const lang = option.dataset.lang;
+      if (!lang) return;
+      
+      if (lang === currentLanguage) {
+        option.textContent = `✓ ${lang.toUpperCase()}`;
+        option.style.fontWeight = 'bold';
+        option.style.color = '#fbbf24';
+      } else {
+        option.textContent = lang.toUpperCase();
+        option.style.fontWeight = 'normal';
+        option.style.color = 'white';
+      }
+    });
+  };
+
+  languageBtn?.addEventListener('click', (e) => {
+    e.stopPropagation();
+    languageDropdown?.classList.toggle('hidden');
+  });
+
+  languageOptions.forEach((option) => {
+    option.addEventListener('click', (e) => {
+      const lang = option.dataset.lang;
+      if (!lang) return;
+      currentLanguage = lang;
+      console.log(`Changing language to: ${lang}`, translations[lang]);
+      updateLanguageMarks();
+      languageDropdown?.classList.add('hidden');
+      languageBtn?.setAttribute('aria-label', `Language: ${lang.toUpperCase()}`);
+      updateBuffs();
+      // Add a small delay to ensure DOM is ready
+      setTimeout(() => {
+        updateUILanguage();
+      }, 100);
+      console.log(`Language selected: ${lang}`);
+    });
+  });
+
+  // Initialize marks on page load
+  updateLanguageMarks();
+
+  // Setup help modal buttons
+  const helpBtn = document.getElementById('help-btn');
+  const helpModal = document.getElementById('help-modal');
+  const helpClose = document.getElementById('help-close');
+
+  helpBtn?.addEventListener('click', () => {
+    helpModal?.classList.remove('hidden');
+  });
+
+  helpClose?.addEventListener('click', () => {
+    helpModal?.classList.add('hidden');
+  });
+
+  helpModal?.addEventListener('click', (e) => {
+    if (e.target === helpModal) {
+      helpModal.classList.add('hidden');
+    }
+  });
+
+  document.addEventListener('click', (e) => {
+    if (!languageDropdown || !languageBtn) return;
+    if (!languageDropdown.contains(e.target) && e.target !== languageBtn) {
+      languageDropdown.classList.add('hidden');
+    }
+  });
+
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape') {
+      helpModal?.classList.add('hidden');
+      languageDropdown?.classList.add('hidden');
+    }
+  });
 
 });
 
@@ -1047,54 +1224,3 @@ function createClickEffect(e) {
 
   setTimeout(() => effect.remove(), 900);
 }
-
-const helpBtn = document.getElementById('help-btn');
-const helpModal = document.getElementById('help-modal');
-const helpClose = document.getElementById('help-close');
-
-helpBtn.addEventListener('click', () => {
-  helpModal.classList.remove('hidden');
-});
-
-helpClose.addEventListener('click', () => {
-  helpModal.classList.add('hidden');
-});
-
-helpModal.addEventListener('click', (e) => {
-  if (e.target === helpModal) {
-    helpModal.classList.add('hidden');
-  }
-});
-
-const languageBtn = document.getElementById('language-btn');
-const languageDropdown = document.getElementById('language-dropdown');
-const languageOptions = document.querySelectorAll('.language-option');
-
-languageBtn?.addEventListener('click', (e) => {
-  e.stopPropagation();
-  languageDropdown?.classList.toggle('hidden');
-});
-
-languageOptions.forEach((option) => {
-  option.addEventListener('click', (e) => {
-    const lang = option.dataset.lang;
-    if (!lang) return;
-    languageDropdown?.classList.add('hidden');
-    languageBtn?.setAttribute('aria-label', `Language: ${lang.toUpperCase()}`);
-    console.log(`Language selected: ${lang}`);
-  });
-});
-
-document.addEventListener('click', (e) => {
-  if (!languageDropdown || !languageBtn) return;
-  if (!languageDropdown.contains(e.target) && e.target !== languageBtn) {
-    languageDropdown.classList.add('hidden');
-  }
-});
-
-document.addEventListener('keydown', (e) => {
-  if (e.key === 'Escape') {
-    helpModal.classList.add('hidden');
-    languageDropdown?.classList.add('hidden');
-  }
-});

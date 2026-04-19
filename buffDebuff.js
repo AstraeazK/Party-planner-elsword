@@ -7,11 +7,27 @@ const essentialBuffs = [
   "เร่งคูลดาวน์",
 ];
 
+const essentialBuffs_EN = [
+  "ATK/MAG Increase",
+  "Boss Damage",
+  "Damage Reduction",
+  "Critical Damage Increase",
+  "Action speed Increase",
+  "Cooldown Acceleration",
+];
+
 const essentialDebuffs = [
   "เจาะกาย/เวทย์",
   "รับดาเมจกาย/เวทย์เพิ่มขึ้น",
   "รับ Critical Damage เพิ่มขึ้น",
   "ลดดาเมจ"
+];
+
+const essentialDebuffs_EN = [
+  "Ignore Physical/Magical Defense",
+  "Increase Damage Taken",
+  "Increase Critical Damage Taken",
+  "Damage Reduction"
 ];
 
 const buffAliases = {
@@ -171,5 +187,9 @@ export function compareValues(leftName, rightName) {
 
 
 export { 
-  calculateMissingBuffs, 
+  calculateMissingBuffs,
+  essentialBuffs,
+  essentialBuffs_EN,
+  essentialDebuffs,
+  essentialDebuffs_EN,
 };

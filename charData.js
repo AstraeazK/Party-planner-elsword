@@ -1,263 +1,483 @@
 export const charData = {
   "pics/Elsword/Icon_-_Knight_Emperor.png": {
     role: "physical",
-    buffs: ["ลดดาเมจ 20%"],
-    debuffs: ["เจาะกาย/เวทย์ 20%","รับดาเมจกาย/เวทย์เพิ่มขึ้น 12%"]},
+    buffs: ["damage_reduction_20"],
+    debuffs: ["ignore_def_20", "damage_taken_up_12"]
+  },
+
   "pics/Elsword/Icon_-_Rune_Master.png": {
     role: "magical",
-    buffs: ["วิ่ง/กระโดดเพิ่มขึ้น 20%"],
-    debuffs: ["ลดธาตุ 160","เจาะกาย/เวทย์ 20%","ลดความเร็ว 50%","รับดาเมจกาย/เวทย์เพิ่มขึ้น 12%"]},
+    buffs: ["move_jump_speed_20"],
+    debuffs: ["elemental_res_down_160", "ignore_def_20", "speed_down_50", "damage_taken_up_12"]
+  },
+
   "pics/Elsword/Icon_-_Immortal.png": {
     role: "physical",
-    buffs: ["วิ่งเร็วขึ้น 30%"], 
-    debuffs: ["รับดาเมจกาย/เวทย์เพิ่มขึ้น 20%"]},
-  "pics/Elsword/Icon_-_Genesis.png": { 
+    buffs: ["move_speed_30"],
+    debuffs: ["damage_taken_up_20"]
+  },
+
+  "pics/Elsword/Icon_-_Genesis.png": {
     role: "magical",
-    buffs: ["ลดดาเมจ 8%"], 
-    debuffs: ["เจาะกาย/เวทย์ 20%","รับดาเมจกาย/เวทย์เพิ่มขึ้น 12%","ลดธาตุ 130"]},
-  "pics/Aisha/Icon_-_Aether_Sage.png": { 
+    buffs: ["damage_reduction_8"],
+    debuffs: ["ignore_def_20", "damage_taken_up_12", "elemental_res_down_130"]
+  },
+
+  "pics/Aisha/Icon_-_Aether_Sage.png": {
     role: "magical",
-    buffs: ["ดาเมจกาย/เวทย์เพิ่มขึ้น 20%"], 
-    debuffs: []},
-  "pics/Aisha/Icon_-_Oz_Sorcerer.png": { 
+    buffs: ["atk_mag_up_20"],
+    debuffs: []
+  },
+
+  "pics/Aisha/Icon_-_Oz_Sorcerer.png": {
     role: "magical",
-    buffs: ["ดาเมจกาย/เวทย์เพิ่มขึ้น 12%","All Speed 10%"], 
-    debuffs: ["ลดธาตุ 195","เจาะกาย/เวทย์ 20%","ลดดาเมจ 20%","ลดความเร็ว 40%"]},
-  "pics/Aisha/Icon_-_Metamorphy.png": { 
+    buffs: ["atk_mag_up_12", "all_speed_10"],
+    debuffs: ["elemental_res_down_195", "ignore_def_20", "damage_reduction_down_20", "speed_down_40"]
+  },
+
+  "pics/Aisha/Icon_-_Metamorphy.png": {
     role: "physical",
-    buffs: ["ดาเมจกาย/เวทย์เพิ่มขึ้น 12%"], 
-    debuffs: ["เจาะกาย/เวทย์ 21%"]},
-  "pics/Aisha/Icon_-_Lord_Azoth.png": { 
+    buffs: ["atk_mag_up_12"],
+    debuffs: ["ignore_def_21"]
+  },
+
+  "pics/Aisha/Icon_-_Lord_Azoth.png": {
     role: "physical",
-    buffs: ["All Speed 5%","ดาเมจกาย/เวทย์เพิ่มขึ้น 5%","คูลดาวน์ยาเร็วขึ้น","ไซส์ตัวใหญ่ขึ้น 30%","Critical Damage เพิ่มขึ้น 5%","ลดดาเมจ 20%","MAX HP 15%","MAX MP 50"], 
-    debuffs: ["รับดาเมจเพิ่มขึ้น 5%","เจาะกาย/เวทย์ 15%"]},
-  "pics/Rena/Icon_-_Anemos.png": { 
+    buffs: [
+      "all_speed_5",
+      "atk_mag_up_5",
+      "potion_cd_faster",
+      "size_up_30",
+      "crit_damage_up_5",
+      "damage_reduction_20",
+      "max_hp_15",
+      "max_mp_50"
+    ],
+    debuffs: ["damage_taken_up_5", "ignore_def_15"]
+  },
+
+  "pics/Rena/Icon_-_Anemos.png": {
     role: "physical",
-    buffs: ["ดาเมจกาย/เวทย์เพิ่มขึ้น 12%","All Speed 15%"], 
-    debuffs: ["เจาะกาย/เวทย์ 19.5%"]},
-  "pics/Rena/Icon_-_Daybreaker.png": { 
+    buffs: ["atk_mag_up_12", "all_speed_15"],
+    debuffs: ["ignore_def_19_5"]
+  },
+
+  "pics/Rena/Icon_-_Daybreaker.png": {
     role: "magical",
-    buffs: [], 
-    debuffs: ["รับดาเมจกาย/เวทย์เพิ่มขึ้น 15%","รับ Critical Damage เพิ่มขึ้น 20%"]},
-  "pics/Rena/Icon_-_Twilight.png": { 
+    buffs: [],
+    debuffs: ["damage_taken_up_15", "crit_damage_taken_up_20"]
+  },
+
+  "pics/Rena/Icon_-_Twilight.png": {
     role: "physical",
-    buffs: ["ลดดาเมจ 20%"], 
-    debuffs: ["รับดาเมจกาย/เวทย์เพิ่มขึ้น 12%","เจาะกาย/เวทย์ 20%"]},
+    buffs: ["damage_reduction_20"],
+    debuffs: ["damage_taken_up_12", "ignore_def_20"]
+  },
+
   "pics/Rena/Icon_-_Prophetess.png": {
-    role: "magical", 
-    buffs: ["ดาเมจกาย/เวทย์เพิ่มขึ้น 10%", "ลดดาเมจจากบอส 15%", "All Damage 10%", "โล่ขาว 10%", "ดาเมจต่อบอส 20%", "เติมเกจ", "def กาย/เวทย์เพิ่มขึ้น 15%","All Speed 10%"], 
-    debuffs: ["เจาะกาย/เวทย์ 10%"]},
-  "pics/Raven/Icon_-_Furious_Blade.png": { 
-    role: "physical",
-    buffs: [], 
-    debuffs: ["รับดาเมจกาย/เวทย์เพิ่มขึ้น 12%", "เจาะกาย/เวทย์ 22.5%"]},
-  "pics/Raven/Icon_-_Rage_Hearts.png": { 
     role: "magical",
-    buffs: [], 
-    debuffs: ["รับ Critical Damage เพิ่มขึ้น 12%","เจาะกาย/เวทย์ 20%","ลดธาตุ 150","ลดดาเมจ 15%"]},
-  "pics/Raven/Icon_-_Nova_Imperator.png": { 
-    role: "magical",
-    buffs: ["ดาเมจกาย/เวทย์เพิ่มขึ้น 10%","def กาย/เวทย์เพิ่มขึ้น 12%"], 
-    debuffs: ["รับดาเมจกาย/เวทย์เพิ่มขึ้น 12%","ลดธาตุ 150"]},
-  "pics/Raven/Icon_-_Revenant.png": { 
+    buffs: [
+      "atk_mag_up_10",
+      "boss_damage_reduction_15",
+      "all_damage_10",
+      "white_shield_10",
+      "boss_damage_20",
+      "fill_gauge",
+      "def_up_15",
+      "all_speed_10"
+    ],
+    debuffs: ["ignore_def_10"]
+  },
+
+  "pics/Raven/Icon_-_Furious_Blade.png": {
     role: "physical",
-    buffs: ["ดาเมจเลือดต่ำ 8% (>50% HP)","ดาเมจเลือดต่ำ 10% (>10% HP)","ลดดาเมจจากบอส 15%","All Speed 10%"], 
-    debuffs: ["รับ Critical Damage เพิ่มขึ้น 9%","รับดาเมจกาย/เวทย์เพิ่มขึ้น 8%","เจาะกาย/เวทย์ 10%","ลดธาตุ 150"]},
-  "pics/Eve/Icon_-_Code_Ultimate.png": { 
+    buffs: [],
+    debuffs: ["damage_taken_up_12", "ignore_def_22_5"]
+  },
+
+  "pics/Raven/Icon_-_Rage_Hearts.png": {
     role: "magical",
-    buffs: ["ลดดาเมจ 30%"], 
-    debuffs: ["เจาะกาย/เวทย์ 20%","รับดาเมจกาย/เวทย์เพิ่มขึ้น (>50% HP) 10%","รับดาเมจกาย/เวทย์เพิ่มขึ้น (<50% HP) 14%"]},
-  "pics/Eve/Icon_-_Code_Esencia.png": { 
-    role: "physical",
-    buffs: ["Special Active Damage เพิ่มขึ้น 12%","ลดดาเมจ 20%"], 
-    debuffs: ["รับดาเมจกาย/เวทย์เพิ่มขึ้น 12%","ลดธาตุ 150"]},
-  "pics/Eve/Icon_-_Code_Sariel.png": { 
+    buffs: [],
+    debuffs: ["crit_damage_taken_up_12", "ignore_def_20", "elemental_res_down_150", "damage_reduction_down_15"]
+  },
+
+  "pics/Raven/Icon_-_Nova_Imperator.png": {
     role: "magical",
-    buffs: [], 
-    debuffs: ["รับ Critical Damage เพิ่มขึ้น 12%","เจาะกาย/เวทย์ 20%"]},
-  "pics/Eve/Icon_-_Code_Antithese.png": { 
+    buffs: ["atk_mag_up_10", "def_up_12"],
+    debuffs: ["damage_taken_up_12", "elemental_res_down_150"]
+  },
+
+  "pics/Raven/Icon_-_Revenant.png": {
     role: "physical",
-    buffs: [], 
-    debuffs: ["เจาะกาย/เวทย์ 20%","รับดาเมจกาย/เวทย์เพิ่มขึ้น 12%"]},
-  "pics/Chung/Icon_-_Comet_Crusader.png": { 
-    role: "physical",
-    buffs: ["ลดดาเมจ 30%"], 
-    debuffs: ["เจาะกาย/เวทย์ 20%","รับดาเมจกาย/เวทย์เพิ่มขึ้น 18%","ลดดาเมจ 50%"]},
-  "pics/Chung/Icon_-_Fatal_Phantom.png": { 
+    buffs: [
+      "low_hp_damage_8_over_50",
+      "low_hp_damage_10_over_10",
+      "boss_damage_reduction_15",
+      "all_speed_10"
+    ],
+    debuffs: ["crit_damage_taken_up_9", "damage_taken_up_8", "ignore_def_10", "elemental_res_down_150"]
+  },
+
+  "pics/Eve/Icon_-_Code_Ultimate.png": {
     role: "magical",
-    buffs: ["ดาเมจกาย/เวทย์เพิ่มขึ้น 20%"],
+    buffs: ["damage_reduction_30"],
+    debuffs: [
+      "ignore_def_20",
+      "damage_taken_up_over_50_10",
+      "damage_taken_up_under_50_14"
+    ]
+  },
+
+  "pics/Eve/Icon_-_Code_Esencia.png": {
+    role: "physical",
+    buffs: ["special_active_damage_up_12", "damage_reduction_20"],
+    debuffs: ["damage_taken_up_12", "elemental_res_down_150"]
+  },
+
+  "pics/Eve/Icon_-_Code_Sariel.png": {
+    role: "magical",
+    buffs: [],
+    debuffs: ["crit_damage_taken_up_12", "ignore_def_20"]
+  },
+
+  "pics/Eve/Icon_-_Code_Antithese.png": {
+    role: "physical",
+    buffs: [],
+    debuffs: ["ignore_def_20", "damage_taken_up_12"]
+  },
+
+  "pics/Chung/Icon_-_Comet_Crusader.png": {
+    role: "physical",
+    buffs: ["damage_reduction_30"],
+    debuffs: ["ignore_def_20", "damage_taken_up_18", "damage_reduction_down_50"]
+  },
+
+  "pics/Chung/Icon_-_Fatal_Phantom.png": {
+    role: "magical",
+    buffs: ["atk_mag_up_20"],
     buffGroups: [
       {
         groupId: "sharpshooter_syndrome",
-        groupName: "Sharpshooter Syndrome",
-        options: ["Action Speed เพิ่มขึ้น 18%", "Critical 10%"],
-        default: "Action Speed เพิ่มขึ้น 18%"
+        groupNameKey: "group.sharpshooter_syndrome",
+        options: ["action_speed_up_18", "critical_10"],
+        default: "action_speed_up_18"
       }
     ],
-    debuffs: []},
-  "pics/Chung/Icon_-_Centurion.png": { 
+    debuffs: []
+  },
+
+  "pics/Chung/Icon_-_Centurion.png": {
     role: "magical",
-    buffs: ["ลดดาเมจ 20%"], 
-    debuffs: ["เจาะกาย/เวทย์ 20%","รับดาเมจกาย/เวทย์เพิ่มขึ้น 12%"]},
-  "pics/Chung/Icon_-_Dius_Aer.png": { 
+    buffs: ["damage_reduction_20"],
+    debuffs: ["ignore_def_20", "damage_taken_up_12"]
+  },
+
+  "pics/Chung/Icon_-_Dius_Aer.png": {
     role: "support",
-    buffs: ["ดาเมจกาย/เวทย์เพิ่มขึ้น 12%", "เร่งคูลดาวน์ 1.2x", "ลดดาเมจ 20%", "ตัวแดง" , "All Skill Damage 12%", "All Speed 15%", "เติมเกจ 20%","เจนมานาไว 40%"], 
-    debuffs: ["ลดธาตุ 120","เจาะกาย/เวทย์ 15%"]},
-  "pics/Ara/Icon_-_Apsara.png": { 
+    buffs: [
+      "atk_mag_up_12",
+      "cooldown_accel_1_2x",
+      "damage_reduction_20",
+      "Super_Armor",
+      "all_skill_damage_12",
+      "all_speed_15",
+      "fill_gauge_20",
+      "mana_regen_40"
+    ],
+    debuffs: ["elemental_res_down_120", "ignore_def_15"]
+  },
+
+  "pics/Ara/Icon_-_Apsara.png": {
     role: "physical",
-    buffs: ["ดาเมจต่อมอนสเตอร์ที่ไม่ใช่บอสหรือมิดบอสเพิ่มขึ้น 10%", "Action Speed เพิ่มขึ้น 10%"], 
-    debuffs: ["รับดาเมจกาย/เวทย์เพิ่มขึ้น 12%", "ลดธาตุ 150", "เจาะกาย/เวทย์ 54%"]},
-  "pics/Ara/Icon_-_Devi.png": { 
+    buffs: ["non_boss_damage_10", "action_speed_up_10"],
+    debuffs: ["damage_taken_up_12", "elemental_res_down_150", "ignore_def_54"]
+  },
+
+  "pics/Ara/Icon_-_Devi.png": {
     role: "magical",
-    buffs: [], 
-    debuffs: ["รับดาเมจกาย/เวทย์เพิ่มขึ้น 12%", "เจาะกาย/เวทย์ 15%"]},
-  "pics/Ara/Icon_-_Shakti.png": { 
+    buffs: [],
+    debuffs: ["damage_taken_up_12", "ignore_def_15"]
+  },
+
+  "pics/Ara/Icon_-_Shakti.png": {
     role: "physical",
-    buffs: ["Strength and Bravery Skill Damage 6%"], 
-    debuffs: ["รับดาเมจกาย/เวทย์เพิ่มขึ้น 7%", "เจาะกาย/เวทย์ 20%"]},
-  "pics/Ara/Icon_-_Surya.png": { 
+    buffs: ["strength_bravery_damage_6"],
+    debuffs: ["damage_taken_up_7", "ignore_def_20"]
+  },
+
+  "pics/Ara/Icon_-_Surya.png": {
     role: "support",
-    buffs: ["ดาเมจกาย/เวทย์เพิ่มขึ้น 12%", "เร่งคูลดาวน์ 1.2x", "ลดดาเมจ 20%", "All Skill Damage 12%", "All Speed 15%", "MAX HP 10%", "ลดการใช้มานา 6%", "ตัวแดง", "เติมเกจ 20%"], 
-    debuffs: ["เจาะกาย/เวทย์ 15%", "ลดธาตุ 150"]},
-  "pics/Elesis/Icon_-_Empire_Sword.png": { 
+    buffs: [
+      "atk_mag_up_12",
+      "cooldown_accel_1_2x",
+      "damage_reduction_20",
+      "all_skill_damage_12",
+      "all_speed_15",
+      "max_hp_10",
+      "mana_cost_down_6",
+      "Super_Armor",
+      "fill_gauge_20"
+    ],
+    debuffs: ["ignore_def_15", "elemental_res_down_150"]
+  },
+
+  "pics/Elesis/Icon_-_Empire_Sword.png": {
     role: "physical",
-    buffs: ["ลดดาเมจ 15%", "Action Speed เพิ่มขึ้น 6%", "Special Active Damage เพิ่มขึ้น 10%", "Critical 6%", "Maximize 6%"], 
-    debuffs: ["รับดาเมจกาย/เวทย์เพิ่มขึ้น 8%", "เจาะกาย/เวทย์ 34%", "ลดธาตุ 160"]},
-  "pics/Elesis/Icon_-_Flame_Lord.png": { 
+    buffs: ["damage_reduction_15", "action_speed_up_6", "special_active_damage_up_10", "critical_6", "maximize_6"],
+    debuffs: ["damage_taken_up_8", "ignore_def_34", "elemental_res_down_160"]
+  },
+
+  "pics/Elesis/Icon_-_Flame_Lord.png": {
     role: "magical",
-    buffs: [], 
-    debuffs: ["รับดาเมจกาย/เวทย์เพิ่มขึ้น 12%", "เจาะกาย/เวทย์ 20%"]},
-  "pics/Elesis/Icon_-_Bloody_Queen.png": { 
+    buffs: [],
+    debuffs: ["damage_taken_up_12", "ignore_def_20"]
+  },
+
+  "pics/Elesis/Icon_-_Bloody_Queen.png": {
     role: "physical",
-    buffs: [], 
-    debuffs: ["ลดธาตุ 300", "รับ Critical Damage เพิ่มขึ้น (>=76% HP) 10%", "รับ Critical Damage เพิ่มขึ้น (51~75% HP) 20%","รับ Critical Damage เพิ่มขึ้น (<=50% HP) 25%"]},
-  "pics/Elesis/Icon_-_Adrestia.png": { 
+    buffs: [],
+    debuffs: ["elemental_res_down_300", "crit_damage_taken_up_10_76", "crit_damage_taken_up_20_51_75", "crit_damage_taken_up_25_under_50"]
+  },
+
+  "pics/Elesis/Icon_-_Adrestia.png": {
     role: "magical",
-    buffs: ["ดาเมจกาย/เวทย์เพิ่มขึ้น 10%", "ลดดาเมจ 20%", "Action Speed เพิ่มขึ้น 10%", "ดาเมจต่อบอส 10%"], 
-    debuffs: ["รับดาเมจกาย/เวทย์เพิ่มขึ้น 7%", "เจาะกาย/เวทย์ 25%"]},
-  "pics/Add/Icon_-_Doom_Bringer.png": { 
+    buffs: ["atk_mag_up_10", "damage_reduction_20", "action_speed_up_10", "boss_damage_10"],
+    debuffs: ["damage_taken_up_7", "ignore_def_25"]
+  },
+
+  "pics/Add/Icon_-_Doom_Bringer.png": {
     role: "magical",
-    buffs: ["วิ่ง/กระโดดเพิ่มขึ้น 20%", "Action Speed เพิ่มขึ้น 20%"], 
-    debuffs: ["รับ Critical Damage เพิ่มขึ้น 20%"]},
-  "pics/Add/Icon_-_Dominator.png": { 
+    buffs: ["move_jump_speed_20", "action_speed_up_20"],
+    debuffs: ["crit_damage_taken_up_20"]
+  },
+
+  "pics/Add/Icon_-_Dominator.png": {
     role: "physical",
-    buffs: ["ดาเมจกาย/เวทย์เพิ่มขึ้น 9.2%", "Critical Damage เพิ่มขึ้น 9.2%"], 
-    debuffs: ["รับดาเมจกาย/เวทย์เพิ่มขึ้น 5.07%", "เจาะกาย/เวทย์ 10%"]},
-  "pics/Add/Icon_-_Mad_Paradox.png": { 
+    buffs: ["atk_mag_up_9_2", "crit_damage_up_9_2"],
+    debuffs: ["damage_taken_up_5_07", "ignore_def_10"]
+  },
+
+  "pics/Add/Icon_-_Mad_Paradox.png": {
     role: "magical",
-    buffs: ["SoT"], 
-    debuffs: ["รับดาเมจกาย/เวทย์เพิ่มขึ้น 12%", "เจาะกาย/เวทย์ 19.6%"]},
-  "pics/Add/Icon_-_Overmind.png": { 
-  role: "support",
-  buffs: ["Action Speed เพิ่มขึ้น 15%","ดาเมจกาย/เวทย์เพิ่มขึ้น 22%","ลดดาเมจ 20%","All Skill Damage 12%","เติมเกจ","เร่งคูลดาวน์ 1.2x"],
-  buffGroups: [
-    {
-      groupId: "Hyperactive_OM",
-      groupName: "Hyperactive Overmind",
-      options: [
-        { label: "Mass Examination", effects: ["เร่งHA&Master 1.2x"]},
-        { label: "Trolley Dilemma",  effects: ["MAX HP เพิ่มขึ้น (เฉพาะคนผูก) 1.2x ", "MAX MP (เฉพาะคนผูก) 60", "ลดการใช้มานา (เฉพาะคนผูก) 20%"]}
-      ],
-      defaultOption: 0
-    }
-  ],
-  debuffs: ["เจาะกาย/เวทย์ 15%", "ลดธาตุ 150", "ลดดาเมจ 20%"]
-},
-  "pics/LuCiel/Icon_-_Catastrophe.png": { 
-    role: "physical",
-    buffs: [], 
-    debuffs: ["รับดาเมจกาย/เวทย์เพิ่มขึ้น 12%", "รับ Critical Damage เพิ่มขึ้น 8%", "ลดดาเมจ 10%"]},
-  "pics/LuCiel/Icon_-_Innocent.png": { 
-    role: "magical",
-    buffs: [], 
-    debuffs: ["เจาะกาย/เวทย์ 20%", "รับ Critical Damage เพิ่มขึ้น 12%", "ลดดาเมจ 31%"]},
-  "pics/LuCiel/Icon_-_Diangelion.png": { 
-    role: "physical",
-    buffs: [], 
-    debuffs: ["รับดาเมจกาย/เวทย์เพิ่มขึ้น 12%", "เจาะกาย/เวทย์ 40%"]}, 
-  "pics/LuCiel/Icon_-_Demersio.png": { 
+    buffs: ["sot"],
+    debuffs: ["damage_taken_up_12", "ignore_def_19_6"]
+  },
+
+  "pics/Add/Icon_-_Overmind.png": {
     role: "support",
-    buffs: ["MAX HP 10%","ดาเมจกาย/เวทย์เพิ่มขึ้น 12%","เร่งคูลดาวน์ 1.2x", "ลดดาเมจ 20%", "All Skill Damage 12%","วิ่งเร็วขึ้น 15%", "Action Speed เพิ่มขึ้น 15%","SoT"], 
-    debuffs: ["เจาะกาย/เวทย์ 15%", "ลดธาตุ 150"]},
-  "pics/Rose/Icon_-_Tempest_Burster.png": { 
+    buffs: [
+      "action_speed_up_15",
+      "atk_mag_up_22",
+      "damage_reduction_20",
+      "all_skill_damage_12",
+      "fill_gauge",
+      "cooldown_accel_1_2x"
+    ],
+    buffGroups: [
+      {
+        groupId: "Hyperactive_OM",
+        groupNameKey: "group.hyperactive_overmind",
+        options: [
+          { labelKey: "option.mass_examination", effects: ["ha_master_accel_1_2x"] },
+          { labelKey: "option.trolley_dilemma", effects: ["linked_max_hp_1_2x", "linked_max_mp_60", "linked_mana_cost_down_20"] }
+        ],
+        defaultOption: 0
+      }
+    ],
+    debuffs: ["ignore_def_15", "elemental_res_down_150", "damage_reduction_down_20"]
+  },
+
+  "pics/LuCiel/Icon_-_Catastrophe.png": {
     role: "physical",
-    buffs: ["ดาเมจกาย/เวทย์เพิ่มขึ้น 10%"], 
-    debuffs: ["รับดาเมจกาย/เวทย์เพิ่มขึ้น 8%", "เจาะกาย/เวทย์ 10%", "ลดธาตุ 100"]},
-  "pics/Rose/Icon_-_Black_Massacre.png": { 
-    role: "physical",
-    buffs: [], 
-    debuffs: ["เจาะกาย/เวทย์ 20%", "รับ Critical Damage เพิ่มขึ้น 12%"]},
-  "pics/Rose/Icon_-_Minerva.png": { 
+    buffs: [],
+    debuffs: ["damage_taken_up_12", "crit_damage_taken_up_8", "damage_reduction_down_10"]
+  },
+
+  "pics/LuCiel/Icon_-_Innocent.png": {
     role: "magical",
-    buffs: [], 
-    debuffs: ["รับดาเมจกาย/เวทย์เพิ่มขึ้น 12%", "เจาะกาย/เวทย์ 20%", "ลดธาตุ 120"]},
-  "pics/Rose/Icon_-_Prime_Operator.png": { 
-    role: "magical",
-    buffs: ["ดาเมจกาย/เวทย์เพิ่มขึ้น 3%", "ลดดาเมจ 10%"], 
-    debuffs: ["รับดาเมจกาย/เวทย์เพิ่มขึ้น 8%", "เจาะกาย/เวทย์ 20%"]},
-  "pics/Ain/Icon_-_Richter.png": { 
+    buffs: [],
+    debuffs: ["ignore_def_20", "crit_damage_taken_up_12", "damage_reduction_down_31"]
+  },
+
+  "pics/LuCiel/Icon_-_Diangelion.png": {
     role: "physical",
-    buffs: ["ดาเมจกาย/เวทย์เพิ่มขึ้น 20%", "MAX MP 60","วิ่งไวขึ้น 1.3x"], 
-    debuffs: []},
+    buffs: [],
+    debuffs: ["damage_taken_up_12", "ignore_def_40"]
+  },
+
+  "pics/LuCiel/Icon_-_Demersio.png": {
+    role: "support",
+    buffs: [
+      "max_hp_10",
+      "atk_mag_up_12",
+      "cooldown_accel_1_2x",
+      "damage_reduction_20",
+      "all_skill_damage_12",
+      "move_speed_15",
+      "action_speed_up_15",
+      "sot"
+    ],
+    debuffs: ["ignore_def_15", "elemental_res_down_150"]
+  },
+
+  "pics/Rose/Icon_-_Tempest_Burster.png": {
+    role: "physical",
+    buffs: ["atk_mag_up_10"],
+    debuffs: ["damage_taken_up_8", "ignore_def_10", "elemental_res_down_100"]
+  },
+
+  "pics/Rose/Icon_-_Black_Massacre.png": {
+    role: "physical",
+    buffs: [],
+    debuffs: ["ignore_def_20", "crit_damage_taken_up_12"]
+  },
+
+  "pics/Rose/Icon_-_Minerva.png": {
+    role: "magical",
+    buffs: [],
+    debuffs: ["damage_taken_up_12", "ignore_def_20", "elemental_res_down_120"]
+  },
+
+  "pics/Rose/Icon_-_Prime_Operator.png": {
+    role: "magical",
+    buffs: ["atk_mag_up_3", "damage_reduction_10"],
+    debuffs: ["damage_taken_up_8", "ignore_def_20"]
+  },
+
+  "pics/Ain/Icon_-_Richter.png": {
+    role: "physical",
+    buffs: ["atk_mag_up_20", "max_mp_60", "move_speed_1_3x"],
+    debuffs: []
+  },
+
   "pics/Ain/Icon_-_Bluhen.png": {
     role: "support",
-    buffs: ["โล่ขาว 10%", "เจนมานาไว 40%", "All Stat 5%", "ดาเมจกาย/เวทย์เพิ่มขึ้น 12%", "All Skill Damage 12%", " เร่งคูลดาวน์ 1.2x", "ลดดาเมจ 20%", "All Speed 15%", "เติมเกจ 20%"],
-    debuffs: ["เจาะกาย/เวทย์ 15%", "ลดธาตุ 150"]},
-  "pics/Ain/Icon_-_Herrscher.png": { 
+    buffs: [
+      "white_shield_10",
+      "mana_regen_40",
+      "all_stat_5",
+      "atk_mag_up_12",
+      "all_skill_damage_12",
+      "cooldown_accel_1_2x",
+      "damage_reduction_20",
+      "all_speed_15",
+      "fill_gauge_20"
+    ],
+    debuffs: ["ignore_def_15", "elemental_res_down_150"]
+  },
+
+  "pics/Ain/Icon_-_Herrscher.png": {
     role: "magical",
-    buffs: ["Critical Damage เพิ่มขึ้น 16%"], 
-    debuffs: ["เจาะกาย/เวทย์ 35%", "ลดธาตุ 100", "ลดดาเมจเวทย์ 20%"]},
-  "pics/Ain/Icon_-_Opferung.png": { 
+    buffs: ["crit_damage_up_16"],
+    debuffs: ["ignore_def_35", "elemental_res_down_100", "magic_damage_down_20"]
+  },
+
+  "pics/Ain/Icon_-_Opferung.png": {
     role: "physical",
-    buffs: ["ดาเมจกาย/เวทย์เพิ่มขึ้น 6%", "Special Active Damage เพิ่มขึ้น 5%", "ลดการใช้มานา 10%"], 
-    debuffs: ["เจาะกาย/เวทย์ 20%", "ลดดาเมจ 13%"]},
-  "pics/Laby/Icon_-_Eternity_Winner.png": { 
+    buffs: ["atk_mag_up_6", "special_active_damage_up_5", "mana_cost_down_10"],
+    debuffs: ["ignore_def_20", "damage_reduction_down_13"]
+  },
+
+  "pics/Laby/Icon_-_Eternity_Winner.png": {
     role: "physical",
     buffs: [],
-    debuffs: ["รับดาเมจกาย/เวทย์เพิ่มขึ้น 12%", "เจาะกาย/เวทย์ 20%", "ลดธาตุ 100"]},
+    debuffs: ["damage_taken_up_12", "ignore_def_20", "elemental_res_down_100"]
+  },
+
   "pics/Laby/Icon_-_Radiant_Soul.png": {
     role: "support",
-    buffs: ["เจนมานาไว 50%","เร่งคูลดาวน์ 1.2x","All Skill Damage 12%","ดาเมจกาย/เวทย์เพิ่มขึ้น 12%", "ลดดาเมจ 20%", "วิ่ง/กระโดดเพิ่มขึ้น 20%", "Action Speed เพิ่มขึ้น 15%", "reset skill CD"],
-    debuffs: ["เจาะกาย/เวทย์ 15%", "ลดธาตุ 150", "ลดดาเมจ 15%"]},
+    buffs: [
+      "mana_regen_50",
+      "cooldown_accel_1_2x",
+      "all_skill_damage_12",
+      "atk_mag_up_12",
+      "damage_reduction_20",
+      "move_jump_speed_20",
+      "action_speed_up_15",
+      "reset_skill_cd"
+    ],
+    debuffs: ["ignore_def_15", "elemental_res_down_150", "damage_reduction_down_15"]
+  },
+
   "pics/Laby/Icon_-_Nisha_Labyrinth.png": {
     role: "physical",
-    buffs: ["ดาเมจกาย/เวทย์เพิ่มขึ้น 20%"], 
-    debuffs: ["เจาะกาย/เวทย์ 10%"]},
-  "pics/Laby/Icon_-_Twins_Picaro.png": { 
+    buffs: ["atk_mag_up_20"],
+    debuffs: ["ignore_def_10"]
+  },
+
+  "pics/Laby/Icon_-_Twins_Picaro.png": {
     role: "magical",
     buffs: [],
-    debuffs: ["เจาะกาย/เวทย์ 20%"]},
-  "pics/Noah/Icon_-_Liberator.png": { 
+    debuffs: ["ignore_def_20"]
+  },
+
+  "pics/Noah/Icon_-_Liberator.png": {
     role: "physical",
-    buffs: ["ดาเมจต่อบอส 8%"], 
-    debuffs: ["เจาะกาย/เวทย์ 7%", "รับ Critical Damage เพิ่มขึ้น 12%"]},
+    buffs: ["boss_damage_8"],
+    debuffs: ["ignore_def_7", "crit_damage_taken_up_12"]
+  },
+
   "pics/Noah/Icon_-_Celestia.png": {
     role: "magical",
-    buffs: ["ดาเมจกาย/เวทย์เพิ่มขึ้น 10%", "เติมเกจ 20%","ดาเมจเพิ่มขึ้น 8%"],
-    debuffs: ["เจาะกาย/เวทย์ 15%", "รับ Critical Damage เพิ่มขึ้น 4%"]},
+    buffs: ["atk_mag_up_10", "fill_gauge_20", "damage_up_8"],
+    debuffs: ["ignore_def_15", "crit_damage_taken_up_4"]
+  },
+
   "pics/Noah/Icon_-_Nyx_Pieta.png": {
     role: "support",
-    buffs: ["เร่งHA&Master 1.5x","เร่งคูลดาวน์ 1.2x","ดาเมจกาย/เวทย์เพิ่มขึ้น 12%", "ลดดาเมจ 20%", "เติมเกจ","All Skill Damage 12%", "def กาย/เวทย์เพิ่มขึ้น 20%", "Action Speed เพิ่มขึ้น 15%","SoT"],
-    debuffs: ["เจาะกาย/เวทย์ 15%", "ลดธาตุ 150"]},
-  "pics/Noah/Icon_-_Morpheus.png": { 
+    buffs: [
+      "ha_master_accel_1_5x",
+      "cooldown_accel_1_2x",
+      "atk_mag_up_12",
+      "damage_reduction_20",
+      "fill_gauge",
+      "all_skill_damage_12",
+      "def_up_20",
+      "action_speed_up_15",
+      "sot"
+    ],
+    debuffs: ["ignore_def_15", "elemental_res_down_150"]
+  },
+
+  "pics/Noah/Icon_-_Morpheus.png": {
     role: "magical",
-    buffs: ["ดาเมจกาย/เวทย์เพิ่มขึ้น 20%"], 
-    debuffs: ["ลดธาตุ 100"]},
+    buffs: ["atk_mag_up_20"],
+    debuffs: ["elemental_res_down_100"]
+  },
+
   "pics/Lithia/Icon_-_Gembliss.png": {
     role: "physical",
-    buffs: ["ดาเมจกาย/เวทย์เพิ่มขึ้น 20%", "เติมเกจ 20%", "ลดดาเมจ 20%"],
-    debuffs: []},
+    buffs: ["atk_mag_up_20", "fill_gauge_20", "damage_reduction_20"],
+    debuffs: []
+  },
+
   "pics/Lithia/Icon_-_Avarice.png": {
     role: "support",
-    buffs: ["Action Speed เพิ่มขึ้น 15%" ,"ดาเมจกาย/เวทย์เพิ่มขึ้น 12%", "เร่งคูลดาวน์ 1.2x", "All Skill Damage 12%", "เติมเกจ", "ลดดาเมจ 20%", "def กาย/เวทย์เพิ่มขึ้น 20%", "SoT",
-          "วิ่ง/กระโดดเพิ่มขึ้น (เฉพาะคนผูก) 15%", "อเวคไว (เฉพาะคนผูก) 10%", "ตัวแดง (เฉพาะคนผูก)"], 
-    debuffs: ["เจาะกาย/เวทย์ 15%", "ลดธาตุ 150"]},
+    buffs: [
+      "action_speed_up_15",
+      "atk_mag_up_12",
+      "cooldown_accel_1_2x",
+      "all_skill_damage_12",
+      "fill_gauge",
+      "damage_reduction_20",
+      "def_up_20",
+      "sot",
+      "linked_move_jump_speed_15",
+      "linked_awaken_speed_10",
+      "linked_Super_Armor"
+    ],
+    debuffs: ["ignore_def_15", "elemental_res_down_150"]
+  },
+
   "pics/Lithia/Icon_-_Achlys.png": {
     role: "magical",
-    buffs: [], 
-    debuffs: ["รับดาเมจกาย/เวทย์เพิ่มขึ้น 12%", "เจาะกาย/เวทย์ 20%"]},
+    buffs: [],
+    debuffs: ["damage_taken_up_12", "ignore_def_20"]
+  },
+
   "pics/Lithia/Icon_-_Mischief.png": {
     role: "magical",
     buffs: [],
-    debuffs: ["เจาะกาย/เวทย์ 20%", "รับ Critical Damage เพิ่มขึ้น 12.5%", "ลดธาตุ 125"]},
-  };
+    debuffs: ["ignore_def_20", "crit_damage_taken_up_12_5", "elemental_res_down_125"]
+  }
+};

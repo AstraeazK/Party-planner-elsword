@@ -13,18 +13,9 @@
 <body class="bg-gray-900 text-white">
   <header class="relative overflow-hidden text-center py-8 border-b border-pink-500 bg-gray-950 shadow-[0_0_25px_rgba(255,20,147,0.4)]">
     <div class="absolute inset-0 bg-gradient-to-r from-pink-700/20 via-fuchsia-600/20 to-pink-700/20 blur-2xl"></div>
-    <!-- Help + Language Buttons -->
-    <div class="fixed top-4 left-4 z-50 flex items-start gap-2">
-      <button id="help-btn"
-        class="w-10 h-10 rounded-full
-              bg-pink-500 text-white
-              flex items-center justify-center
-              hover:bg-pink-400
-              shadow-lg shadow-pink-500/40
-              transition">
-        <img src="assets/setting.png" class="w-5 h-5" alt="Setting">
-      </button>
 
+    <!-- Help + Language Buttons -->
+    <div class="fixed top-4 right-4 z-50 flex items-start gap-2">
       <div class="relative">
         <button id="language-btn"
           class="w-10 h-10 rounded-full
@@ -37,14 +28,26 @@
           <img src="assets/language.png" class="w-5 h-5" alt="Language">
         </button>
 
+
+
         <div id="language-dropdown"
-          class="hidden absolute top-full left-0 mt-2 w-28 overflow-hidden rounded-xl border border-pink-500/40 bg-gray-900 text-left shadow-lg shadow-pink-500/30">
+          class="hidden absolute top-full right-0 mt-2 w-28 overflow-hidden rounded-xl border border-pink-500/40 bg-gray-900 text-left shadow-lg shadow-pink-500/30">
           <button type="button" class="language-option w-full px-3 py-2 text-sm text-white hover:bg-pink-500/20"
             data-lang="th">TH</button>
           <button type="button" class="language-option w-full px-3 py-2 text-sm text-white hover:bg-pink-500/20"
             data-lang="en">EN</button>
         </div>
       </div>
+
+      <button id="help-btn"
+        class="w-10 h-10 rounded-full
+              bg-pink-500 text-white
+              flex items-center justify-center
+              hover:bg-pink-400
+              shadow-lg shadow-pink-500/40
+              transition">
+        <img src="assets/setting.png" class="w-5 h-5" alt="Setting">
+      </button>
     </div>
 
     <!-- Help Hint Bubble
@@ -80,11 +83,11 @@
                   rounded-2xl p-5
                   border border-pink-500/40
                   shadow-[0_0_25px_rgba(255,20,147,0.35)]
-                  absolute top-16 left-4">
+                  absolute top-16 right-4">
 
         <!-- Header -->
         <div class="flex items-center justify-between mb-4">
-          <h2 class="text-lg font-bold text-pink-300 justify-center">Setting</h2>
+          <h2 class="text-lg font-bold text-pink-300 justify-center" data-i18n="ui.setting">Setting</h2>
           <button id="help-close"
             class="text-gray-400 hover:text-white text-xl leading-none">✕</button>
         </div>
@@ -93,22 +96,22 @@
 
           <!-- Controls -->
           <div>
-            <h3 class="text-pink-400 font-semibold mb-2">Controls</h3>
+            <h3 class="text-pink-400 font-semibold mb-2" data-i18n="ui.controls">Controls</h3>
 
             <div class="space-y-2 text-gray-200">
 
               <!-- Left Click + Hold -->
               <div class="grid grid-cols-[28px_120px_1fr] items-center gap-2">
                 <img src="assets/left-click.png" class="w-5 h-5" alt="Left Click">
-                <span class="text-gray-300">คลิกซ้าย + ลาก</span>
-                <span class="text-left">ใส่ตัวละครลงช่อง</span>
+                <span class="text-gray-300" data-i18n="ui.left_click_drag">Left Click + Hold</span>
+                <span class="text-left" data-i18n="ui.left_click_desc">Place Character in Slot</span>
               </div>
 
               <!-- Right Click -->
               <div class="grid grid-cols-[28px_120px_1fr] items-center gap-2">
                 <img src="assets/right-click.png" class="w-5 h-5" alt="Right Click">
-                <span class="text-gray-300">คลิกขวา</span>
-                <span class="text-left">ใส่ตัวละครในแถว / ลบตัวละครออกจากช่อง</span>
+                <span class="text-gray-300" data-i18n="ui.right_click">Right Click</span>
+                <span class="text-left" data-i18n="ui.right_click_desc">Add Character to Row / Remove from Slot</span>
               </div>
 
             </div>
@@ -118,34 +121,34 @@
 
           <!-- Row Actions -->
           <div>
-            <h3 class="text-pink-400 font-semibold mb-1">Actions</h3>
+            <h3 class="text-pink-400 font-semibold mb-1" data-i18n="ui.actions">Actions</h3>
               <ul class="space-y-2 text-gray-200">
                 <li class="grid grid-cols-[28px_90px_1fr] items-center gap-2">
                   <i data-lucide="brush-cleaning"
                     class="w-5 h-5 text-pink-400"></i>
-                  <span class="font-semibold text-gray-300">Brush</span>
-                  <span class="text-left">ลบตัวละครทั้งแถว</span>
+                  <span class="font-semibold text-gray-300" data-i18n="ui.brush">Brush</span>
+                  <span class="text-left" data-i18n="ui.brush_desc">Clear Entire Row</span>
                 </li>
 
                 <li class="grid grid-cols-[28px_90px_1fr] items-center gap-2">
                   <i data-lucide="columns"
                     class="w-5 h-5 text-pink-400"></i>
-                  <span class="font-semibold text-gray-300">Compare</span>
-                  <span class="text-left">เปรียบเทียบบัพ / ดีบัฟกับแถวอื่น</span>
+                  <span class="font-semibold text-gray-300" data-i18n="ui.compare">Compare</span>
+                  <span class="text-left" data-i18n="ui.compare_desc">Compare Buffs/Debuffs with Other Row</span>
                 </li>
 
                 <li class="grid grid-cols-[28px_90px_1fr] items-center gap-2">
                   <i data-lucide="scroll-text"
                     class="w-5 h-5 text-pink-400"></i>
-                  <span class="font-semibold text-gray-300">Scroll</span>
-                  <span class="text-left">ดูรายละเอียดบัพ / ดีบัฟ</span>
+                  <span class="font-semibold text-gray-300" data-i18n="ui.scroll">Scroll</span>
+                  <span class="text-left" data-i18n="ui.scroll_desc">View Buff/Debuff Details</span>
                 </li>
             </ul>
           </div>
 
           <div class="border-b border-pink-500/30 my-2"></div>
             <div class="space-y-4">
-              <h3 class="text-pink-400 font-semibold text-lg">Buff</h3>
+              <h3 class="text-pink-400 font-semibold text-lg" data-i18n="ui.buff_section">Buff</h3>
                 <ul class="space-y-3 text-gray-200">
                 <div class="flex items-center gap-4 bg-gray-700/50 p-3 rounded-lg">
                   <!-- Toggle Show Buff -->
@@ -153,17 +156,17 @@
                     <i data-lucide="maximize"
                       class="w-6 h-6 text-pink-400"></i>
 
-                    <span class="font-semibold text-gray-300">
-                      เปิดปิดตัวเลข Buff/Debuff
+                    <span class="font-semibold text-gray-300" data-i18n="ui.show_buff_numbers">
+                      Show/Hide Buff/Debuff Numbers
                     </span>
 
                     <div class="flex h-9 border border-gray-600 rounded-md overflow-hidden text-xs">
                       <button class="buffgroup-toggle px-4 flex items-center justify-center bg-gray-700 text-gray-300 hover:bg-gray-600"
-                              data-group-id="Show_buff" data-value="close">
+                              data-group-id="Show_buff" data-value="close" data-i18n="ui.close">
                         Close
                       </button>
                       <button class="buffgroup-toggle px-4 flex items-center justify-center bg-green-600 text-white"
-                              data-group-id="Show_buff" data-value="open">
+                              data-group-id="Show_buff" data-value="open" data-i18n="ui.open">
                         Open
                       </button>
                     </div>
@@ -192,13 +195,13 @@
                 <div class="flex h-9 border border-gray-600 rounded-md overflow-hidden text-xs ml-auto">
                   <button class="buffgroup-toggle px-4 flex items-center justify-center bg-green-600 text-white"
                           data-group-id="sharpshooter_syndrome"
-                          data-value="Action Speed เพิ่มขึ้น 18%">
+                          data-value="action_speed_up_18">
                     Action Speed 18%
                   </button>
 
                   <button class="buffgroup-toggle px-4 flex items-center justify-center bg-gray-700 text-gray-300 hover:bg-gray-600"
                           data-group-id="sharpshooter_syndrome"
-                          data-value="Critical 10%">
+                          data-value="critical_10">
                     Critical 10%
                   </button>
                 </div>
@@ -227,7 +230,7 @@
                 <div class="flex h-9 border border-gray-600 rounded-md overflow-hidden text-xs ml-auto">
                   <button class="buffgroup-toggle px-4 flex items-center justify-center bg-green-600 text-white"
                           data-group-id="Hyperactive_OM"
-                          data-value="Mass Examination"
+                          data-value="ha_master_accel_1_2x"
                           data-skill-icon="assets/skills/Mass_Examination.png"
                           data-skill-link="https://elwiki.net/w/Mass_Examination">
                     Mass Examination
@@ -235,7 +238,7 @@
 
                   <button class="buffgroup-toggle px-4 flex items-center justify-center bg-gray-700 text-gray-300 hover:bg-gray-600"
                           data-group-id="Hyperactive_OM"
-                          data-value="Trolley Dilemma"
+                          data-value="linked_max_hp_1_2x,linked_max_mp_60,linked_mana_cost_down_20"
                           data-skill-icon="assets/skills/Trolley_Dilemma.png"
                           data-skill-link="https://elwiki.net/w/Trolley_Dilemma">
                     Trolley Dilemma
@@ -480,7 +483,7 @@
             </div>
 
             <div>
-              <h3 class="text-yellow-400 font-semibold mb-2">⚠️ Missing Buffs/Debuffs</h3>
+              <h3 class="text-yellow-400 font-semibold mb-2" data-i18n="ui.missing_buffs_debuffs">⚠️ Missing Buffs/Debuffs</h3>
               <ul id="missing-buff-list" class="hover:text-yellow-300 transition list-disc list-inside space-y-1"></ul>
             </div>
 
