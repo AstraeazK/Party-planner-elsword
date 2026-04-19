@@ -162,7 +162,8 @@ document.addEventListener("DOMContentLoaded", () => {
   const filterBtns = document.querySelectorAll("#char-filter-buttons .filter-btn");
 
   filterBtns.forEach(btn => {
-    btn.addEventListener("click", () => {
+     btn.addEventListener("click", (e) => {
+      e.stopPropagation();
       const role = btn.dataset.role;
       filterCharacters(role);
       filterBtns.forEach(b => {
@@ -1096,9 +1097,16 @@ async function showCompareModal(selectedIndex) {
     const isInsideBuffSection = e.composedPath().some(
       (el) => el.id === "buff-section"
     );
+    const isInsideTopControls = e.composedPath().some(
+      (el) =>
+        el?.id === "language-btn" ||
+        el?.id === "language-dropdown" ||
+        el?.id === "help-btn" ||
+        el?.id === "help-modal"
+    );
     createClickEffect(e);
 
-    if (!isInsidePartyRow && !isInsideBuffSection) {
+    if (!isInsidePartyRow && !isInsideBuffSection && !isInsideTopControls) {
       clearRowSelection();
       ["buff-list", "debuff-list", "missing-buff-list"].forEach((id) => {
         const el = document.getElementById(id);
@@ -1139,6 +1147,7 @@ async function showCompareModal(selectedIndex) {
 
   languageOptions.forEach((option) => {
     option.addEventListener('click', (e) => {
+      e.stopPropagation();
       const lang = option.dataset.lang;
       if (!lang) return;
       currentLanguage = lang;
@@ -1165,7 +1174,8 @@ async function showCompareModal(selectedIndex) {
     helpModal?.classList.remove('hidden');
   });
 
-  helpClose?.addEventListener('click', () => {
+  helpClose?.addEventListener('click', (e) => {
+    e.stopPropagation();
     helpModal?.classList.add('hidden');
   });
 
