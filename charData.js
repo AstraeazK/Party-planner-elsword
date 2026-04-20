@@ -168,7 +168,7 @@ export const charData = {
 
   "pics/Chung/Icon_-_Centurion.png": {
     role: "magical",
-    buffs: ["damage_reduction_20"],
+    buffs: ["damage_reduction_20","Super_Armor"],
     debuffs: ["ignore_def_20", "damage_taken_up_12"]
   },
 
