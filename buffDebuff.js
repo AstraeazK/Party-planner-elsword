@@ -89,6 +89,48 @@ export const BUFF_DISPLAY_ORDER = [
   "เจนมานาไว",
 ];
 
+export const BUFF_DISPLAY_ORDER_EN = [
+  "All Stats",
+  "Physical/Magical Attack",
+  "Boss Damage",
+  "Damage",
+  "Damage to NonBoss/MidBoss Monsters",
+  "All Skill Damage",
+  "All Damage",
+  "Special Active Skill Damage",
+  "Critical Damage",
+  "Strength & Bravery Skill Damage",
+  "Critical",
+  "Maximize",
+  "Low HP Damage 10% (>50% HP)",
+  "Low HP Damage 15% (>10% HP)",
+  "Damage Reduction",
+  "Boss Damage Reduction",
+  "Physical/Magical Defense",
+  "Shield",
+  "Max HP",
+  "Max HP Increase",
+  "Max MP",
+  "Cooldown Acceleration",
+  "HA & Master Skill Cooldown",
+  "Cooldown Reduction",
+  "Cooldown Cut",
+  "Reset Skill Cooldown",
+  "All Speed",
+  "Action Speed",
+  "Movement/Jump Speed",
+  "Movement Speed",
+  "Movement Speed 1.3x",
+  "Special Resource",
+  "Super Armor",
+  "SoT",
+  "(Vow)",
+  "Potion Cooldown Faster",
+  "Character Size",
+  "Mana Cost",
+  "Mana Recovery",
+];
+
 export const DEBUFF_DISPLAY_ORDER = [
   "เจาะกาย/เวทย์",
   "รับดาเมจกาย/เวทย์เพิ่มขึ้น",
@@ -105,6 +147,21 @@ export const DEBUFF_DISPLAY_ORDER = [
   "ลดความเร็ว",
 ];
 
+export const DEBUFF_DISPLAY_ORDER_EN = [
+  "Ignore Physical/Magical Defense",
+  "Damage Taken",
+  "Damage Taken",
+  "Critical Damage Taken",
+  "Damage Taken (>50% HP)",
+  "Damage Taken (<50% HP)",
+  "Critical Damage Taken (>=76% HP)",
+  "Critical Damage Taken (51~75% HP)",
+  "Critical Damage Taken (<=50% HP)",
+  "Damage Reduction from Monsters",
+  "Magical Damage",
+  "Elemental Resistance",
+  "Speed",
+];
 
 const UP_ICON = "assets/up-triangle.png";
 const DOWN_ICON = "assets/down-triangle.png";
