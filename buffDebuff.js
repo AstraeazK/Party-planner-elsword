@@ -25,8 +25,8 @@ const essentialDebuffs = [
 
 const essentialDebuffs_EN = [
   "Ignore Physical/Magical Defense",
-  "Increase Damage Taken",
-  "Increase Critical Damage Taken",
+  "Damage Taken",
+  "Critical Damage Taken",
   "Damage Reduction from Monsters",
 ];
 
