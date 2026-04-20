@@ -6,6 +6,9 @@ export const Char_TH = {
     damage_reduction_20: "ลดดาเมจ 20%",
     damage_reduction_30: "ลดดาเมจ 30%",
 
+    def_up_15: "def กาย/เวทย์เพิ่มขึ้น 15%",
+    def_up_20: "def กาย/เวทย์เพิ่มขึ้น 20%",
+
     move_speed_15: "วิ่งเร็วขึ้น 15%",
     move_speed_30: "วิ่งเร็วขึ้น 30%",
     move_speed_1_3x: "วิ่งไวขึ้น 1.3x",

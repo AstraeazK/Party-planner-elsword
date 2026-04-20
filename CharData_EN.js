@@ -6,6 +6,9 @@ export const Char_EN = {
     damage_reduction_20: "Damage Reduction 20%",
     damage_reduction_30: "Damage Reduction 30%",
 
+    def_up_15: "def phy/mag increase 15%",
+    def_up_20: "def phy/mag increase 20%",
+
     move_speed_15: "Movement Speed 15%",
     move_speed_30: "Movement Speed 30%",
     move_speed_1_3x: "Movement Speed 1.3x",
