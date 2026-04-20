@@ -54,10 +54,10 @@ export const Char_EN = {
     special_active_damage_up_10: "Special Active Skill Damage 10%",
     special_active_damage_up_12: "Special Active Skill Damage 12%",
 
-    max_hp_10: "Max HP 10%",
-    max_hp_15: "Max HP 15%",
-    max_mp_50: "Max MP 50",
-    max_mp_60: "Max MP 60",
+    max_hp_10: "MAX HP 10%",
+    max_hp_15: "MAX HP 15%",
+    max_mp_50: "MAX MP 50",
+    max_mp_60: "MAX MP 60",
 
     mana_cost_down_6: "Mana Cost 6%",
     mana_cost_down_10: "Mana Cost 10%",
@@ -68,8 +68,8 @@ export const Char_EN = {
     ha_master_accel_1_2x: "HA & Master Skill Cooldown 1.2x",
     ha_master_accel_1_5x: "HA & Master Skill Cooldown 1.5x",
 
-    mana_regen_40: "Mana Recovery 40%",
-    mana_regen_50: "Mana Recovery 50%",
+    mana_regen_40: "MP Gain 40%",
+    mana_regen_50: "MP Gain 50%",
 
     reset_skill_cd: "Reset Skill Cooldown",
 
@@ -80,8 +80,8 @@ export const Char_EN = {
     linked_Super_Armor: "Super Armor (Vow)",
 
     size_up_30: "Character Size 30%",
-    linked_max_hp_1_2x: "Max HP 1.2x (Vow)",
-    linked_max_mp_60: "Max MP 60 (Vow)",
+    linked_max_hp_1_2x: "MAX HP 1.2x (Vow)",
+    linked_max_mp_60: "MAX MP 60 (Vow)",
 
     non_boss_damage_10: "Damage to NonBoss/MidBoss Monsters 10%",
 
@@ -155,7 +155,7 @@ export const Char_EN = {
     damage_reduction_down_31: "Damage Reduction from Monsters 31%",
     damage_reduction_down_50: "Damage Reduction from Monsters 50%",
 
-    magic_damage_down_20: "Magical Damage 20%"
+    magic_damage_down_20: "Magical Damage Reduction 20%"
   },
 
   group: {

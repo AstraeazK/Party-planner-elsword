@@ -1,4 +1,7 @@
-import { calculateMissingBuffs, essentialBuffs, essentialBuffs_EN, essentialDebuffs, essentialDebuffs_EN, BUFF_DISPLAY_ORDER, DEBUFF_DISPLAY_ORDER, normalizeKey, stripNumbersAndPercents } from "./buffDebuff.js";
+import {  calculateMissingBuffs, essentialBuffs, essentialBuffs_EN, 
+          essentialDebuffs, essentialDebuffs_EN, BUFF_DISPLAY_ORDER, DEBUFF_DISPLAY_ORDER, 
+          normalizeKey, stripNumbersAndPercents, BUFF_DISPLAY_ORDER_EN, DEBUFF_DISPLAY_ORDER_EN
+        } from "./buffDebuff.js";
 import { charData } from "./charData.js";
 import { pics } from "./pics.js";
 import { buildCompareMap } from './buffDebuff.js';
@@ -26,10 +29,10 @@ const essentialDebuffsMap = {
   en: essentialDebuffs_EN
 };
 
-console.log('Translation data loaded:', {
-  th: Char_TH?.ui ? '✓' : '✗',
-  en: Char_EN?.ui ? '✓' : '✗'
-});
+// console.log('Translation data loaded:', {
+//   th: Char_TH?.ui ? '✓' : '✗',
+//   en: Char_EN?.ui ? '✓' : '✗'
+// });
 
 function translateBuff(code, type = 'buff') {
   const langData = translations[currentLanguage];
@@ -507,7 +510,7 @@ function updateBuffs() {
   });
 
   const { mergedBuffs, mergedDebuffs } = mergeBuffsAndDebuffs(allBuffs, allDebuffs);
-  const { missingBuffs, missingDebuffs } = calculateMissingBuffs(allBuffs, allDebuffs);
+  const { missingBuffs, missingDebuffs } = calculateMissingBuffs(allBuffs, allDebuffs, currentLanguage);
 
   renderBuffLists(mergedBuffs, mergedDebuffs, missingBuffs, missingDebuffs);
 }
@@ -621,7 +624,8 @@ function renderBuffLists(mergedBuffs, mergedDebuffs, missingBuffs, missingDebuff
 
   if (buffListEl) {
     buffListEl.innerHTML = '';
-    const sortedBuffs = sortByDisplayOrder(mergedBuffs, BUFF_DISPLAY_ORDER);
+    const buffDisplayOrder = currentLanguage === 'en' ? BUFF_DISPLAY_ORDER_EN : BUFF_DISPLAY_ORDER;
+    const sortedBuffs = sortByDisplayOrder(mergedBuffs, buffDisplayOrder);
     sortedBuffs.forEach(b => {
       const li = document.createElement('li');
       li.className = 'text-green-200 relative cursor-default';
@@ -644,7 +648,8 @@ function renderBuffLists(mergedBuffs, mergedDebuffs, missingBuffs, missingDebuff
 
   if (debuffListEl) {
     debuffListEl.innerHTML = '';
-    const sortedDebuffs = sortByDisplayOrder(mergedDebuffs, DEBUFF_DISPLAY_ORDER);
+    const debuffDisplayOrder = currentLanguage === 'en' ? DEBUFF_DISPLAY_ORDER_EN : DEBUFF_DISPLAY_ORDER;
+    const sortedDebuffs = sortByDisplayOrder(mergedDebuffs, debuffDisplayOrder);
     sortedDebuffs.forEach(d => {
       const li = document.createElement('li');
       li.className = 'text-pink-200 relative cursor-default';
@@ -1151,7 +1156,7 @@ async function showCompareModal(selectedIndex) {
       const lang = option.dataset.lang;
       if (!lang) return;
       currentLanguage = lang;
-      console.log(`Changing language to: ${lang}`, translations[lang]);
+      // console.log(`Changing language to: ${lang}`, translations[lang]);
       updateLanguageMarks();
       languageDropdown?.classList.add('hidden');
       languageBtn?.setAttribute('aria-label', `Language: ${lang.toUpperCase()}`);
@@ -1159,7 +1164,7 @@ async function showCompareModal(selectedIndex) {
       setTimeout(() => {
         updateUILanguage();
       }, 100);
-      console.log(`Language selected: ${lang}`);
+      // console.log(`Language selected: ${lang}`);
     });
   });
 

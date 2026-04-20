@@ -12,7 +12,7 @@ const essentialBuffs_EN = [
   "Boss Damage",
   "Damage Reduction",
   "Critical Damage Increase",
-  "Action speed Increase",
+  "Action Speed",
   "Cooldown Acceleration",
 ];
 
@@ -20,7 +20,7 @@ const essentialDebuffs = [
   "เจาะกาย/เวทย์",
   "รับดาเมจกาย/เวทย์เพิ่มขึ้น",
   "รับ Critical Damage เพิ่มขึ้น",
-  "ลดดาเมจจากมอน",
+  "ดาเมจจากมอนลดลง",
 ];
 
 const essentialDebuffs_EN = [
@@ -33,18 +33,19 @@ const essentialDebuffs_EN = [
 const buffAliases = {
   "ดาเมจกาย/เวทย์เพิ่มขึ้น": ["ดาเมจกาย/เวทย์เพิ่มขึ้น", "Physical/Magical Attack"],
   "ดาเมจต่อบอส": ["ดาเมจต่อบอส", "Boss Damage"],
-  "ลดดาเมจ": ["ลดดาเมจ", "def กาย/เวทย์เพิ่มขึ้น", "ลดดาเมจจากบอส", "Damage Reduction"],
-  "Critical Damage เพิ่มขึ้น": ["Critical Damage เพิ่มขึ้น", "Critical Damage Increase"],
-  "Action speed เพิ่มขึ้น": ["Action speed เพิ่มขึ้น", "Action speed Increase", "All Speed"],
-  "เร่งคูลดาวน์": ["เร่งคูลดาวน์", "ลดคูลดาวน์", "reset skill CD", "หั่นคูลดาวน์", "Cooldown Acceleration"],
+  "ลดดาเมจ": ["ลดดาเมจ", "def กาย/เวทย์เพิ่มขึ้น", "ลดดาเมจจากบอส", "Damage Reduction", "def phy/mag increase","Boss Damage Reduction"],
+  "Critical Damage เพิ่มขึ้น": ["Critical Damage เพิ่มขึ้น", "Critical Damage"],
+  "Action speed เพิ่มขึ้น": ["Action speed เพิ่มขึ้น", "Action Speed", "All Speed"],
+  "เร่งคูลดาวน์": ["เร่งคูลดาวน์", "ลดคูลดาวน์", "reset skill CD", "Cooldown Acceleration"],
   "วิ่ง/กระโดดเพิ่มขึ้น": ["วิ่ง/กระโดดเพิ่มขึ้น", "วิ่งเร็วขึ้น", "All Speed"],
 };
 
 const debuffAliases = {
-  "เจาะกาย/เวทย์": ["เจาะกาย/เวทย์", "เจาะเวทย์", "เจาะกาย", "Ignore Physical/Magical Defense"],
-  "รับดาเมจกาย/เวทย์เพิ่มขึ้น": ["รับดาเมจกาย/เวทย์เพิ่มขึ้น", "รับดาเมจเพิ่มขึ้น", "Increase Damage Taken"],
-  "รับ Critical Damage เพิ่มขึ้น": ["รับ Critical Damage เพิ่มขึ้น", "Increase Critical Damage Taken"],
-  "ลดดาเมจ": ["ลดดาเมจจากมอน", "Damage Reduction from Monsters"],
+  "เจาะกาย/เวทย์": ["เจาะกาย/เวทย์", "Ignore Physical/Magical Defense"],
+  "รับดาเมจกาย/เวทย์เพิ่มขึ้น": [ "รับดาเมจกาย/เวทย์เพิ่มขึ้น", "รับดาเมจเพิ่มขึ้น", "Damage Taken","รับดาเมจกาย/เวทย์เพิ่มขึ้น (>50% HP)",
+                            "รับดาเมจกาย/เวทย์เพิ่มขึ้น (<50% HP)","Damage Taken 10% (>50% HP)","Damage Taken 15% (>10% HP)"],
+  "รับ Critical Damage เพิ่มขึ้น": ["รับ Critical Damage เพิ่มขึ้น", "Critical Damage Taken"],
+  "ดาเมจจากมอนลดลง": ["ดาเมจจากมอนลดลง", "Damage Reduction from Monsters"],
 };
 
 export const BUFF_DISPLAY_ORDER = [
@@ -72,7 +73,6 @@ export const BUFF_DISPLAY_ORDER = [
   "เร่งคูลดาวน์",
   "เร่งHA&Master",
   "ลดคูลดาวน์",
-  "หั่นคูลดาวน์",
   "reset skill CD",
   "All Speed",
   "Action speed เพิ่มขึ้น",
@@ -106,15 +106,14 @@ export const BUFF_DISPLAY_ORDER_EN = [
   "Low HP Damage 15% (>10% HP)",
   "Damage Reduction",
   "Boss Damage Reduction",
-  "Physical/Magical Defense",
+  "def phy/mag increase",
   "Shield",
-  "Max HP",
-  "Max HP Increase",
-  "Max MP",
+  "MAX HP",
+  "MAX HP Increase",
+  "MAX MP",
   "Cooldown Acceleration",
   "HA & Master Skill Cooldown",
   "Cooldown Reduction",
-  "Cooldown Cut",
   "Reset Skill Cooldown",
   "All Speed",
   "Action Speed",
@@ -128,20 +127,19 @@ export const BUFF_DISPLAY_ORDER_EN = [
   "Potion Cooldown Faster",
   "Character Size",
   "Mana Cost",
-  "Mana Recovery",
+  "MP Gain",
 ];
 
 export const DEBUFF_DISPLAY_ORDER = [
   "เจาะกาย/เวทย์",
   "รับดาเมจกาย/เวทย์เพิ่มขึ้น",
-  "รับดาเมจเพิ่มขึ้น",
-  "รับ Critical Damage เพิ่มขึ้น",
   "รับดาเมจกาย/เวทย์เพิ่มขึ้น (>50% HP)",
   "รับดาเมจกาย/เวทย์เพิ่มขึ้น (<50% HP)",
+  "รับ Critical Damage เพิ่มขึ้น",
   "รับ Critical Damage เพิ่มขึ้น (>=76% HP)",
   "รับ Critical Damage เพิ่มขึ้น (51~75% HP)",
   "รับ Critical Damage เพิ่มขึ้น (<=50% HP)",
-  "ลดดาเมจ",
+  "ดาเมจจากมอนลดลง",
   "ลดดาเมจเวทย์",
   "ลดธาตุ",
   "ลดความเร็ว",
@@ -150,15 +148,14 @@ export const DEBUFF_DISPLAY_ORDER = [
 export const DEBUFF_DISPLAY_ORDER_EN = [
   "Ignore Physical/Magical Defense",
   "Damage Taken",
-  "Damage Taken",
-  "Critical Damage Taken",
   "Damage Taken (>50% HP)",
   "Damage Taken (<50% HP)",
+  "Critical Damage Taken",
   "Critical Damage Taken (>=76% HP)",
   "Critical Damage Taken (51~75% HP)",
   "Critical Damage Taken (<=50% HP)",
   "Damage Reduction from Monsters",
-  "Magical Damage",
+  "Magical Damage Reduction",
   "Elemental Resistance",
   "Speed",
 ];

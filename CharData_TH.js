@@ -113,7 +113,7 @@ export const Char_TH = {
     ignore_def_40: "เจาะกาย/เวทย์ 40%",
     ignore_def_54: "เจาะกาย/เวทย์ 54%",
 
-    damage_taken_up_5: "รับดาเมจเพิ่มขึ้น 5%",
+    damage_taken_up_5: "รับดาเมจกาย/เวทย์เพิ่มขึ้น 5%",
     damage_taken_up_7: "รับดาเมจกาย/เวทย์เพิ่มขึ้น 7%",
     damage_taken_up_8: "รับดาเมจกาย/เวทย์เพิ่มขึ้น 8%",
     damage_taken_up_12: "รับดาเมจกาย/เวทย์เพิ่มขึ้น 12%",
@@ -148,12 +148,12 @@ export const Char_TH = {
     speed_down_40: "ลดความเร็ว 40%",
     speed_down_50: "ลดความเร็ว 50%",
 
-    damage_reduction_down_10: "ลดดาเมจจากมอน 10%",
-    damage_reduction_down_13: "ลดดาเมจจากมอน 13%",
-    damage_reduction_down_15: "ลดดาเมจจากมอน 15%",
-    damage_reduction_down_20: "ลดดาเมจจากมอน 20%",
-    damage_reduction_down_31: "ลดดาเมจจากมอน 31%",
-    damage_reduction_down_50: "ลดดาเมจจากมอน 50%",
+    damage_reduction_down_10: "ดาเมจจากมอนลดลง 10%",
+    damage_reduction_down_13: "ดาเมจจากมอนลดลง 13%",
+    damage_reduction_down_15: "ดาเมจจากมอนลดลง 15%",
+    damage_reduction_down_20: "ดาเมจจากมอนลดลง 20%",
+    damage_reduction_down_31: "ดาเมจจากมอนลดลง 31%",
+    damage_reduction_down_50: "ดาเมจจากมอนลดลง 50%",
 
     magic_damage_down_20: "ลดดาเมจเวทย์ 20%"
   },
