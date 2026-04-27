@@ -510,7 +510,7 @@ function updateBuffs() {
   });
 
   const { mergedBuffs, mergedDebuffs } = mergeBuffsAndDebuffs(allBuffs, allDebuffs);
-  const { missingBuffs, missingDebuffs } = calculateMissingBuffs(allBuffs, allDebuffs, currentLanguage);
+  const { missingBuffs, missingDebuffs } = calculateMissingBuffs(allBuffs, allDebuffs);
 
   renderBuffLists(mergedBuffs, mergedDebuffs, missingBuffs, missingDebuffs);
 }

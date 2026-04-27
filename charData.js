@@ -1,7 +1,7 @@
 export const charData = {
   "pics/Elsword/Icon_-_Knight_Emperor.png": {
     role: "physical",
-    buffs: ["damage_reduction_20"],
+    buffs: ["damage_reduction_20","Super_Armor"],
     debuffs: ["ignore_def_20", "damage_taken_up_12"]
   },
 
@@ -148,7 +148,7 @@ export const charData = {
 
   "pics/Chung/Icon_-_Comet_Crusader.png": {
     role: "physical",
-    buffs: ["damage_reduction_30"],
+    buffs: ["damage_reduction_30","Super_Armor"],
     debuffs: ["ignore_def_20", "damage_taken_up_18", "damage_reduction_down_50"]
   },
 

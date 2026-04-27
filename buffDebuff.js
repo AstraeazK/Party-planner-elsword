@@ -3,7 +3,7 @@ const essentialBuffs = [
   "ดาเมจต่อบอส",
   "ลดดาเมจ",
   "Critical Damage เพิ่มขึ้น",
-  "Action speed เพิ่มขึ้น",
+  "Action Speed เพิ่มขึ้น",
   "เร่งคูลดาวน์",
 ];
 
@@ -35,7 +35,7 @@ const buffAliases = {
   "ดาเมจต่อบอส": ["ดาเมจต่อบอส", "Boss Damage"],
   "ลดดาเมจ": ["ลดดาเมจ", "def กาย/เวทย์เพิ่มขึ้น", "ลดดาเมจจากบอส", "Damage Reduction", "def phy/mag increase","Boss Damage Reduction"],
   "Critical Damage เพิ่มขึ้น": ["Critical Damage เพิ่มขึ้น", "Critical Damage"],
-  "Action speed เพิ่มขึ้น": ["Action speed เพิ่มขึ้น", "Action Speed", "All Speed"],
+  "Action Speed เพิ่มขึ้น": ["Action Speed เพิ่มขึ้น", "Action Speed", "All Speed"],
   "เร่งคูลดาวน์": ["เร่งคูลดาวน์", "ลดคูลดาวน์", "reset skill CD", "Cooldown Acceleration"],
   "วิ่ง/กระโดดเพิ่มขึ้น": ["วิ่ง/กระโดดเพิ่มขึ้น", "วิ่งเร็วขึ้น", "All Speed"],
 };
@@ -165,17 +165,21 @@ const DOWN_ICON = "assets/down-triangle.png";
 
 // ---------------- Missing Buffs ----------------
 function calculateMissingBuffs(activeBuffs, activeDebuffs) {
-  const normalize = str => str.toLowerCase().replace(/\s+/g, "").replace(/[0-9.%x×]/g,"");
-  const includesAny = (text, keywords) => keywords.some(k => normalize(text).includes(normalize(k)));
+  const normalize = str => String(str || '')
+    .toLowerCase()
+    .replace(/\s+/g, "")
+    .replace(/[0-9.%x×]/g, "")
+    .replace(/[^a-zก-๙]/g, "");
+  const matchesAny = (text, keywords) => keywords.some(k => normalize(text) === normalize(k));
 
   const missingBuffs = essentialBuffs.filter(essential => {
     const aliases = buffAliases[essential] || [essential];
-    return !activeBuffs.some(({buff}) => includesAny(buff, aliases));
+    return !activeBuffs.some(({buff}) => matchesAny(buff, aliases));
   });
 
   const missingDebuffs = essentialDebuffs.filter(essential => {
     const aliases = debuffAliases[essential] || [essential];
-    return !activeDebuffs.some(({buff}) => includesAny(buff, aliases));
+    return !activeDebuffs.some(({buff}) => matchesAny(buff, aliases));
   });
 
   return { missingBuffs, missingDebuffs };
