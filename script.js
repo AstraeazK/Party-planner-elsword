@@ -923,8 +923,39 @@ function getMergedForRowElement(rowEl) {
   uniqueCharSources.forEach(srcKey => {
     const info = charData[srcKey];
     if (info) {
-      info.buffs.forEach(b => allBuffs.push({ buff: b, charName: srcKey }));
-      info.debuffs.forEach(d => allDebuffs.push({ buff: d, charName: srcKey }));
+      info.buffs.forEach(b => allBuffs.push({ buff: translateBuff(b, 'buff'), charName: srcKey }));
+      info.debuffs.forEach(d => allDebuffs.push({ buff: translateBuff(d, 'debuff'), charName: srcKey }));
+
+      if (info.buffGroups) {
+        info.buffGroups.forEach(group => {
+          const selectedValue = buffGroupSelections[group.groupId] || group.default;
+          if (!selectedValue) return;
+
+          const pushBuff = (buffCode) => {
+            const translatedBuff = translateBuff(buffCode, 'buff');
+            if (translatedBuff) allBuffs.push({ buff: translatedBuff, charName: srcKey });
+          };
+
+          if (Array.isArray(selectedValue)) {
+            selectedValue.forEach(pushBuff);
+          } else if (typeof selectedValue === 'string') {
+            if (group.options && Array.isArray(group.options)) {
+              const option = group.options.find(opt => {
+                if (typeof opt === 'string') return opt === selectedValue;
+                return opt.effects === selectedValue || opt.label === selectedValue;
+              });
+
+              if (option && typeof option !== 'string' && Array.isArray(option.effects)) {
+                option.effects.forEach(pushBuff);
+              } else {
+                pushBuff(selectedValue);
+              }
+            } else {
+              pushBuff(selectedValue);
+            }
+          }
+        });
+      }
     }
   });
   
@@ -1058,7 +1089,7 @@ async function showCompareModal(selectedIndex) {
         `;
 
       await Swal.fire({
-        title: 'ผลการเปรียบเทียบ',
+        title: translations[currentLanguage]?.ui?.compare_result_title || 'ผลการเปรียบเทียบ',
         html: table,
         width: '42%',
         allowOutsideClick: false,

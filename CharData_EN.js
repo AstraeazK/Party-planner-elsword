@@ -193,6 +193,7 @@ export const Char_EN = {
     trolley_dilemma: "Trolley Dilemma",
     hyperactive_om: "Hyperactive Overmind",
     missing_buffs_debuffs: "⚠️ Missing Buffs/Debuffs",
-    no_missing_buffs: "No Missing Buffs"
+    no_missing_buffs: "No Missing Buffs",
+    compare_result_title: "Comparison Result"
   }
 };
