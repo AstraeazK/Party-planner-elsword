@@ -5,19 +5,26 @@ export const Char_TH = {
     damage_reduction_15: "ลดดาเมจ 15%",
     damage_reduction_20: "ลดดาเมจ 20%",
     damage_reduction_30: "ลดดาเมจ 30%",
+    damage_block_70: "ลดดาเมจ 70% 1 วิ",
+    damage_block_80: "ลดดาเมจ 80% 0.3 วิ",
+    damage_block_99_9: "ลดดาเมจ 99.9% 0.5 วิ",
 
+    def_up_10: "def กาย/เวทย์เพิ่มขึ้น 10%",
     def_up_12: "def กาย/เวทย์เพิ่มขึ้น 12%",
     def_up_15: "def กาย/เวทย์เพิ่มขึ้น 15%",
     def_up_20: "def กาย/เวทย์เพิ่มขึ้น 20%",
+    def_up_40: "def กาย/เวทย์เพิ่มขึ้น 40%",
 
     move_speed_15: "วิ่งเร็วขึ้น 15%",
     move_speed_30: "วิ่งเร็วขึ้น 30%",
     move_speed_1_3x: "วิ่งไวขึ้น 1.3x",
+    move_jump_speed_5: "วิ่ง/กระโดดเพิ่มขึ้น 5%",
     move_jump_speed_20: "วิ่ง/กระโดดเพิ่มขึ้น 20%",
 
-    atk_mag_up_3: "ดาเมจกาย/เวทย์เพิ่มขึ้น 3%",
     atk_mag_up_5: "ดาเมจกาย/เวทย์เพิ่มขึ้น 5%",
     atk_mag_up_6: "ดาเมจกาย/เวทย์เพิ่มขึ้น 6%",
+    atk_mag_up_7_8: "ดาเมจกาย/เวทย์เพิ่มขึ้น 7.8%",
+    atk_mag_up_8: "ดาเมจกาย/เวทย์เพิ่มขึ้น 8%",
     atk_mag_up_9_2: "ดาเมจกาย/เวทย์เพิ่มขึ้น 9.2%",
     atk_mag_up_10: "ดาเมจกาย/เวทย์เพิ่มขึ้น 10%",
     atk_mag_up_12: "ดาเมจกาย/เวทย์เพิ่มขึ้น 12%",
@@ -33,10 +40,10 @@ export const Char_TH = {
     all_speed_5: "All Speed 5%",
     all_speed_10: "All Speed 10%",
     all_speed_15: "All Speed 15%",
+    all_speed_20: "All Speed 20%",
 
     all_skill_damage_12: "All Skill Damage 12%",
     all_damage_10: "All Damage 10%",
-    all_stat_5: "All Stat 5%",
 
     boss_damage_8: "ดาเมจต่อบอส 8%",
     boss_damage_10: "ดาเมจต่อบอส 10%",
@@ -47,7 +54,7 @@ export const Char_TH = {
     critical_10: "Critical 10%",
     maximize_6: "Maximize 6%",
     crit_damage_up_5: "Critical Damage เพิ่มขึ้น 5%",
-    crit_damage_up_9_2: "Critical Damage เพิ่มขึ้น 9.2%",
+    crit_damage_up_11_5: "Critical Damage เพิ่มขึ้น 11.5%",
     crit_damage_up_16: "Critical Damage เพิ่มขึ้น 16%",
 
     special_active_damage_up_5: "Special Active Damage เพิ่มขึ้น 5%",
@@ -56,6 +63,7 @@ export const Char_TH = {
 
     max_hp_10: "MAX HP 10%",
     max_hp_15: "MAX HP 15%",
+    max_hp_40: "MAX HP 40%",
     max_mp_50: "MAX MP 50",
     max_mp_60: "MAX MP 60",
 
@@ -67,7 +75,9 @@ export const Char_TH = {
     cooldown_accel_1_2x: "เร่งคูลดาวน์ 1.2x",
     ha_master_accel_1_2x: "เร่งHA&Master 1.2x",
     ha_master_accel_1_5x: "เร่งHA&Master 1.5x",
+    ha_accel_2x: "เร่งHA 2x",
 
+    mana_regen_5: "เจนมานาไว 5%",
     mana_regen_40: "เจนมานาไว 40%",
     mana_regen_50: "เจนมานาไว 50%",
 
@@ -99,18 +109,16 @@ export const Char_TH = {
   },
 
   debuff: {
-    ignore_def_7: "เจาะกาย/เวทย์ 7%",
     ignore_def_10: "เจาะกาย/เวทย์ 10%",
     ignore_def_15: "เจาะกาย/เวทย์ 15%",
     ignore_def_19_5: "เจาะกาย/เวทย์ 19.5%",
     ignore_def_19_6: "เจาะกาย/เวทย์ 19.6%",
     ignore_def_20: "เจาะกาย/เวทย์ 20%",
     ignore_def_21: "เจาะกาย/เวทย์ 21%",
+    ignore_def_22: "เจาะกาย/เวทย์ 22%",
     ignore_def_22_5: "เจาะกาย/เวทย์ 22.5%",
     ignore_def_25: "เจาะกาย/เวทย์ 25%",
-    ignore_def_34: "เจาะกาย/เวทย์ 34%",
     ignore_def_35: "เจาะกาย/เวทย์ 35%",
-    ignore_def_40: "เจาะกาย/เวทย์ 40%",
     ignore_def_54: "เจาะกาย/เวทย์ 54%",
 
     damage_taken_up_5: "รับดาเมจกาย/เวทย์เพิ่มขึ้น 5%",
@@ -154,8 +162,6 @@ export const Char_TH = {
     damage_reduction_down_20: "ดาเมจจากมอนลดลง 20%",
     damage_reduction_down_31: "ดาเมจจากมอนลดลง 31%",
     damage_reduction_down_50: "ดาเมจจากมอนลดลง 50%",
-
-    magic_damage_down_20: "ลดดาเมจเวทย์ 20%"
   },
 
   group: {

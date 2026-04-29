@@ -8,7 +8,7 @@ export const charData = {
   "pics/Elsword/Icon_-_Rune_Master.png": {
     role: "magical",
     buffs: ["move_jump_speed_20"],
-    debuffs: ["elemental_res_down_160", "ignore_def_20", "speed_down_50", "damage_taken_up_12"]
+    debuffs: ["elemental_res_down_250", "ignore_def_20", "speed_down_50", "damage_taken_up_12"]
   },
 
   "pics/Elsword/Icon_-_Immortal.png": {
@@ -51,7 +51,8 @@ export const charData = {
       "crit_damage_up_5",
       "damage_reduction_20",
       "max_hp_15",
-      "max_mp_50"
+      "max_mp_50",
+      "Super_Armor"
     ],
     debuffs: ["damage_taken_up_5", "ignore_def_15"]
   },
@@ -82,9 +83,11 @@ export const charData = {
       "all_damage_10",
       "white_shield_10",
       "boss_damage_20",
-      "fill_gauge",
+      "fill_gauge_20",
       "def_up_15",
-      "all_speed_10"
+      "all_speed_10",
+      "non_boss_damage_10",
+      "Super_Armor"
     ],
     debuffs: ["ignore_def_10"]
   },
@@ -92,7 +95,7 @@ export const charData = {
   "pics/Raven/Icon_-_Furious_Blade.png": {
     role: "physical",
     buffs: [],
-    debuffs: ["damage_taken_up_12", "ignore_def_22_5"]
+    debuffs: ["damage_taken_up_12", "ignore_def_19_5"]
   },
 
   "pics/Raven/Icon_-_Rage_Hearts.png": {
@@ -113,9 +116,10 @@ export const charData = {
       "low_hp_damage_8_over_50",
       "low_hp_damage_10_over_10",
       "boss_damage_reduction_15",
-      "all_speed_10"
+      "all_speed_10",
+      "mana_regen_50"
     ],
-    debuffs: ["crit_damage_taken_up_9", "damage_taken_up_8", "ignore_def_10", "elemental_res_down_150"]
+    debuffs: ["crit_damage_taken_up_6", "damage_taken_up_8", "ignore_def_10", "elemental_res_down_150"]
   },
 
   "pics/Eve/Icon_-_Code_Ultimate.png": {
@@ -142,7 +146,7 @@ export const charData = {
 
   "pics/Eve/Icon_-_Code_Antithese.png": {
     role: "physical",
-    buffs: [],
+    buffs: ["damage_block_99_9"],
     debuffs: ["ignore_def_20", "damage_taken_up_12"]
   },
 
@@ -184,7 +188,7 @@ export const charData = {
       "fill_gauge_20",
       "mana_regen_40"
     ],
-    debuffs: ["elemental_res_down_120", "ignore_def_15"]
+    debuffs: ["elemental_res_down_150", "ignore_def_15"]
   },
 
   "pics/Ara/Icon_-_Apsara.png": {
@@ -196,7 +200,7 @@ export const charData = {
   "pics/Ara/Icon_-_Devi.png": {
     role: "magical",
     buffs: [],
-    debuffs: ["damage_taken_up_12", "ignore_def_15"]
+    debuffs: ["damage_taken_up_12", "ignore_def_20"]
   },
 
   "pics/Ara/Icon_-_Shakti.png": {
@@ -224,7 +228,7 @@ export const charData = {
   "pics/Elesis/Icon_-_Empire_Sword.png": {
     role: "physical",
     buffs: ["damage_reduction_15", "action_speed_up_6", "special_active_damage_up_10", "critical_6", "maximize_6"],
-    debuffs: ["damage_taken_up_8", "ignore_def_34", "elemental_res_down_160"]
+    debuffs: ["damage_taken_up_8", "ignore_def_20", "elemental_res_down_100"]
   },
 
   "pics/Elesis/Icon_-_Flame_Lord.png": {
@@ -247,13 +251,13 @@ export const charData = {
 
   "pics/Add/Icon_-_Doom_Bringer.png": {
     role: "magical",
-    buffs: ["move_jump_speed_20", "action_speed_up_20"],
+    buffs: ["all_speed_20"],
     debuffs: ["crit_damage_taken_up_20"]
   },
 
   "pics/Add/Icon_-_Dominator.png": {
     role: "physical",
-    buffs: ["atk_mag_up_9_2", "crit_damage_up_9_2"],
+    buffs: ["atk_mag_up_9_2", "crit_damage_up_11_5"],
     debuffs: ["damage_taken_up_5_07", "ignore_def_10"]
   },
 
@@ -296,13 +300,13 @@ export const charData = {
   "pics/LuCiel/Icon_-_Innocent.png": {
     role: "magical",
     buffs: [],
-    debuffs: ["ignore_def_20", "crit_damage_taken_up_12", "damage_reduction_down_31"]
+    debuffs: ["ignore_def_20", "crit_damage_taken_up_12"]
   },
 
   "pics/LuCiel/Icon_-_Diangelion.png": {
     role: "physical",
     buffs: [],
-    debuffs: ["damage_taken_up_12", "ignore_def_40"]
+    debuffs: ["damage_taken_up_12", "ignore_def_20"]
   },
 
   "pics/LuCiel/Icon_-_Demersio.png": {
@@ -315,6 +319,7 @@ export const charData = {
       "all_skill_damage_12",
       "move_speed_15",
       "action_speed_up_15",
+      "damage_block_70",
       "sot"
     ],
     debuffs: ["ignore_def_15", "elemental_res_down_150"]
@@ -340,7 +345,7 @@ export const charData = {
 
   "pics/Rose/Icon_-_Prime_Operator.png": {
     role: "magical",
-    buffs: ["atk_mag_up_3", "damage_reduction_10"],
+    buffs: ["atk_mag_up_8", "damage_reduction_10"],
     debuffs: ["damage_taken_up_8", "ignore_def_20"]
   },
 
@@ -355,7 +360,8 @@ export const charData = {
     buffs: [
       "white_shield_10",
       "mana_regen_40",
-      "all_stat_5",
+      "move_jump_speed_5",
+      "mana_regen_5",
       "atk_mag_up_12",
       "all_skill_damage_12",
       "cooldown_accel_1_2x",
@@ -369,12 +375,12 @@ export const charData = {
   "pics/Ain/Icon_-_Herrscher.png": {
     role: "magical",
     buffs: ["crit_damage_up_16"],
-    debuffs: ["ignore_def_35", "elemental_res_down_100", "magic_damage_down_20"]
+    debuffs: ["ignore_def_20", "elemental_res_down_100"]
   },
 
   "pics/Ain/Icon_-_Opferung.png": {
     role: "physical",
-    buffs: ["atk_mag_up_6", "special_active_damage_up_5", "mana_cost_down_10"],
+    buffs: ["atk_mag_up_7_8", "special_active_damage_up_5", "mana_cost_down_10"],
     debuffs: ["ignore_def_20", "damage_reduction_down_13"]
   },
 
@@ -407,19 +413,19 @@ export const charData = {
 
   "pics/Laby/Icon_-_Twins_Picaro.png": {
     role: "magical",
-    buffs: [],
+    buffs: ["ha_accel_2x"],
     debuffs: ["ignore_def_20"]
   },
 
   "pics/Noah/Icon_-_Liberator.png": {
     role: "physical",
     buffs: ["boss_damage_8"],
-    debuffs: ["ignore_def_7", "crit_damage_taken_up_12"]
+    debuffs: ["ignore_def_22", "crit_damage_taken_up_12"]
   },
 
   "pics/Noah/Icon_-_Celestia.png": {
     role: "magical",
-    buffs: ["atk_mag_up_10", "fill_gauge_20", "damage_up_8"],
+    buffs: ["atk_mag_up_10", "fill_gauge_20", "damage_up_8", "damage_block_80", "def_up_40", "MAX HP 40%"],
     debuffs: ["ignore_def_15", "crit_damage_taken_up_4"]
   },
 

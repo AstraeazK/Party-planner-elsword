@@ -5,19 +5,26 @@ export const Char_EN = {
     damage_reduction_15: "Damage Reduction 15%",
     damage_reduction_20: "Damage Reduction 20%",
     damage_reduction_30: "Damage Reduction 30%",
+    damage_block_70: "Damage Reduction 70% 1 sec",
+    damage_block_80: "Damage Reduction 80% 0.3 sec",
+    damage_block_99_9: "Damage Reduction 99.9% 0.5 sec",
 
+    def_up_10: "def phy/mag increase 10%",
     def_up_12: "def phy/mag increase 12%",
     def_up_15: "def phy/mag increase 15%",
     def_up_20: "def phy/mag increase 20%",
+    def_up_40: "def phy/mag increase 40%",
 
     move_speed_15: "Movement Speed 15%",
     move_speed_30: "Movement Speed 30%",
     move_speed_1_3x: "Movement Speed 1.3x",
+    move_jump_speed_5: "Movement/Jump Speed 5%",
     move_jump_speed_20: "Movement/Jump Speed 20%",
 
-    atk_mag_up_3: "Physical/Magical Attack 3%",
     atk_mag_up_5: "Physical/Magical Attack 5%",
     atk_mag_up_6: "Physical/Magical Attack 6%",
+    atk_mag_up_7_8: "Physical/Magical Attack 7.8%",
+    atk_mag_up_8: "Physical/Magical Attack 8%",
     atk_mag_up_9_2: "Physical/Magical Attack 9.2%",
     atk_mag_up_10: "Physical/Magical Attack 10%",
     atk_mag_up_12: "Physical/Magical Attack 12%",
@@ -33,10 +40,10 @@ export const Char_EN = {
     all_speed_5: "All Speed 5%",
     all_speed_10: "All Speed 10%",
     all_speed_15: "All Speed 15%",
+    all_speed_20: "All Speed 20%",
 
     all_skill_damage_12: "All Skill Damage 12%",
     all_damage_10: "All Damage 10%",
-    all_stat_5: "All Stats 5%",
 
     boss_damage_8: "Boss Damage 8%",
     boss_damage_10: "Boss Damage 10%",
@@ -47,7 +54,7 @@ export const Char_EN = {
     critical_10: "Critical 10%",
     maximize_6: "Maximize 6%",
     crit_damage_up_5: "Critical Damage 5%",
-    crit_damage_up_9_2: "Critical Damage 9.2%",
+    crit_damage_up_11_5: "Critical Damage 11.5%",
     crit_damage_up_16: "Critical Damage 16%",
 
     special_active_damage_up_5: "Special Active Skill Damage 5%",
@@ -56,6 +63,7 @@ export const Char_EN = {
 
     max_hp_10: "MAX HP 10%",
     max_hp_15: "MAX HP 15%",
+    max_hp_40: "MAX HP 40%",
     max_mp_50: "MAX MP 50",
     max_mp_60: "MAX MP 60",
 
@@ -67,7 +75,9 @@ export const Char_EN = {
     cooldown_accel_1_2x: "Cooldown Acceleration 1.2x",
     ha_master_accel_1_2x: "HA & Master Skill Cooldown 1.2x",
     ha_master_accel_1_5x: "HA & Master Skill Cooldown 1.5x",
+    ha_accel_2x: "HA Cooldown 2x",
 
+    mana_regen_5: "MP Gain 5%",
     mana_regen_40: "MP Gain 40%",
     mana_regen_50: "MP Gain 50%",
 
@@ -94,23 +104,21 @@ export const Char_EN = {
     sot: "SoT",
     strength_bravery_damage_6: "Strength & Bravery Skill Damage 6%",
 
-    linked_move_jump_speed_15: "Movement/Jump Speed 15% (Vow)",
-    linked_awaken_speed_10: "Awakening Speed 10% (Vow)"
+    linked_move_jump_speed_15: "Movement/Jump Speed (Vow) 15%",
+    linked_awaken_speed_10: "Awakening Speed (Vow) 10%"
   },
 
   debuff: {
-    ignore_def_7: "Ignore Physical/Magical Defense 7%",
     ignore_def_10: "Ignore Physical/Magical Defense 10%",
     ignore_def_15: "Ignore Physical/Magical Defense 15%",
     ignore_def_19_5: "Ignore Physical/Magical Defense 19.5%",
     ignore_def_19_6: "Ignore Physical/Magical Defense 19.6%",
     ignore_def_20: "Ignore Physical/Magical Defense 20%",
     ignore_def_21: "Ignore Physical/Magical Defense 21%",
+    ignore_def_22: "Ignore Physical/Magical Defense 22%",
     ignore_def_22_5: "Ignore Physical/Magical Defense 22.5%",
     ignore_def_25: "Ignore Physical/Magical Defense 25%",
-    ignore_def_34: "Ignore Physical/Magical Defense 34%",
     ignore_def_35: "Ignore Physical/Magical Defense 35%",
-    ignore_def_40: "Ignore Physical/Magical Defense 40%",
     ignore_def_54: "Ignore Physical/Magical Defense 54%",
 
     damage_taken_up_5: "Damage Taken 5%",
@@ -154,8 +162,6 @@ export const Char_EN = {
     damage_reduction_down_20: "Damage Reduction from Monsters 20%",
     damage_reduction_down_31: "Damage Reduction from Monsters 31%",
     damage_reduction_down_50: "Damage Reduction from Monsters 50%",
-
-    magic_damage_down_20: "Magical Damage Reduction 20%"
   },
 
   group: {
