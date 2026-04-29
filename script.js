@@ -530,7 +530,6 @@ function updateDuplicateWarnings() {
       if (!badge) {
         badge = document.createElement('div');
         badge.className = 'duplicate-warning ml-2 bg-yellow-400 text-black text-xs font-semibold px-2 py-0.5 rounded self-center whitespace-nowrap';
-        badge.innerText = '⚠️มีตัวละครซ้ำกัน';
         const slots = row.querySelectorAll('[data-slot]');
         const lastSlot = slots[slots.length - 1];
         if (lastSlot && lastSlot.parentNode) {
@@ -539,6 +538,7 @@ function updateDuplicateWarnings() {
           row.appendChild(badge);
         }
       }
+      badge.innerText = translations[currentLanguage]?.ui?.duplicate_char || '⚠️มีตัวละครซ้ำกัน';
     } else {
       if (badge) badge.remove();
     }

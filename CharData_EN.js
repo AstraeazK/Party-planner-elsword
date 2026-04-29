@@ -194,6 +194,7 @@ export const Char_EN = {
     hyperactive_om: "Hyperactive Overmind",
     missing_buffs_debuffs: "⚠️ Missing Buffs/Debuffs",
     no_missing_buffs: "No Missing Buffs",
-    compare_result_title: "Comparison Result"
+    compare_result_title: "Comparison Result",
+    duplicate_char: "⚠️Duplicate Character",
   }
 };

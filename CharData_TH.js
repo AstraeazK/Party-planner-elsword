@@ -194,6 +194,7 @@ export const Char_TH = {
     hyperactive_om: "Hyperactive Overmind",
     missing_buffs_debuffs: "⚠️ Missing Buffs/Debuffs",
     no_missing_buffs: "ไม่มี Missing Buffs",
-    compare_result_title: "ผลการเปรียบเทียบ"
+    compare_result_title: "ผลการเปรียบเทียบ",
+    duplicate_char: "⚠️มีตัวละครซ้ำกัน",
   }
 };
