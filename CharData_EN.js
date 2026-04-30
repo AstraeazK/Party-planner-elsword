@@ -134,6 +134,7 @@ export const Char_EN = {
     damage_taken_up_under_50_14: "Damage Taken 14% (<50% HP)",
 
     crit_damage_taken_up_4: "Critical Damage Taken 4%",
+    crit_damage_taken_up_6: "Critical Damage Taken 6%",
     crit_damage_taken_up_8: "Critical Damage Taken 8%",
     crit_damage_taken_up_9: "Critical Damage Taken 9%",
     crit_damage_taken_up_12: "Critical Damage Taken 12%",

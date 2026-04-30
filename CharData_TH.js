@@ -134,6 +134,7 @@ export const Char_TH = {
     damage_taken_up_under_50_14: "รับดาเมจกาย/เวทย์เพิ่มขึ้น (<50% HP) 14%",
 
     crit_damage_taken_up_4: "รับ Critical Damage เพิ่มขึ้น 4%",
+    crit_damage_taken_up_6: "รับ Critical Damage เพิ่มขึ้น 6%",
     crit_damage_taken_up_8: "รับ Critical Damage เพิ่มขึ้น 8%",
     crit_damage_taken_up_9: "รับ Critical Damage เพิ่มขึ้น 9%",
     crit_damage_taken_up_12: "รับ Critical Damage เพิ่มขึ้น 12%",
