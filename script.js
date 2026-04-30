@@ -765,6 +765,15 @@ function renderBuffLists(mergedBuffs, mergedDebuffs, missingBuffs, missingDebuff
       // Translate missing
       const translatedMissing = allMissing.map(m => thToCurrentLang[m] || m);
       missingListEl.innerHTML = translatedMissing.map(m => `<li class="text-yellow-300">${escapeHtml(m)}</li>`).join('');
+      missingListEl.querySelectorAll('li').forEach(li => {
+        li.addEventListener('mouseenter', () => {
+          const entries = getMissingEffectProviders(li.textContent || '');
+          highlightSlotsForEntries(entries, true, true);
+        });
+        li.addEventListener('mouseleave', () => {
+          highlightSlotsForEntries([], false);
+        });
+      });
     }
   }
 
@@ -777,6 +786,47 @@ function escapeHtml(str) {
     .replace(/>/g, '&gt;')
     .replace(/"/g, '&quot;')
     .replace(/'/g, '&#39;');
+}
+
+function normalizeEffectText(str) {
+  return String(str || '')
+    .toLowerCase()
+    .replace(/\s+/g, '')
+    .replace(/[0-9.%x×()><=~\-]/g, '')
+    .replace(/[^a-zก-๙]/g, '');
+}
+
+function getMissingEffectProviders(missingText) {
+  const target = normalizeEffectText(missingText);
+  if (!target) return [];
+  const providers = [];
+
+  Object.entries(charData).forEach(([srcKey, info]) => {
+    if (!info) return;
+    const effects = [];
+    if (Array.isArray(info.buffs)) effects.push(...info.buffs);
+    if (Array.isArray(info.debuffs)) effects.push(...info.debuffs);
+    if (Array.isArray(info.buffGroups)) {
+      info.buffGroups.forEach(group => {
+        if (!Array.isArray(group.options)) return;
+        group.options.forEach(option => {
+          if (typeof option === 'string') effects.push(option);
+          else if (Array.isArray(option?.effects)) effects.push(...option.effects);
+          else if (typeof option?.effects === 'string') effects.push(option.effects);
+        });
+      });
+    }
+
+    const matched = effects.some(effect => {
+      const asBuff = normalizeEffectText(translateBuff(effect, 'buff'));
+      const asDebuff = normalizeEffectText(translateBuff(effect, 'debuff'));
+      return (asBuff && (asBuff.includes(target) || target.includes(asBuff))) ||
+             (asDebuff && (asDebuff.includes(target) || target.includes(asDebuff)));
+    });
+    if (matched) providers.push({ source: srcKey });
+  });
+
+  return providers;
 }
 
 // ---------- Helpers for hover highlight + tooltip ----------
@@ -939,7 +989,7 @@ function updateBuffsForRow(rowIndex) {
   updateBuffs();
 }
 
-  // ---------- Highlight ----------
+// ---------- Highlight ----------
 const scrollButtons = document.querySelectorAll(".scroll-btn, [data-lucide='scroll-text']");
 
 function setRowSelected(row) {
