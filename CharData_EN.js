@@ -151,6 +151,7 @@ export const Char_EN = {
     elemental_res_down_150: "Elemental Resistance 150",
     elemental_res_down_160: "Elemental Resistance 160",
     elemental_res_down_195: "Elemental Resistance 195",
+    elemental_res_down_250: "Elemental Resistance 250",
     elemental_res_down_300: "Elemental Resistance 300",
 
     speed_down_40: "Speed 40%",

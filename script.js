@@ -29,10 +29,29 @@ const essentialDebuffsMap = {
   en: essentialDebuffs_EN
 };
 
+const SINGLE_APPLY_EFFECT_CODES = new Set([
+  'damage_reduction_20',
+  'action_speed_up_15',
+  'all_speed_15',
+  'atk_mag_up_12',
+  'cooldown_accel_1_2x',
+  'all_skill_damage_12',
+  'ignore_def_15'
+]);
+
+const SPEED_PRIORITY_CODES = new Set(['all_speed_15', 'action_speed_up_15']);
+const SINGLE_APPLY_CODE_PREFIXES = ['atk_mag_up_', 'damage_reduction_', 'ignore_def_'];
+
 // console.log('Translation data loaded:', {
 //   th: Char_TH?.ui ? '✓' : '✗',
 //   en: Char_EN?.ui ? '✓' : '✗'
 // });
+
+function getEffectGroupKey(code, buffText = '') {
+  const prefix = SINGLE_APPLY_CODE_PREFIXES.find(p => typeof code === 'string' && code.startsWith(p));
+  if (prefix) return prefix;
+  return stripNumbersAndPercents(buffText || '').toLowerCase().replace(/\s+/g, ' ').trim();
+}
 
 function translateBuff(code, type = 'buff') {
   const langData = translations[currentLanguage];
@@ -473,8 +492,8 @@ function updateBuffs() {
   uniqueCharSources.forEach(srcKey => {
     const info = charData[srcKey];
     if (info) {
-      info.buffs.forEach(b => allBuffs.push({ buff: translateBuff(b, 'buff'), charName: srcKey }));
-      info.debuffs.forEach(d => allDebuffs.push({ buff: translateBuff(d, 'debuff'), charName: srcKey }));
+      info.buffs.forEach(b => allBuffs.push({ buff: translateBuff(b, 'buff'), code: b, charName: srcKey, role: info.role }));
+      info.debuffs.forEach(d => allDebuffs.push({ buff: translateBuff(d, 'debuff'), code: d, charName: srcKey, role: info.role }));
 
       if (info.buffGroups) {
         info.buffGroups.forEach(group => {
@@ -482,7 +501,7 @@ function updateBuffs() {
           if (selectedValue) {
             const pushBuff = (buffCode) => {
               const translatedBuff = translateBuff(buffCode, 'buff');
-              if (translatedBuff) allBuffs.push({ buff: translatedBuff, charName: srcKey });
+              if (translatedBuff) allBuffs.push({ buff: translatedBuff, code: buffCode, charName: srcKey, role: info.role });
             };
 
             if (Array.isArray(selectedValue)) {
@@ -548,10 +567,16 @@ function updateDuplicateWarnings() {
 // ---------- รวมบัพ ----------
 function mergeBuffsAndDebuffs(allBuffs, allDebuffs) {
   const merge = (list) => {
+    const preparedList = list.filter(item => item && item.buff);
+    const hasAllSpeed15 = preparedList.some(item => item.code === 'all_speed_15');
+    const filteredList = hasAllSpeed15
+      ? preparedList.filter(item => !(item.code === 'action_speed_up_15' && SPEED_PRIORITY_CODES.has(item.code)))
+      : preparedList;
+
     const map = {};
-    list.forEach(({ buff, charName }) => {
-      const key = buff.toLowerCase().replace(/\s+/g, "").replace(/[0-9.%x×]/g, "");
-      if (!map[key]) map[key] = { text: buff, entries: [], units: null, sources: new Set() };
+    filteredList.forEach(({ buff, code, charName, role }) => {
+      const key = getEffectGroupKey(code, buff);
+      if (!map[key]) map[key] = { text: buff, code, entries: [], units: null, sources: new Set() };
       if (charName) map[key].sources.add(charName);
 
       const numMatch = buff.match(/(\d+(?:\.\d+)?)\s*(%|x|×)?/);
@@ -560,13 +585,31 @@ function mergeBuffsAndDebuffs(allBuffs, allDebuffs) {
       const decimals = raw && raw.includes('.') ? raw.split('.')[1].length : 0;
       if (numMatch && map[key].units === null) map[key].units = numMatch[2] || '';
 
-      map[key].entries.push({ source: charName, text: buff, value, decimals });
+      map[key].entries.push({ source: charName, text: buff, value, decimals, role, code });
     });
 
     return Object.values(map).map((v) => {
       let displayName = v.text;
       const numericEntries = v.entries.filter(e => typeof e.value === 'number');
       if (numericEntries.length > 1) {
+        const isSingleApplyByCode = v.entries.some(e => e.code && SINGLE_APPLY_EFFECT_CODES.has(e.code));
+        const isSingleApplyByPrefix = v.entries.some(e => SINGLE_APPLY_CODE_PREFIXES.some(prefix => typeof e.code === 'string' && e.code.startsWith(prefix)));
+        if (isSingleApplyByCode || isSingleApplyByPrefix) {
+          const supportEntries = numericEntries.filter(e => e.role === 'support');
+          const nonSupportEntries = numericEntries.filter(e => e.role !== 'support');
+          const bestSupportEntry = supportEntries.length > 0
+            ? supportEntries.reduce((best, curr) => (curr.value > best.value ? curr : best))
+            : null;
+          const mergedEntries = bestSupportEntry ? nonSupportEntries.concat(bestSupportEntry) : numericEntries;
+          const sum = mergedEntries.reduce((a, b) => a + b.value, 0);
+          const maxDecimals = mergedEntries.reduce((m, b) => Math.max(m, b.decimals || 0), 0);
+          const precision = Math.min(Math.max(maxDecimals, 0), 6);
+          const roundedValue = precision > 0 ? parseFloat(sum.toFixed(precision)) : Math.round(sum);
+          const suffix = v.units || '';
+          displayName = v.text.replace(/(\d+(?:\.\d+)?)\s*(%|x|×)?/, `${roundedValue}${suffix}`);
+          v.entries = mergedEntries;
+          return { name: displayName, sources: Array.from(v.sources), entries: v.entries };
+        }
         let sum;
         // สำหรับบัพ "เร่งคูลดาวน์" ให้บวกแค่เลขหลังจุดทศนิยม (Ex. 1.2 + 1.2 = 1 + (0.2 + 0.2) = 1.4)
         const cooldownText = v.text.toLowerCase();
@@ -923,8 +966,8 @@ function getMergedForRowElement(rowEl) {
   uniqueCharSources.forEach(srcKey => {
     const info = charData[srcKey];
     if (info) {
-      info.buffs.forEach(b => allBuffs.push({ buff: translateBuff(b, 'buff'), charName: srcKey }));
-      info.debuffs.forEach(d => allDebuffs.push({ buff: translateBuff(d, 'debuff'), charName: srcKey }));
+      info.buffs.forEach(b => allBuffs.push({ buff: translateBuff(b, 'buff'), code: b, charName: srcKey, role: info.role }));
+      info.debuffs.forEach(d => allDebuffs.push({ buff: translateBuff(d, 'debuff'), code: d, charName: srcKey, role: info.role }));
 
       if (info.buffGroups) {
         info.buffGroups.forEach(group => {
@@ -933,7 +976,7 @@ function getMergedForRowElement(rowEl) {
 
           const pushBuff = (buffCode) => {
             const translatedBuff = translateBuff(buffCode, 'buff');
-            if (translatedBuff) allBuffs.push({ buff: translatedBuff, charName: srcKey });
+            if (translatedBuff) allBuffs.push({ buff: translatedBuff, code: buffCode, charName: srcKey, role: info.role });
           };
 
           if (Array.isArray(selectedValue)) {

@@ -151,6 +151,7 @@ export const Char_TH = {
     elemental_res_down_150: "ลดธาตุ 150",
     elemental_res_down_160: "ลดธาตุ 160",
     elemental_res_down_195: "ลดธาตุ 195",
+    elemental_res_down_250: "ลดธาตุ 250",
     elemental_res_down_300: "ลดธาตุ 300",
 
     speed_down_40: "ลดความเร็ว 40%",
