@@ -800,6 +800,29 @@ function getMissingEffectProviders(missingText) {
   const target = normalizeEffectText(missingText);
   if (!target) return [];
   const providers = [];
+  const effectMatchers = {
+    ดาเมจกายเวทย์เพิ่มขึ้น: code => code.startsWith('atk_mag_up_'),
+    physicalmagicalattack: code => code.startsWith('atk_mag_up_'),
+    ดาเมจต่อบอส: code => code.startsWith('boss_damage_'),
+    bossdamage: code => code.startsWith('boss_damage_'),
+    ลดดาเมจ: code => code.startsWith('damage_reduction_') || code.startsWith('def_up_') || code.startsWith('boss_damage_reduction_'),
+    damagereduction: code => code.startsWith('damage_reduction_') || code.startsWith('def_up_') || code.startsWith('boss_damage_reduction_'),
+    CriticalDamageเพิ่มขึ้น: code => code.startsWith('crit_damage_up_'),
+    criticaldamageincrease: code => code.startsWith('crit_damage_up_'),
+    actionspeedเพิ่มขึ้น: code => code.startsWith('action_speed_up_') || code.startsWith('all_speed_'),
+    actionspeed: code => code.startsWith('action_speed_up_') || code.startsWith('all_speed_'),
+    เร่งคูลดาวน์: code => code.startsWith('cooldown_accel_') || code.startsWith('reset_skill_cd'),
+    cooldownacceleration: code => code.startsWith('cooldown_accel_') || code.startsWith('reset_skill_cd'),
+    เจาะกายเวทย์: code => code.startsWith('ignore_def_'),
+    ignorephysicalmagicaldefense: code => code.startsWith('ignore_def_'),
+    รับดาเมจกายเวทย์เพิ่มขึ้น: code => code.startsWith('damage_taken_up_'),
+    damagetaken: code => code.startsWith('damage_taken_up_'),
+    รับcriticaldamageเพิ่มขึ้น: code => code.startsWith('crit_damage_taken_up_'),
+    criticaldamagetaken: code => code.startsWith('crit_damage_taken_up_'),
+    ดาเมจจากมอนลดลง: code => code.startsWith('damage_reduction_down_'),
+    damagereductionfrommonsters: code => code.startsWith('damage_reduction_down_')
+  };
+  const matchByCode = effectMatchers[target];
 
   Object.entries(charData).forEach(([srcKey, info]) => {
     if (!info) return;
@@ -818,10 +841,10 @@ function getMissingEffectProviders(missingText) {
     }
 
     const matched = effects.some(effect => {
+      if (matchByCode) return matchByCode(effect);
       const asBuff = normalizeEffectText(translateBuff(effect, 'buff'));
       const asDebuff = normalizeEffectText(translateBuff(effect, 'debuff'));
-      return (asBuff && (asBuff.includes(target) || target.includes(asBuff))) ||
-             (asDebuff && (asDebuff.includes(target) || target.includes(asDebuff)));
+      return asBuff === target || asDebuff === target;
     });
     if (matched) providers.push({ source: srcKey });
   });
