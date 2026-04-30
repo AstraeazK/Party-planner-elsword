@@ -120,7 +120,7 @@ body { font-family: 'Fredoka', sans-serif; }
   #buff-entries-tooltip.visible { opacity: 1; transform: translateY(0); }
 
   /* Slot badge small tweak */
-  .duplicate-warning { display: inline-flex; align-items: center; height: 28px; }
+  .duplicate-warning, .support-warning { display: flex; align-items: center; justify-content: center; min-height: 26px; }
 
   /* Custom scrollbar for sidebar and char container */
   #buff-section::-webkit-scrollbar, #char-container::-webkit-scrollbar { width: 10px; height: 10px; }

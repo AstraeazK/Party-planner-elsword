@@ -203,5 +203,6 @@ export const Char_EN = {
     no_missing_buffs: "No Missing Buffs",
     compare_result_title: "Comparison Result",
     duplicate_char: "⚠️Duplicate Character",
+    multiple_support_char: "⚠️Multiple Supports",
   }
 };

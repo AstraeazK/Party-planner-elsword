@@ -543,23 +543,50 @@ function updateDuplicateWarnings() {
     const counts = {};
     names.forEach(n => counts[n] = (counts[n] || 0) + 1);
     const hasDup = Object.values(counts).some(c => c > 1);
+    const supportCount = imgs.reduce((count, img) => {
+      const src = img.getAttribute('src') || img.src || '';
+      const matchedKey = Object.keys(charData).find((key) => src.endsWith(key));
+      if (matchedKey && charData[matchedKey]?.role === 'support') return count + 1;
+      return count;
+    }, 0);
+    const hasMultipleSupport = supportCount > 1;
 
-    let badge = row.querySelector('.duplicate-warning');
-    if (hasDup) {
-      if (!badge) {
-        badge = document.createElement('div');
-        badge.className = 'duplicate-warning ml-2 bg-yellow-400 text-black text-xs font-semibold px-2 py-0.5 rounded self-center whitespace-nowrap';
+    let warningStack = row.querySelector('.warning-stack');
+    if (hasDup || hasMultipleSupport) {
+      if (!warningStack) {
+        warningStack = document.createElement('div');
+        warningStack.className = 'warning-stack ml-1 self-center flex flex-col gap-1 w-[140px] min-w-[140px]';
         const slots = row.querySelectorAll('[data-slot]');
         const lastSlot = slots[slots.length - 1];
         if (lastSlot && lastSlot.parentNode) {
-          lastSlot.insertAdjacentElement('afterend', badge);
+          lastSlot.insertAdjacentElement('afterend', warningStack);
         } else {
-          row.appendChild(badge);
+          row.appendChild(warningStack);
         }
       }
-      badge.innerText = translations[currentLanguage]?.ui?.duplicate_char || '⚠️มีตัวละครซ้ำกัน';
+      const messages = [];
+      if (hasDup) {
+        messages.push({
+          className: 'duplicate-warning',
+          text: translations[currentLanguage]?.ui?.duplicate_char || '⚠️มีตัวละครซ้ำกัน'
+        });
+      }
+      if (hasMultipleSupport) {
+        messages.push({
+          className: 'support-warning',
+          text: translations[currentLanguage]?.ui?.multiple_support_char || '⚠️Support>1'
+        });
+      }
+
+      warningStack.innerHTML = '';
+      messages.forEach(({ className, text }) => {
+        const badge = document.createElement('div');
+        badge.className = `${className} bg-yellow-400 text-black text-[12px] leading-tight font-semibold px-1.5 py-0.5 rounded text-center whitespace-normal break-words`;
+        badge.innerText = text;
+        warningStack.appendChild(badge);
+      });
     } else {
-      if (badge) badge.remove();
+      if (warningStack) warningStack.remove();
     }
   });
 }
@@ -1279,7 +1306,6 @@ async function showCompareModal(selectedIndex) {
   });
 
 });
-
 
 function createClickEffect(e) {
   const effect = document.createElement("div");
