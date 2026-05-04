@@ -9,6 +9,7 @@ import { initCompareTable } from './compareTable.js';
 import { Char_TH } from './CharData_TH.js';
 import { Char_EN } from './CharData_EN.js';
 import { setupCardSelection, getSelectedCardEffects } from './Card_Select.js';
+import { renderPartyRows } from './partyRowsTemplate.js';
 
 let activeRowIndex = null;
 let partyRows = null;
@@ -156,6 +157,7 @@ document.addEventListener("DOMContentLoaded", () => {
     }, 2700);
   }
 
+  renderPartyRows();
   const charContainer = document.getElementById("char-container");
   setupCardSelection(updateBuffs);
   partyRows = document.querySelectorAll(".party-row");
@@ -245,7 +247,7 @@ document.addEventListener("DOMContentLoaded", () => {
   });
 
   // ---------- กันลากไฟล์เข้า text ----------
-  document.querySelectorAll("#custom-text-slot").forEach((slot) => {
+  document.querySelectorAll(".custom-text-slot").forEach((slot) => {
     ["dragenter", "dragover", "drop"].forEach((event) => {
       slot.addEventListener(event, (e) => {
         if (e.dataTransfer?.files?.length) e.preventDefault();
@@ -1116,7 +1118,7 @@ function getMergedForRowElement(rowEl) {
 async function showCompareModal(selectedIndex) {
   const selRow = partyRows[selectedIndex];
   if (!selRow) return;
-  const textBoxes = Array.from(document.querySelectorAll('#custom-text-slot'));
+  const textBoxes = Array.from(document.querySelectorAll('.custom-text-slot'));
   const selLabel =
     textBoxes[selectedIndex]?.innerText?.trim() ||
     `แถวที่ ${selectedIndex + 1}`;
@@ -1125,7 +1127,7 @@ async function showCompareModal(selectedIndex) {
   const selBuffs = selResult.mergedBuffs || [];
   const selDebuffs = selResult.mergedDebuffs || [];
 
-  const nameEls = Array.from(document.querySelectorAll('#custom-text-slot'));
+  const nameEls = Array.from(document.querySelectorAll('.custom-text-slot'));
   if (nameEls.length < 2) {
     Swal.fire('ข้อมูล', 'ต้องมีแถวอื่นอย่างน้อย 1 แถว', 'info');
     return;
