@@ -208,19 +208,15 @@ export const Char_TH = {
 
     card_select_title: "เลือกการ์ดสำหรับตัวละคร",
     card_select_limit: "(เลือกได้สูงสุด 2 ใบ)",
-    card_aquarius_desc: "Aquarius - ดาเมจกาย/เวทย์เพิ่มขึ้น 10% แก่เพื่อน",
-    card_gemini_desc: "Gemini - บล็อกดาเมจ 80% 0.3 วิ",
-    card_leo_desc: "Leo - def กาย/เวทย์เพิ่มขึ้น 40% MAX HP 40%",
-    card_scorpio_desc_prefix: "Scorpio - Critical Damage 20% เจาะเกราะ 50%",
     card_self_only: "(ให้แค่ตัวเอง)",
     card_preview_default: "ชี้ที่การ์ดเพื่อดูคำอธิบาย",
     card_name_aquarius: "Aquarius",
     card_name_gemini: "Gemini",
     card_name_leo: "Leo",
     card_name_scorpio: "Scorpio",
-    card_desc_aquarius: "ดาเมจกาย/เวทย์เพิ่มขึ้น 10% แก่เพื่อน",
-    card_desc_gemini: "บล็อกดาเมจ 80% 0.3 วิ",
-    card_desc_leo: "def กาย/เวทย์เพิ่มขึ้น 40% MAX HP 40%",
+    card_desc_aquarius: "ดาเมจกาย/เวทย์เพิ่มขึ้น 10% ให้เพื่อน",
+    card_desc_gemini: "บล็อกดาเมจ 80% 0.3 วิ ให้เพื่อน",
+    card_desc_leo: "def กาย/เวทย์เพิ่มขึ้น 40% MAX HP 40% ให้เพื่อน",
     card_desc_scorpio: "Critical Damage 20% เจาะเกราะ 50% (ให้แค่ตัวเอง)",
   }
 };

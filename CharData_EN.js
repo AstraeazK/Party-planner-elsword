@@ -205,13 +205,9 @@ export const Char_EN = {
     compare_result_title: "Comparison Result",
     duplicate_char: "⚠️Duplicate Character",
     multiple_support_char: "⚠️Multiple Supports",
-    
+
     card_select_title: "Select cards for character",
     card_select_limit: "(up to 2 cards)",
-    card_aquarius_desc: "Aquarius - Increases Physical/Magical Damage by 10% for allies",
-    card_gemini_desc: "Gemini - Blocks 80% damage for 0.3 sec",
-    card_leo_desc: "Leo - Increases Physical/Magical DEF by 40% and MAX HP by 40%",
-    card_scorpio_desc_prefix: "Scorpio - Critical Damage 20%, Ignore DEF 50%",
     card_self_only: "(Self only)",
     card_preview_default: "Hover over a card to see details",
     card_name_aquarius: "Aquarius",
@@ -219,8 +215,8 @@ export const Char_EN = {
     card_name_leo: "Leo",
     card_name_scorpio: "Scorpio",
     card_desc_aquarius: "Increases Physical/Magical Damage by 10% for allies",
-    card_desc_gemini: "Blocks 80% damage for 0.3 sec",
-    card_desc_leo: "Increases Physical/Magical DEF by 40% and MAX HP by 40%",
+    card_desc_gemini: "Blocks 80% damage for 0.3 sec for allies",
+    card_desc_leo: "Increases Physical/Magical DEF by 40% and MAX HP by 40% for allies",
     card_desc_scorpio: "Critical Damage 20%, Ignore DEF 50% (Self only)",
   }
 };

@@ -425,7 +425,7 @@ export const charData = {
 
   "pics/Noah/Icon_-_Celestia.png": {
     role: "magical",
-    buffs: ["atk_mag_up_10", "fill_gauge_20", "damage_up_8", "damage_block_80", "def_up_40", "MAX HP 40%"],
+    buffs: ["fill_gauge_20", "damage_up_8"],
     debuffs: ["ignore_def_15", "crit_damage_taken_up_4"]
   },
 

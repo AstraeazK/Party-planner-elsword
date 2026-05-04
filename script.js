@@ -8,6 +8,7 @@ import { buildCompareMap } from './buffDebuff.js';
 import { initCompareTable } from './compareTable.js';
 import { Char_TH } from './CharData_TH.js';
 import { Char_EN } from './CharData_EN.js';
+import { setupCardSelection, getSelectedCardEffects } from './Card_Select.js';
 
 let activeRowIndex = null;
 let partyRows = null;
@@ -156,6 +157,7 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   const charContainer = document.getElementById("char-container");
+  setupCardSelection(updateBuffs);
   partyRows = document.querySelectorAll(".party-row");
 
   // ---------- สร้าง <img> ตัวละคร ----------
@@ -523,6 +525,12 @@ function updateBuffs() {
               }
             }
           }
+        });
+      }
+      if (srcKey === "pics/Noah/Icon_-_Celestia.png") {
+        getSelectedCardEffects().forEach((buffCode) => {
+          const translatedBuff = translateBuff(buffCode, 'buff');
+          if (translatedBuff) allBuffs.push({ buff: translatedBuff, code: buffCode, charName: srcKey, role: info.role });
         });
       }
     }
