@@ -182,7 +182,7 @@ export const Char_TH = {
     left_click_drag: "คลิกซ้าย + ลาก",
     left_click_desc: "ใส่ตัวละครลงช่อง",
     right_click: "คลิกขวา",
-    right_click_desc: "ใส่ตัวละครในแถว / ลบตัวละครออกจากช่อง",
+    right_click_desc: "ใส่ตัวละครในช่อง / ลบตัวละครออกจากช่อง",
     actions: "การกระทำ",
     brush: "แปรง",
     brush_desc: "ลบตัวละครทั้งแถว",
