@@ -15,7 +15,7 @@ function buildRowMarkup(rowIndex) {
       <div class="ml-auto flex gap-2">
         <div class="w-[90px] h-[90px] bg-gray-800 flex items-center justify-center text-pink-400 hover:text-pink-300 cursor-pointer clear-btn relative group">
           <i data-lucide="brush-cleaning" class="w-10 h-10 transition-transform active:scale-90"></i>
-          <span class="pointer-events-none absolute -top-8 left-1/2 -translate-x-1/2 whitespace-nowrap rounded bg-gray-900 px-2 py-1 text-xs text-white opacity-0 group-hover:opacity-100 transition-opacity" data-i18n="ui.brush_desc">Clear Entire Row</span>
+          <span class="pointer-events-none absolute -top-8 left-1/2 -translate-x-1/2 whitespace-nowrap rounded bg-gray-900 px-2 py-1 text-xs text-white opacity-0 group-hover:opacity-100 transition-opacity">Clear Entire Row</span>
         </div>
         <div class="w-[90px] h-[90px] bg-gray-800 flex items-center justify-center text-pink-400 hover:text-pink-300 cursor-pointer compare-btn relative group">
           <i data-lucide="columns" class="w-8 h-8 transition-transform active:scale-90"></i>
