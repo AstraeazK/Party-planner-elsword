@@ -5,9 +5,9 @@ export const Char_EN = {
     damage_reduction_15: "Damage Reduction 15%",
     damage_reduction_20: "Damage Reduction 20%",
     damage_reduction_30: "Damage Reduction 30%",
-    damage_block_70: "Damage Reduction 70% 1 sec",
-    damage_block_80: "Damage Reduction 80% 0.3 sec",
-    damage_block_99_9: "Damage Reduction 99.9% 0.5 sec",
+    damage_block_70: "Block Damage 70% 1 sec",
+    damage_block_80: "Block Damage 80% 0.3 sec",
+    damage_block_99_9: "Block Damage 99.9% 0.5 sec",
 
     def_up_10: "def phy/mag increase 10%",
     def_up_12: "def phy/mag increase 12%",
