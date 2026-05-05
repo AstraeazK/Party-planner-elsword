@@ -81,7 +81,7 @@ export const Char_TH = {
     mana_regen_40: "เจนมานาไว 40%",
     mana_regen_50: "เจนมานาไว 50%",
 
-    reset_skill_cd: "reset skill CD",
+    reset_skill_cd: "Reset Skill Cooldown",
 
     fill_gauge: "เติมเกจ",
     fill_gauge_20: "เติมเกจ 20%",

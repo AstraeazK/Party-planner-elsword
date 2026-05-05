@@ -5,6 +5,7 @@ const essentialBuffs = [
   "Critical Damage เพิ่มขึ้น",
   "Action Speed เพิ่มขึ้น",
   "เร่งคูลดาวน์",
+  "All Skill Damage",
 ];
 
 const essentialBuffs_EN = [
@@ -14,6 +15,7 @@ const essentialBuffs_EN = [
   "Critical Damage Increase",
   "Action Speed",
   "Cooldown Acceleration",
+  "All Skill Damage",
 ];
 
 const essentialDebuffs = [
@@ -36,7 +38,7 @@ const buffAliases = {
   "ลดดาเมจ": ["ลดดาเมจ", "def กาย/เวทย์เพิ่มขึ้น", "ลดดาเมจจากบอส", "Damage Reduction", "def phy/mag increase","Boss Damage Reduction"],
   "Critical Damage เพิ่มขึ้น": ["Critical Damage เพิ่มขึ้น", "Critical Damage"],
   "Action Speed เพิ่มขึ้น": ["Action Speed เพิ่มขึ้น", "Action Speed", "All Speed"],
-  "เร่งคูลดาวน์": ["เร่งคูลดาวน์", "ลดคูลดาวน์", "reset skill CD", "Cooldown Acceleration"],
+  "เร่งคูลดาวน์": ["เร่งคูลดาวน์", "Reset Skill Cooldown", "Cooldown Acceleration"],
   "วิ่ง/กระโดดเพิ่มขึ้น": ["วิ่ง/กระโดดเพิ่มขึ้น", "วิ่งเร็วขึ้น", "All Speed"],
 };
 
@@ -49,7 +51,6 @@ const debuffAliases = {
 };
 
 export const BUFF_DISPLAY_ORDER = [
-  "All Stat",
   "ดาเมจกาย/เวทย์เพิ่มขึ้น",
   "ดาเมจต่อบอส",
   "ดาเมจเพิ่มขึ้น",
@@ -66,14 +67,13 @@ export const BUFF_DISPLAY_ORDER = [
   "ลดดาเมจ",
   "ลดดาเมจจากบอส",
   "def กาย/เวทย์เพิ่มขึ้น",
+  "บล็อกดาเมจ",
   "โล่ขาว",
   "MAX HP",
-  "MAX HP เพิ่มขึ้น",
   "MAX MP",
   "เร่งคูลดาวน์",
   "เร่งHA&Master",
-  "ลดคูลดาวน์",
-  "reset skill CD",
+  "Reset Skill Cooldown",
   "All Speed",
   "Action speed เพิ่มขึ้น",
   "วิ่ง/กระโดดเพิ่มขึ้น",
@@ -90,7 +90,6 @@ export const BUFF_DISPLAY_ORDER = [
 ];
 
 export const BUFF_DISPLAY_ORDER_EN = [
-  "All Stats",
   "Physical/Magical Attack",
   "Boss Damage",
   "Damage",
@@ -107,13 +106,12 @@ export const BUFF_DISPLAY_ORDER_EN = [
   "Damage Reduction",
   "Boss Damage Reduction",
   "def phy/mag increase",
+  "Block Damage",
   "Shield",
   "MAX HP",
-  "MAX HP Increase",
   "MAX MP",
   "Cooldown Acceleration",
   "HA & Master Skill Cooldown",
-  "Cooldown Reduction",
   "Reset Skill Cooldown",
   "All Speed",
   "Action Speed",
@@ -140,7 +138,6 @@ export const DEBUFF_DISPLAY_ORDER = [
   "รับ Critical Damage เพิ่มขึ้น (51~75% HP)",
   "รับ Critical Damage เพิ่มขึ้น (<=50% HP)",
   "ดาเมจจากมอนลดลง",
-  "ลดดาเมจเวทย์",
   "ลดธาตุ",
   "ลดความเร็ว",
 ];
@@ -155,7 +152,6 @@ export const DEBUFF_DISPLAY_ORDER_EN = [
   "Critical Damage Taken (51~75% HP)",
   "Critical Damage Taken (<=50% HP)",
   "Damage Reduction from Monsters",
-  "Magical Damage Reduction",
   "Elemental Resistance",
   "Speed",
 ];
