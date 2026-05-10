@@ -104,6 +104,51 @@ function setupDragStart(imgEl, src, rowElement) {
 }
 
 document.addEventListener("DOMContentLoaded", () => {
+  const charPopout = document.getElementById("char-popout");
+  if (charPopout) {
+    let dragging = false;
+    let offsetX = 0;
+    let offsetY = 0;
+
+    const startDrag = (e) => {
+      if (e.button !== 0) return;
+      const rect = charPopout.getBoundingClientRect();
+      const edgeThreshold = 12;
+      const nearEdge =
+        e.clientX - rect.left <= edgeThreshold ||
+        rect.right - e.clientX <= edgeThreshold ||
+        e.clientY - rect.top <= edgeThreshold ||
+        rect.bottom - e.clientY <= edgeThreshold;
+      if (nearEdge) return;
+      dragging = true;
+      offsetX = e.clientX - rect.left;
+      offsetY = e.clientY - rect.top;
+      charPopout.style.right = "auto";
+      charPopout.style.top = `${rect.top}px`;
+      charPopout.style.left = `${rect.left}px`;
+      charPopout.style.bottom = "auto";
+      e.preventDefault();
+    };
+
+    const onDrag = (e) => {
+      if (!dragging) return;
+      const maxLeft = window.innerWidth - charPopout.offsetWidth;
+      const maxTop = window.innerHeight - charPopout.offsetHeight;
+      const nextLeft = Math.min(Math.max(0, e.clientX - offsetX), maxLeft);
+      const nextTop = Math.min(Math.max(0, e.clientY - offsetY), maxTop);
+      charPopout.style.left = `${nextLeft}px`;
+      charPopout.style.top = `${nextTop}px`;
+    };
+
+    const stopDrag = () => {
+      dragging = false;
+    };
+
+    charPopout.addEventListener("mousedown", startDrag);
+    document.addEventListener("mousemove", onDrag);
+    document.addEventListener("mouseup", stopDrag);
+  }
+
   Object.keys(charData).forEach(srcKey => {
     const info = charData[srcKey];
     if (info && info.buffGroups) {
@@ -161,6 +206,13 @@ document.addEventListener("DOMContentLoaded", () => {
   const charContainer = document.getElementById("char-container");
   setupCardSelection(updateBuffs);
   partyRows = document.querySelectorAll(".party-row");
+
+  if (charPopout && partyRows.length > 0) {
+    const rowWidth = partyRows[0].getBoundingClientRect().width;
+    if (rowWidth > 0) {
+      charPopout.style.width = `${Math.round(rowWidth)}px`;
+    }
+  }
 
   // ---------- สร้าง <img> ตัวละคร ----------
   function createCharImage(src) {

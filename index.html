@@ -314,16 +314,17 @@
       <div id="party-rows-container"></div>
 
       <!-- Bottom: Characters -->
-      <div id="char-filter-buttons" class="flex justify-end gap-2 mb-1">
-        <button data-role="all" class="filter-btn bg-pink-600 text-white px-2 py-1 rounded">ALL</button>
-        <button data-role="physical" class="filter-btn bg-gray-700 text-white px-2 py-1 rounded">PHY</button>
-        <button data-role="magical" class="filter-btn bg-gray-700 text-white px-2 py-1 rounded">MAG</button>
-        <button data-role="support" class="filter-btn bg-gray-700 text-white px-2 py-1 rounded">SUP</button>
+      <div id="char-popout" class="char-popout">
+        <div id="char-filter-buttons" class="flex justify-start gap-2 mb-1">
+          <button data-role="all" class="filter-btn bg-pink-600 text-white px-2 py-1 rounded">ALL</button>
+          <button data-role="physical" class="filter-btn bg-gray-700 text-white px-2 py-1 rounded">PHY</button>
+          <button data-role="magical" class="filter-btn bg-gray-700 text-white px-2 py-1 rounded">MAG</button>
+          <button data-role="support" class="filter-btn bg-gray-700 text-white px-2 py-1 rounded">SUP</button>
+        </div>
+        
+        <!-- Character Container -->
+        <div id="char-container" class="bg-gray-800 p-1 flex flex-wrap gap-x-1 gap-y-0.5"></div>
       </div>
-
-
-<!-- Bottom: Characters -->
-<div id="char-container" class="bg-gray-800 p-1 flex flex-wrap gap-x-1 gap-y-0.5"></div>
 
     </div>
 

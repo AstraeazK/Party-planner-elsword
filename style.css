@@ -123,9 +123,21 @@ body { font-family: 'Fredoka', sans-serif; }
   .duplicate-warning, .support-warning { display: flex; align-items: center; justify-content: center; min-height: 26px; }
 
   /* Custom scrollbar for sidebar and char container */
-  #buff-section::-webkit-scrollbar, #char-container::-webkit-scrollbar { width: 10px; height: 10px; }
-  #buff-section::-webkit-scrollbar-thumb, #char-container::-webkit-scrollbar-thumb { background: rgba(255,20,147,0.18); border-radius: 8px; }
-  #buff-section::-webkit-scrollbar-track, #char-container::-webkit-scrollbar-track { background: transparent; }
+  #buff-section::-webkit-scrollbar, #char-container::-webkit-scrollbar, #char-popout::-webkit-scrollbar { width: 10px; height: 10px; }
+  #buff-section::-webkit-scrollbar-thumb, #char-container::-webkit-scrollbar-thumb, #char-popout::-webkit-scrollbar-thumb {
+    background: linear-gradient(180deg, #ff4fd8 0%, #ff1493 55%, #ff007f 100%);
+    border-radius: 999px;
+    border: 1px solid rgba(255, 255, 255, 0.22);
+    box-shadow: 0 0 10px rgba(255, 20, 147, 0.8);
+  }
+  #buff-section::-webkit-scrollbar-track, #char-container::-webkit-scrollbar-track, #char-popout::-webkit-scrollbar-track {
+    background: rgba(255, 255, 255, 0.08);
+    border-radius: 999px;
+  }
+  #buff-section, #char-container, #char-popout {
+    scrollbar-color: #ff1493 rgba(255, 255, 255, 0.08);
+    scrollbar-width: thin;
+  }
 
   /* Floating Sparkles */
   .sparkle {
@@ -427,4 +439,30 @@ body { font-family: 'Fredoka', sans-serif; }
   animation: sparkle 1s ease-in-out infinite;
 }
 
+.char-popout {
+  position: fixed;
+  left: 1rem;
+  bottom: 1rem;
+  z-index: 40;
+  max-width: calc(100vw - 2rem);
+  background: rgba(31, 41, 55, 0.95);
+  border: 1px solid rgba(236, 72, 153, 0.5);
+  border-radius: 10px;
+  padding: 0.5rem;
+  box-shadow: 0 0 18px rgba(255, 20, 147, 0.25);
+  cursor: move;
+  resize: both;
+  overflow: hidden;
+  min-width: 420px;
+  min-height: 160px;
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
 
+#char-container {
+  width: 100%;
+  flex: 1 1 auto;
+  min-height: 0;
+  overflow-y: auto;
+}
