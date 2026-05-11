@@ -204,6 +204,10 @@ document.addEventListener("DOMContentLoaded", () => {
 
   renderPartyRows();
   const charContainer = document.getElementById("char-container");
+  const charPopoutToggle = document.getElementById("char-popout-toggle");
+  const charPopoutCollapsed = document.getElementById("char-popout-collapsed");
+  const charPopoutPreview = document.getElementById("char-popout-preview");
+  const charFilterGroup = document.querySelector("#char-filter-buttons .char-filter-group");
   setupCardSelection(updateBuffs);
   partyRows = document.querySelectorAll(".party-row");
 
@@ -212,6 +216,79 @@ document.addEventListener("DOMContentLoaded", () => {
     if (rowWidth > 0) {
       charPopout.style.width = `${Math.round(rowWidth)}px`;
     }
+  }
+
+  if (charPopout && charPopoutToggle && charPopoutCollapsed && charPopoutPreview && charFilterGroup) {
+    const MINIMIZE_ICON = '<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-minimize2-icon lucide-minimize-2"><path d="m14 10 7-7"/><path d="M20 10h-6V4"/><path d="m3 21 7-7"/><path d="M4 14h6v6"/></svg>';
+    const MAXIMIZE_ICON = '<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-maximize2-icon lucide-maximize-2"><path d="M15 3h6v6"/><path d="m21 3-7 7"/><path d="m3 21 7-7"/><path d="M9 21H3v-6"/></svg>';
+    let isCollapsed = false;
+    let previewInterval = null;
+    let expandedWidth = '';
+    let expandedHeight = '';
+
+    const randomPreview = () => {
+      if (!pics.length) return;
+      const src = pics[Math.floor(Math.random() * pics.length)];
+      charPopoutPreview.src = src;
+    };
+
+    const startPreviewShuffle = () => {
+      if (previewInterval) clearInterval(previewInterval);
+      randomPreview();
+      previewInterval = setInterval(randomPreview, 1200);
+    };
+
+    const stopPreviewShuffle = () => {
+      if (!previewInterval) return;
+      clearInterval(previewInterval);
+      previewInterval = null;
+    };
+
+    const collapsePopout = () => {
+      if (isCollapsed) return;
+      expandedWidth = charPopout.style.width || `${charPopout.offsetWidth}px`;
+      expandedHeight = charPopout.style.height || `${charPopout.offsetHeight}px`;
+      isCollapsed = true;
+      charPopout.classList.add("char-popout-collapsed");
+      charContainer.classList.add("hidden");
+      charFilterGroup.classList.add("invisible");
+      charPopoutCollapsed.classList.remove("hidden");
+      charPopoutCollapsed.classList.add("flex");
+      charPopout.style.width = "68px";
+      charPopout.style.height = "92px";
+      charPopoutToggle.innerHTML = MAXIMIZE_ICON;
+      startPreviewShuffle();
+    };
+
+    const expandPopout = () => {
+      if (!isCollapsed) return;
+      isCollapsed = false;
+      charPopout.classList.remove("char-popout-collapsed");
+      charPopout.classList.add("char-popout-expanding");
+      charContainer.classList.remove("hidden");
+      charFilterGroup.classList.remove("invisible");
+      charPopoutCollapsed.classList.remove("flex");
+      charPopoutCollapsed.classList.add("hidden");
+      charPopout.style.width = expandedWidth || `${Math.max(300, charPopout.offsetWidth)}px`;
+      charPopout.style.height = expandedHeight || "auto";
+      charPopoutToggle.innerHTML = MINIMIZE_ICON;
+      stopPreviewShuffle();
+      setTimeout(() => charPopout.classList.remove("char-popout-expanding"), 340);
+    };
+
+    charPopoutToggle.innerHTML = MINIMIZE_ICON;
+
+    charPopoutToggle.addEventListener("click", (e) => {
+      e.stopPropagation();
+      if (isCollapsed) expandPopout();
+      else collapsePopout();
+    });
+
+    charPopoutPreview.addEventListener("click", (e) => {
+      e.preventDefault();
+      e.stopPropagation();
+      if (isCollapsed) expandPopout();
+    });
   }
 
   // ---------- สร้าง <img> ตัวละคร ----------

@@ -453,11 +453,54 @@ body { font-family: 'Fredoka', sans-serif; }
   cursor: move;
   resize: both;
   overflow: hidden;
-  min-width: 420px;
+  min-width: 300px;
   min-height: 160px;
   display: flex;
   flex-direction: column;
   gap: 0.25rem;
+  transition: transform 180ms ease, box-shadow 180ms ease;
+}
+
+.char-popout-toggle-btn {
+  position: absolute;
+  top: 0.45rem;
+  right: 0.45rem;
+  z-index: 3;
+}
+
+.char-popout-collapsed {
+  animation: popoutShrinkCute 320ms ease;
+}
+
+.char-popout-expanding {
+  animation: popoutExpandCute 320ms ease;
+}
+
+.char-popout.char-popout-collapsed {
+  min-width: 108px;
+  min-height: 138px;
+  padding: 0.35rem;
+}
+
+#char-popout-preview {
+  animation: previewBounce 1.2s ease-in-out infinite;
+}
+
+@keyframes popoutShrinkCute {
+  0% { transform: scale(1); }
+  45% { transform: scale(0.92) rotate(-2deg); }
+  100% { transform: scale(1) rotate(0deg); }
+}
+
+@keyframes popoutExpandCute {
+  0% { transform: scale(0.9) rotate(1deg); }
+  55% { transform: scale(1.04) rotate(-1deg); }
+  100% { transform: scale(1) rotate(0deg); }
+}
+
+@keyframes previewBounce {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-3px); }
 }
 
 #char-container {

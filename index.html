@@ -313,19 +313,27 @@
       <!-- Party Slots from partyRowsTemplate.js -->
       <div id="party-rows-container"></div>
 
-      <!-- Bottom: Characters -->
-      <div id="char-popout" class="char-popout">
-        <div id="char-filter-buttons" class="flex justify-start gap-2 mb-1">
-          <button data-role="all" class="filter-btn bg-pink-600 text-white px-2 py-1 rounded">ALL</button>
-          <button data-role="physical" class="filter-btn bg-gray-700 text-white px-2 py-1 rounded">PHY</button>
-          <button data-role="magical" class="filter-btn bg-gray-700 text-white px-2 py-1 rounded">MAG</button>
-          <button data-role="support" class="filter-btn bg-gray-700 text-white px-2 py-1 rounded">SUP</button>
+       <div id="char-popout" class="char-popout">
+        <!-- Bottom: Characters -->
+        <div id="char-filter-buttons" class="flex items-center justify-between gap-2 mb-1">
+          <div class="flex justify-start gap-2 char-filter-group">
+            <button data-role="all" class="filter-btn bg-pink-600 text-white px-2 py-1 rounded">ALL</button>
+            <button data-role="physical" class="filter-btn bg-gray-700 text-white px-2 py-1 rounded">PHY</button>
+            <button data-role="magical" class="filter-btn bg-gray-700 text-white px-2 py-1 rounded">MAG</button>
+            <button data-role="support" class="filter-btn bg-gray-700 text-white px-2 py-1 rounded">SUP</button>
+          </div>
+          <button id="char-popout-toggle" class="char-popout-toggle-btn px-2 py-1 rounded bg-pink-500/80 hover:bg-pink-400 text-white text-xs shadow-md flex items-center justify-center">
+          </button>
         </div>
-        
-        <!-- Character Container -->
-        <div id="char-container" class="bg-gray-800 p-1 flex flex-wrap gap-x-1 gap-y-0.5"></div>
-      </div>
 
+<div id="char-container" class="bg-gray-800 p-1 flex flex-wrap gap-x-1 gap-y-0.5"></div>
+        <!-- Bottom: Characters -->
+        <div id="char-container" class="bg-gray-800 p-1 flex flex-wrap gap-x-1 gap-y-0.5"></div>
+        <div id="char-popout-collapsed" class="hidden items-center justify-center py-2">
+          <img id="char-popout-preview" class="w-[60px] h-[60px] object-contain rounded-md border-2 border-yellow-300" alt="Character preview">
+        </div>
+      </div>
+     
     </div>
 
     <!-- Right Sidebar: Buff / Debuff -->
