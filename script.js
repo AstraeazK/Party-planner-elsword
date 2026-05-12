@@ -112,6 +112,17 @@ document.addEventListener("DOMContentLoaded", () => {
 
     const startDrag = (e) => {
       if (e.button !== 0) return;
+
+      const targetEl = e.target;
+      const isCharacterIconDrag = targetEl instanceof HTMLElement
+        && !!targetEl.closest('#char-container img');
+      const isPopoutControl = targetEl instanceof HTMLElement
+        && !!targetEl.closest('#char-popout-toggle, #char-popout-collapsed, .filter-btn');
+
+      if (isCharacterIconDrag || isPopoutControl) {
+        return;
+      }
+
       const rect = charPopout.getBoundingClientRect();
       const edgeThreshold = 12;
       const nearEdge =
