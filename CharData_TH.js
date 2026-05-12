@@ -177,6 +177,8 @@ export const Char_TH = {
   },
 
   ui: {
+    web_title: "จัดตี้กินหมูกระทะ",
+    web_subtitle: "อยากกินชาบู",
     setting: "การตั้งค่า",
     controls: "ควบคุม",
     left_click_drag: "คลิกซ้าย + ลาก",

@@ -177,6 +177,8 @@ export const Char_EN = {
   },
 
   ui: {
+    web_title: "Party Planner",
+    web_subtitle: "uiiaaaaaa",
     setting: "Setting",
     controls: "Controls",
     left_click_drag: "Left Click + Hold",
