@@ -303,7 +303,7 @@
   </header>
 
 <!-- Main Content -->
-<main class="flex-1 flex flex-col p-4 gap-4 overflow-auto">
+<main class="flex-1 flex flex-col p-4 gap-4 overflow-hidden">
     <div id="click-area"></div>
     <div class="flex flex-1 gap-4">
 
@@ -311,7 +311,11 @@
     <div class="flex-1 flex flex-col">
 
       <!-- Party Slots from partyRowsTemplate.js -->
-      <div id="party-rows-container"></div>
+      <div id="party-rows-panel" class="flex-1 min-h-0 flex flex-col gap-3">
+        <div id="party-rows-scroll" class="flex-1 min-h-0 overflow-y-auto pr-2">
+          <div id="party-rows-container"></div>
+        </div>
+      </div>
 
        <div id="char-popout" class="char-popout">
         <!-- Bottom: Characters -->

@@ -9,12 +9,83 @@ import { initCompareTable } from './compareTable.js';
 import { Char_TH } from './CharData_TH.js';
 import { Char_EN } from './CharData_EN.js';
 import { setupCardSelection, getSelectedCardEffects } from './Card_Select.js';
-import { renderPartyRows } from './partyRowsTemplate.js';
+import { renderPartyRows, appendPartyRow  } from './partyRowsTemplate.js';
 
 let activeRowIndex = null;
 let partyRows = null;
 let buffGroupSelections = {};
 let currentLanguage = 'th';
+
+function refreshPartyRows() {
+  partyRows = document.querySelectorAll('.party-row');
+}
+
+function refreshRowGhostState() {}
+
+function refreshAllRowGhostStates() {}
+
+function renderAddRowPlaceholder() {
+  const container = document.getElementById('party-rows-container');
+  if (!container) return;
+
+  const oldPlaceholder = container.querySelector('.add-row-placeholder');
+  if (oldPlaceholder) oldPlaceholder.remove();
+
+  const placeholder = document.createElement('div');
+  placeholder.className = 'add-row-placeholder mb-4 mx-4 rounded-xl border border-dashed border-pink-500/25 bg-gradient-to-r from-slate-800/70 to-slate-900/70 p-3 cursor-pointer opacity-55 hover:opacity-95 transition';
+  placeholder.innerHTML = `
+    <div class="flex items-center gap-4 text-slate-400 hover:text-pink-200 transition">
+      <div class="w-[70px] h-[70px] rounded-xl border border-dashed border-slate-500/50 flex items-center justify-center text-3xl font-bold">+</div>
+      <span class="text-xl font-semibold tracking-wide">Add row</span>
+    </div>
+  `;
+
+  placeholder.addEventListener('click', () => {
+    appendPartyRow();
+    refreshPartyRows();
+    const newRow = partyRows[partyRows.length - 1];
+    if (newRow) {
+      const newIndex = partyRows.length - 1;
+      newRow.addEventListener('click', (e) => {
+        if (e.target.closest('#buff-section')) return;
+        document.querySelectorAll('.party-row.party-selected').forEach((r) =>
+          r.classList.remove('party-selected', 'ring-4', 'ring-pink-500')
+        );
+        newRow.classList.add('party-selected', 'ring-4', 'ring-pink-500');
+        activeRowIndex = newIndex;
+        if (typeof updateBuffsForRow === 'function') {
+          updateBuffsForRow(newIndex);
+        } else if (typeof updateBuffs === 'function') {
+          updateBuffs();
+        }
+        e.stopPropagation();
+      });
+    }
+    refreshAllRowGhostStates();
+    renderAddRowPlaceholder();
+
+  const partyRowsContainer = document.getElementById('party-rows-container');
+  if (partyRowsContainer) {
+    partyRowsContainer.addEventListener('click', (e) => {
+      const deleteBtn = e.target.closest('.delete-row-btn');
+      if (!deleteBtn) return;
+      e.stopPropagation();
+      const row = deleteBtn.closest('.party-row');
+      if (!row) return;
+      row.remove();
+      refreshPartyRows();
+      activeRowIndex = null;
+      clearRowSelection();
+      updateBuffs();
+    }, true);
+  }
+    import('https://cdn.jsdelivr.net/npm/lucide@latest/+esm')
+      .then(({ createIcons, icons }) => createIcons({ icons }))
+      .catch(() => {});
+  });
+
+  container.appendChild(placeholder);
+}
 
 const translations = {
   th: Char_TH,
@@ -213,14 +284,32 @@ document.addEventListener("DOMContentLoaded", () => {
     }, 2700);
   }
 
-  renderPartyRows();
+  renderPartyRows('party-rows-container', 4);
   const charContainer = document.getElementById("char-container");
   const charPopoutToggle = document.getElementById("char-popout-toggle");
   const charPopoutCollapsed = document.getElementById("char-popout-collapsed");
   const charPopoutPreview = document.getElementById("char-popout-preview");
   const charFilterGroup = document.querySelector("#char-filter-buttons .char-filter-group");
   setupCardSelection(updateBuffs);
-  partyRows = document.querySelectorAll(".party-row");
+  refreshPartyRows();
+  refreshAllRowGhostStates();
+  renderAddRowPlaceholder();
+
+  const partyRowsContainer = document.getElementById('party-rows-container');
+  if (partyRowsContainer) {
+    partyRowsContainer.addEventListener('click', (e) => {
+      const deleteBtn = e.target.closest('.delete-row-btn');
+      if (!deleteBtn) return;
+      e.stopPropagation();
+      const row = deleteBtn.closest('.party-row');
+      if (!row) return;
+      row.remove();
+      refreshPartyRows();
+      activeRowIndex = null;
+      clearRowSelection();
+      updateBuffs();
+    }, true);
+  }
 
   if (charPopout && partyRows.length > 0) {
     const rowWidth = partyRows[0].getBoundingClientRect().width;
@@ -299,7 +388,7 @@ document.addEventListener("DOMContentLoaded", () => {
       e.preventDefault();
       e.stopPropagation();
       if (isCollapsed) expandPopout();
-    });
+    }, true);
   }
 
   // ---------- สร้าง <img> ตัวละคร ----------
@@ -337,7 +426,7 @@ document.addEventListener("DOMContentLoaded", () => {
         b.classList.add("bg-gray-700");
       });
       btn.classList.add("bg-pink-600");
-    });
+     }, true);
   });
 
   function filterCharacters(role) {
@@ -351,7 +440,7 @@ document.addEventListener("DOMContentLoaded", () => {
       } else {
         img.classList.add("hidden");
       }
-    });
+     }, true);
   }
 
 
@@ -402,7 +491,7 @@ document.addEventListener("DOMContentLoaded", () => {
       e.preventDefault();
       const text = e.clipboardData.getData("text/plain");
       document.execCommand("insertText", false, text);
-    });
+     }, true);
   });
 
   // ---------- ลากเข้าช่อง ----------
@@ -516,7 +605,7 @@ document.addEventListener("DOMContentLoaded", () => {
         updateBuffs();
       });
 
-    });
+     }, true);
   });
 
   // ---------- Drop กลับลงล่าง ----------
@@ -577,7 +666,7 @@ document.addEventListener("DOMContentLoaded", () => {
       window.__SHOW_BUFF_NUMBERS = buffGroupSelections["Show_buff"] === 'open';
 
       updateBuffs();
-    });
+    }, true);
   });
 
   document.querySelectorAll('[data-group-id="Show_buff"]').forEach(button => {
@@ -593,6 +682,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
 function updateBuffs() {
   updateDuplicateWarnings();
+  refreshAllRowGhostStates();
   let selectedRow = document.querySelector(".party-row.party-selected");
   if (!selectedRow && typeof activeRowIndex === 'number' && activeRowIndex !== null) {
     const rows = document.querySelectorAll('.party-row');
@@ -807,7 +897,7 @@ function mergeBuffsAndDebuffs(allBuffs, allDebuffs) {
         displayName = v.text.replace(/(\d+(?:\.\d+)?)\s*(%|x|×)?/, `${rounded}${suffix}`);
       }
       return { name: displayName, sources: Array.from(v.sources), entries: v.entries };
-    });
+    }, true);
   };
 
   return { mergedBuffs: merge(allBuffs), mergedDebuffs: merge(allDebuffs) };
@@ -863,7 +953,7 @@ function renderBuffLists(mergedBuffs, mergedDebuffs, missingBuffs, missingDebuff
       });
 
       buffListEl.appendChild(li);
-    });
+    }, true);
   }
 
   if (debuffListEl) {
@@ -887,7 +977,7 @@ function renderBuffLists(mergedBuffs, mergedDebuffs, missingBuffs, missingDebuff
       });
 
       debuffListEl.appendChild(li);
-    });
+    }, true);
   }
 
   if (missingListEl) {
@@ -1078,7 +1168,7 @@ function highlightSlotsForEntries(entries, highlight, isGrayOutMode = false) {
       } else {
         img.classList.remove('opacity-40', 'grayscale');
       }
-    });
+    }, true);
   }
 }
 
@@ -1199,6 +1289,16 @@ partyRows.forEach((row, index) => {
   });
 });
 
+const addRowButton = document.getElementById('add-row-btn');
+  if (addRowButton) {
+    addRowButton.addEventListener('click', () => {
+      const nextCount = document.querySelectorAll('.party-row').length + 1;
+      localStorage.setItem('partyRowCount', String(nextCount));
+      appendPartyRow();
+      window.location.reload();
+    });
+  }
+  
 // ---------- Compare modal ----------
 function getMergedForRowElement(rowEl) {
   const imgs = Array.from(rowEl.querySelectorAll('img'));
@@ -1466,7 +1566,7 @@ async function showCompareModal(selectedIndex) {
         option.style.fontWeight = 'normal';
         option.style.color = 'white';
       }
-    });
+    }, true);
   };
 
   languageBtn?.addEventListener('click', (e) => {

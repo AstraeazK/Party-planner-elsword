@@ -5,11 +5,25 @@ function buildSlotMarkup() {
     `<div class="w-[90px] h-[90px] bg-gray-700 border-2 flex items-center justify-center" data-slot="${i}"></div>`
   )).join('');
 }
+
+function getRowColor(rowIndex) {
+  return PARTY_COLORS[rowIndex % PARTY_COLORS.length];
+}
+
 function buildRowMarkup(rowIndex) {
+  const hasDeleteButton = rowIndex >= 4;
+  const rowPaddingClass = 'pr-12';
+  const deleteButton = hasDeleteButton
+    ? `<button class="delete-row-btn absolute top-1/2 -translate-y-1/2 right-2 z-30 opacity-0 pointer-events-none transition-opacity" data-row-index="${rowIndex}" aria-label="Delete row">
+         <img src="assets/Delete_row.png" alt="Delete row" class="w-7 h-7 object-contain">
+       </button>`
+    : '';
+
   return `
-    <div class="party-row bg-gray-800 rounded-lg p-2 flex gap-2 overflow-x-auto overflow-y-visible mb-4">
+     <div class="party-row relative bg-gray-800/85 rounded-lg p-2 ${rowPaddingClass} flex gap-2 overflow-visible mb-4 mx-4 border border-pink-500/20 shadow-[0_0_10px_rgba(255,20,147,0.12)]">
+      ${deleteButton}
       <div class="custom-text-slot w-[90px] h-[90px] text-black font-bold text-center p-2 flex items-center justify-center rounded-md cursor-text break-all whitespace-pre-wrap"
-          style="background:${PARTY_COLORS[rowIndex]}" contenteditable="true">Party ${rowIndex + 1}</div>
+          style="background:${getRowColor(rowIndex)}" contenteditable="true">Party ${rowIndex + 1}</div>
       ${buildSlotMarkup()}
       <div class="ml-auto flex gap-2">
         <div class="w-[90px] h-[90px] bg-gray-800 flex items-center justify-center text-pink-400 hover:text-pink-300 cursor-pointer clear-btn relative group" title="Clear Entire Row">
@@ -33,4 +47,11 @@ export function renderPartyRows(containerId = 'party-rows-container', rowCount =
   if (!container) return;
 
   container.innerHTML = Array.from({ length: rowCount }, (_, i) => buildRowMarkup(i)).join('');
+}
+
+export function appendPartyRow(containerId = 'party-rows-container') {
+  const container = document.getElementById(containerId);
+  if (!container) return;
+  const rowIndex = container.querySelectorAll('.party-row').length;
+  container.insertAdjacentHTML('beforeend', buildRowMarkup(rowIndex));
 }
