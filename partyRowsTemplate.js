@@ -10,7 +10,7 @@ function getRowColor(rowIndex) {
   return PARTY_COLORS[rowIndex % PARTY_COLORS.length];
 }
 
-function buildRowMarkup(rowIndex) {
+function buildRowMarkup(rowIndex, partyNumber = rowIndex + 1) {
   const hasDeleteButton = rowIndex >= 4;
   const rowPaddingClass = 'pr-12';
   const deleteButton = hasDeleteButton
@@ -23,7 +23,7 @@ function buildRowMarkup(rowIndex) {
      <div class="party-row relative bg-gray-800/85 rounded-lg p-2 ${rowPaddingClass} flex gap-2 overflow-visible mb-4 mx-4 border border-pink-500/20 shadow-[0_0_10px_rgba(255,20,147,0.12)]">
       ${deleteButton}
       <div class="custom-text-slot w-[90px] h-[90px] text-black font-bold text-center p-2 flex items-center justify-center rounded-md cursor-text break-all whitespace-pre-wrap"
-          style="background:${getRowColor(rowIndex)}" contenteditable="true">Party ${rowIndex + 1}</div>
+          style="background:${getRowColor(rowIndex)}" contenteditable="true">Party ${partyNumber}</div>
       ${buildSlotMarkup()}
       <div class="ml-auto flex gap-2">
         <div class="w-[90px] h-[90px] bg-gray-800 flex items-center justify-center text-pink-400 hover:text-pink-300 cursor-pointer clear-btn relative group" title="Clear Entire Row">
@@ -49,9 +49,10 @@ export function renderPartyRows(containerId = 'party-rows-container', rowCount =
   container.innerHTML = Array.from({ length: rowCount }, (_, i) => buildRowMarkup(i)).join('');
 }
 
-export function appendPartyRow(containerId = 'party-rows-container') {
+export function appendPartyRow(containerId = 'party-rows-container', partyNumber = null) {
   const container = document.getElementById(containerId);
   if (!container) return;
   const rowIndex = container.querySelectorAll('.party-row').length;
-  container.insertAdjacentHTML('beforeend', buildRowMarkup(rowIndex));
+  const nextPartyNumber = Number.isInteger(partyNumber) ? partyNumber : rowIndex + 1;
+  container.insertAdjacentHTML('beforeend', buildRowMarkup(rowIndex, nextPartyNumber));
 }

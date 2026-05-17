@@ -15,6 +15,7 @@ let activeRowIndex = null;
 let partyRows = null;
 let buffGroupSelections = {};
 let currentLanguage = 'th';
+let nextPartyNumber = 1;
 
 function refreshPartyRows() {
   partyRows = document.querySelectorAll('.party-row');
@@ -23,6 +24,104 @@ function refreshPartyRows() {
 function refreshRowGhostState() {}
 
 function refreshAllRowGhostStates() {}
+
+function updateNextPartyNumber() {
+  const textSlots = document.querySelectorAll('.party-row .custom-text-slot');
+  let maxPartyNumber = 0;
+  textSlots.forEach((slot) => {
+    const text = slot?.textContent?.trim() || '';
+    const match = text.match(/^party\s+(\d+)$/i);
+    if (!match) return;
+    const parsed = parseInt(match[1], 10);
+    if (!isNaN(parsed)) maxPartyNumber = Math.max(maxPartyNumber, parsed);
+  });
+  nextPartyNumber = Math.max(maxPartyNumber + 1, 1);
+}
+
+function initializePartyRow(row, rowIndex) {
+  if (!row) return;
+  if (row.dataset.initialized === 'true') return;
+  row.dataset.initialized = 'true';
+
+  const slots = row.querySelectorAll("[data-slot]");
+  const clearBtn = row.querySelector(".clear-btn");
+
+  if (clearBtn) {
+    clearBtn.addEventListener("click", (e) => {
+      e.stopPropagation();
+      slots.forEach((s) => (s.innerHTML = ""));
+      const buffList = document.getElementById("buff-list");
+      const debuffList = document.getElementById("debuff-list");
+      const missingBuffList = document.getElementById("missing-buff-list");
+      if (buffList) buffList.innerHTML = "";
+      if (debuffList) debuffList.innerHTML = "";
+      if (missingBuffList) missingBuffList.innerHTML = "";
+      updateBuffs();
+    });
+  }
+
+  slots.forEach((slot) => {
+    slot.addEventListener("dragover", (e) => e.preventDefault());
+    slot.addEventListener("dragleave", () => slot.classList.remove("animate-pulse-glow"));
+    slot.addEventListener("drop", (e) => {
+      e.preventDefault();
+      slot.classList.remove("animate-pulse-glow");
+      const src = e.dataTransfer.getData("text/plain");
+      if (!src) return;
+
+      const fromRowIndexStr = e.dataTransfer.getData('fromRowIndex');
+      const fromSlotIndexStr = e.dataTransfer.getData('fromSlotIndex');
+      const fromRowIndexVal = fromRowIndexStr !== "" && fromRowIndexStr !== null ? parseInt(fromRowIndexStr, 10) : null;
+      const fromSlotIndexVal = fromSlotIndexStr !== "" && fromSlotIndexStr !== null ? parseInt(fromSlotIndexStr, 10) : null;
+      const targetRow = partyRows[rowIndex];
+      const targetImg = slot.querySelector('img');
+
+      if (fromRowIndexVal !== null && !isNaN(fromRowIndexVal) && partyRows[fromRowIndexVal]) {
+        const sourceRow = partyRows[fromRowIndexVal];
+        const sourceSlots = sourceRow.querySelectorAll('[data-slot]');
+        const sourceSlot = !isNaN(fromSlotIndexVal) && sourceSlots[fromSlotIndexVal] ? sourceSlots[fromSlotIndexVal] : null;
+        if (!sourceSlot || (sourceSlot === slot && fromRowIndexVal === rowIndex)) return;
+
+        const sourceImg = sourceSlot.querySelector('img');
+        if (!sourceImg) return;
+        sourceSlot.removeChild(sourceImg);
+
+        if (fromRowIndexVal === rowIndex) {
+          if (targetImg) {
+            slot.removeChild(targetImg);
+            slot.appendChild(sourceImg);
+            sourceSlot.appendChild(targetImg);
+            setupDragStart(targetImg, targetImg.src, targetRow);
+          } else {
+            slot.appendChild(sourceImg);
+          }
+          setupDragStart(sourceImg, sourceImg.src, targetRow);
+        } else {
+          if (targetImg) slot.removeChild(targetImg);
+          slot.appendChild(sourceImg);
+          setupDragStart(sourceImg, sourceImg.src, targetRow);
+        }
+        if (!document.querySelector('.party-row.party-selected')) setRowSelected(targetRow);
+        updateBuffs();
+        return;
+      }
+
+      slot.innerHTML = '';
+      const imgEl = document.createElement('img');
+      imgEl.src = src;
+      imgEl.className = 'w-full h-full object-contain';
+      setupDragStart(imgEl, src, targetRow);
+      imgEl.addEventListener('contextmenu', (ev) => {
+        ev.preventDefault();
+        imgEl.remove();
+        updateBuffs();
+      });
+      slot.appendChild(imgEl);
+      if (!document.querySelector('.party-row.party-selected')) setRowSelected(targetRow);
+      updateBuffs();
+    });
+  });
+}
 
 function renderAddRowPlaceholder() {
   const container = document.getElementById('party-rows-container');
@@ -41,13 +140,16 @@ function renderAddRowPlaceholder() {
   `;
 
   placeholder.addEventListener('click', () => {
-    appendPartyRow();
+    appendPartyRow('party-rows-container', nextPartyNumber);
+    nextPartyNumber += 1;
     refreshPartyRows();
+    initializePartyRow(partyRows[partyRows.length - 1], partyRows.length - 1);
     const newRow = partyRows[partyRows.length - 1];
     if (newRow) {
       const newIndex = partyRows.length - 1;
       newRow.addEventListener('click', (e) => {
         if (e.target.closest('#buff-section')) return;
+        if (e.target.closest('.compare-btn, .scroll-btn, .clear-btn, .delete-row-btn')) return;
         document.querySelectorAll('.party-row.party-selected').forEach((r) =>
           r.classList.remove('party-selected', 'ring-4', 'ring-pink-500')
         );
@@ -64,21 +166,6 @@ function renderAddRowPlaceholder() {
     refreshAllRowGhostStates();
     renderAddRowPlaceholder();
 
-  const partyRowsContainer = document.getElementById('party-rows-container');
-  if (partyRowsContainer) {
-    partyRowsContainer.addEventListener('click', (e) => {
-      const deleteBtn = e.target.closest('.delete-row-btn');
-      if (!deleteBtn) return;
-      e.stopPropagation();
-      const row = deleteBtn.closest('.party-row');
-      if (!row) return;
-      row.remove();
-      refreshPartyRows();
-      activeRowIndex = null;
-      clearRowSelection();
-      updateBuffs();
-    }, true);
-  }
     import('https://cdn.jsdelivr.net/npm/lucide@latest/+esm')
       .then(({ createIcons, icons }) => createIcons({ icons }))
       .catch(() => {});
@@ -292,6 +379,7 @@ document.addEventListener("DOMContentLoaded", () => {
   const charFilterGroup = document.querySelector("#char-filter-buttons .char-filter-group");
   setupCardSelection(updateBuffs);
   refreshPartyRows();
+  updateNextPartyNumber();
   refreshAllRowGhostStates();
   renderAddRowPlaceholder();
 
@@ -309,6 +397,30 @@ document.addEventListener("DOMContentLoaded", () => {
       clearRowSelection();
       updateBuffs();
     }, true);
+
+    partyRowsContainer.addEventListener('click', (e) => {
+      const scrollBtn = e.target.closest('.scroll-btn');
+      if (!scrollBtn) return;
+      e.stopPropagation();
+      const row = scrollBtn.closest('.party-row');
+      const index = [...partyRows].indexOf(row);
+      if (index < 0) return;
+      setRowSelected(row);
+      activeRowIndex = index;
+      updateBuffsForRow(index);
+    });
+
+    partyRowsContainer.addEventListener('click', (e) => {
+      const compareBtn = e.target.closest('.compare-btn');
+      if (!compareBtn) return;
+      e.stopPropagation();
+      const row = compareBtn.closest('.party-row');
+      const rowIndex = [...partyRows].indexOf(row);
+      if (rowIndex < 0) return;
+      setRowSelected(row);
+      activeRowIndex = rowIndex;
+      showCompareModal(rowIndex);
+    });
   }
 
   if (charPopout && partyRows.length > 0) {
@@ -495,118 +607,7 @@ document.addEventListener("DOMContentLoaded", () => {
   });
 
   // ---------- ลากเข้าช่อง ----------
-  partyRows.forEach((row, rowIndex) => {
-    const slots = row.querySelectorAll("[data-slot]");
-    const clearBtn = row.querySelector(".cursor-pointer");
-
-    if (clearBtn) clearBtn.addEventListener("click", () => {
-      slots.forEach((s) => (s.innerHTML = ""));
-      const buffList = document.getElementById("buff-list");
-      const debuffList = document.getElementById("debuff-list");
-      const missingBuffList = document.getElementById("missing-buff-list");
-
-      if (buffList) buffList.innerHTML = "";
-      if (debuffList) debuffList.innerHTML = "";
-      if (missingBuffList) missingBuffList.innerHTML = "";
-
-      updateBuffs();
-    });
-
-
-    slots.forEach((slot) => {
-      slot.addEventListener("dragover", (e) => {
-        e.preventDefault();
-      });
-
-      slot.addEventListener("dragleave", () => {
-        slot.classList.remove("animate-pulse-glow");
-      });
-
-      slot.addEventListener("drop", (e) => {
-        e.preventDefault();
-        slot.classList.remove("animate-pulse-glow");
-        const src = e.dataTransfer.getData("text/plain");
-        if (!src) return;
-
-        const fromRowIndexStr = e.dataTransfer.getData('fromRowIndex');
-        const fromSlotIndexStr = e.dataTransfer.getData('fromSlotIndex');
-        const fromRowIndexVal = fromRowIndexStr !== "" && fromRowIndexStr !== null ? parseInt(fromRowIndexStr, 10) : null;
-        const fromSlotIndexVal = fromSlotIndexStr !== "" && fromSlotIndexStr !== null ? parseInt(fromSlotIndexStr, 10) : null;
-
-        const targetRowIndex = rowIndex;
-        const targetRow = partyRows[targetRowIndex];
-        const targetSlots = targetRow.querySelectorAll('[data-slot]');
-        const targetImg = slot.querySelector('img');
-
-        // If drag originated from a party row (move/swap)
-        if (fromRowIndexVal !== null && !isNaN(fromRowIndexVal) && partyRows[fromRowIndexVal]) {
-          const sourceRow = partyRows[fromRowIndexVal];
-          const sourceSlots = sourceRow.querySelectorAll('[data-slot]');
-          let sourceSlot = null;
-          
-          if (!isNaN(fromSlotIndexVal) && sourceSlots[fromSlotIndexVal]) {
-            sourceSlot = sourceSlots[fromSlotIndexVal];
-          }
-
-          if (!sourceSlot || sourceSlot === slot && fromRowIndexVal === targetRowIndex) {
-            return;
-          }
-
-          const sourceImg = sourceSlot ? sourceSlot.querySelector('img') : null;
-          if (!sourceImg) {
-            return;
-          }
-
-          sourceSlot.removeChild(sourceImg);
-          
-          if (fromRowIndexVal === targetRowIndex) {
-            if (targetImg) {
-              slot.removeChild(targetImg);
-              slot.appendChild(sourceImg);
-              sourceSlot.appendChild(targetImg);
-              
-              setupDragStart(sourceImg, sourceImg.src, targetRow);
-              setupDragStart(targetImg, targetImg.src, targetRow);
-            } else {
-              slot.appendChild(sourceImg);
-              setupDragStart(sourceImg, sourceImg.src, targetRow);
-            }
-          } else {
-            if (targetImg) {
-              slot.removeChild(targetImg);
-            }
-            slot.appendChild(sourceImg);
-            setupDragStart(sourceImg, sourceImg.src, targetRow);
-          }
-
-          if (!document.querySelector('.party-row.party-selected')) {
-            setRowSelected(targetRow);
-          }
-          updateBuffs();
-          return;
-        }
-        slot.innerHTML = '';
-        const imgEl = document.createElement('img');
-        imgEl.src = src;
-        imgEl.className = 'w-full h-full object-contain';
-
-        setupDragStart(imgEl, src, targetRow);
-
-        imgEl.addEventListener('contextmenu', (ev) => {
-          ev.preventDefault();
-          imgEl.remove();
-          updateBuffs();
-        });
-
-        slot.appendChild(imgEl);
-        if (!document.querySelector('.party-row.party-selected')) {
-          setRowSelected(targetRow);
-        }
-        updateBuffs();
-      });
-
-     }, true);
-  });
+  partyRows.forEach((row, rowIndex) => initializePartyRow(row, rowIndex));
 
   // ---------- Drop กลับลงล่าง ----------
   charContainer.addEventListener("dragover", (e) => e.preventDefault());
@@ -1282,6 +1283,7 @@ scrollButtons.forEach((btn) => {
 partyRows.forEach((row, index) => {
   row.addEventListener('click', (e) => {
     if (e.target.closest('#buff-section')) return;
+    if (e.target.closest('.compare-btn, .scroll-btn, .clear-btn, .delete-row-btn')) return;
     setRowSelected(row);
     activeRowIndex = index;
     updateBuffsForRow(index);
@@ -1502,24 +1504,6 @@ async function showCompareModal(selectedIndex) {
 
 
     }
-
-    // ------------------------ ปุ่มเปรียบเทียบ ------------------------
-    document.querySelectorAll('.compare-btn').forEach((btn) => {
-      btn.addEventListener('click', (e) => {
-        e.stopPropagation();
-        const selectedRow = document.querySelector('.party-row.party-selected');
-        let selectedIdx;
-        if (!selectedRow) {
-          const rowIndex = [...partyRows].indexOf(btn.closest('.party-row'));
-          setRowSelected(partyRows[rowIndex]);
-          activeRowIndex = rowIndex;
-          selectedIdx = rowIndex;
-        } else {
-          selectedIdx = [...partyRows].indexOf(selectedRow);
-        }
-        showCompareModal(selectedIdx);
-      });
-    });
 
     document.addEventListener("click", (e) => {
     const isInsidePartyRow = e.target.closest(".party-row");
