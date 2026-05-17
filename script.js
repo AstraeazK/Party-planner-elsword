@@ -144,25 +144,6 @@ function renderAddRowPlaceholder() {
     nextPartyNumber += 1;
     refreshPartyRows();
     initializePartyRow(partyRows[partyRows.length - 1], partyRows.length - 1);
-    const newRow = partyRows[partyRows.length - 1];
-    if (newRow) {
-      const newIndex = partyRows.length - 1;
-      newRow.addEventListener('click', (e) => {
-        if (e.target.closest('#buff-section')) return;
-        if (e.target.closest('.compare-btn, .scroll-btn, .clear-btn, .delete-row-btn')) return;
-        document.querySelectorAll('.party-row.party-selected').forEach((r) =>
-          r.classList.remove('party-selected', 'ring-4', 'ring-pink-500')
-        );
-        newRow.classList.add('party-selected', 'ring-4', 'ring-pink-500');
-        activeRowIndex = newIndex;
-        if (typeof updateBuffsForRow === 'function') {
-          updateBuffsForRow(newIndex);
-        } else if (typeof updateBuffs === 'function') {
-          updateBuffs();
-        }
-        e.stopPropagation();
-      });
-    }
     refreshAllRowGhostStates();
     renderAddRowPlaceholder();
 
@@ -201,11 +182,6 @@ const SINGLE_APPLY_EFFECT_CODES = new Set([
 
 const SPEED_PRIORITY_CODES = new Set(['all_speed_15', 'action_speed_up_15']);
 const SINGLE_APPLY_CODE_PREFIXES = ['atk_mag_up_', 'damage_reduction_', 'ignore_def_'];
-
-// console.log('Translation data loaded:', {
-//   th: Char_TH?.ui ? '✓' : '✗',
-//   en: Char_EN?.ui ? '✓' : '✗'
-// });
 
 function getEffectGroupKey(code, buffText = '') {
   const prefix = SINGLE_APPLY_CODE_PREFIXES.find(p => typeof code === 'string' && code.startsWith(p));
@@ -420,6 +396,20 @@ document.addEventListener("DOMContentLoaded", () => {
       setRowSelected(row);
       activeRowIndex = rowIndex;
       showCompareModal(rowIndex);
+    });
+
+    partyRowsContainer.addEventListener('click', (e) => {
+      const row = e.target.closest('.party-row');
+      if (!row) return;
+      if (e.target.closest('#buff-section')) return;
+      if (e.target.closest('.compare-btn, .scroll-btn, .clear-btn, .delete-row-btn')) return;
+      refreshPartyRows();
+      const rowIndex = [...partyRows].indexOf(row);
+      if (rowIndex < 0) return;
+      setRowSelected(row);
+      activeRowIndex = rowIndex;
+      updateBuffsForRow(rowIndex);
+      e.stopPropagation();
     });
   }
 
@@ -1277,17 +1267,6 @@ scrollButtons.forEach((btn) => {
     setRowSelected(row);
     activeRowIndex = index;
     updateBuffsForRow(index);
-  });
-});
-
-partyRows.forEach((row, index) => {
-  row.addEventListener('click', (e) => {
-    if (e.target.closest('#buff-section')) return;
-    if (e.target.closest('.compare-btn, .scroll-btn, .clear-btn, .delete-row-btn')) return;
-    setRowSelected(row);
-    activeRowIndex = index;
-    updateBuffsForRow(index);
-    e.stopPropagation();
   });
 });
 
