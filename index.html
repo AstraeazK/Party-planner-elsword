@@ -312,8 +312,10 @@
 
       <!-- Party Slots from partyRowsTemplate.js -->
       <div id="party-rows-panel" class="flex-1 min-h-0 flex flex-col gap-3">
-        <div id="party-rows-scroll" class="flex-1 min-h-0 overflow-y-auto pr-2">
-          <div id="party-rows-container"></div>
+        <div id="party-rows-wrapper" class="flex-1 min-h-0 overflow-hidden rounded-3xl border border-pink-500/20 bg-gray-950/80 p-3">
+          <div id="party-rows-scroll" class="h-full min-h-0 overflow-y-auto pr-2">
+            <div id="party-rows-container"></div>
+          </div>
         </div>
       </div>
 
@@ -342,7 +344,7 @@
 
     <!-- Right Sidebar: Buff / Debuff -->
         <div id="buff-section" 
-            class="w-[30rem] h-[75vh] flex-shrink-0 bg-gray-900/70 p-4 rounded-2xl 
+            class="w-[30rem] h-full flex-shrink-0 bg-gray-900/70 p-4 rounded-2xl 
                   border border-pink-500/40 shadow-[0_0_15px_rgba(255,20,147,0.25)]
                   overflow-y-auto">
 
