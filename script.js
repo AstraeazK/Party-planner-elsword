@@ -216,6 +216,20 @@ function translateBuff(code, type = 'buff') {
   return langData[type][code] || code;
 }
 
+function updateOvermindSettingTooltips() {
+  document.querySelectorAll('[data-tooltip-effect-codes]').forEach((button) => {
+    const codesAttr = button.dataset.tooltipEffectCodes || '';
+    const codes = codesAttr.split(',').map((code) => code.trim()).filter(Boolean);
+    if (codes.length === 0) {
+      button.removeAttribute('title');
+      return;
+    }
+
+    const labels = codes.map((code) => translateBuff(code, 'buff'));
+    button.setAttribute('title', labels.join(', '));
+  });
+}
+
 function updateUILanguage() {
   const langData = translations[currentLanguage];
   if (!langData) {
@@ -243,6 +257,8 @@ function updateUILanguage() {
       el.textContent = value;
     }
   });
+
+  updateOvermindSettingTooltips();
 }
 
 function setupDragStart(imgEl, src, rowElement) {
