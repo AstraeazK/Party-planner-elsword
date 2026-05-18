@@ -17,6 +17,24 @@ let buffGroupSelections = {};
 let currentLanguage = 'th';
 let nextPartyNumber = 1;
 
+function runUpdateBuffs() {
+  if (typeof window.updateBuffs === 'function') {
+    window.updateBuffs();
+  }
+}
+
+function runSetRowSelected(row) {
+  if (!row) return;
+  if (typeof window.setRowSelected === 'function') {
+    window.setRowSelected(row);
+    return;
+  }
+  document.querySelectorAll(".party-row.party-selected").forEach((r) =>
+    r.classList.remove("party-selected", "ring-4", "ring-pink-500")
+  );
+  row.classList.add("party-selected", "ring-4", "ring-pink-500");
+}
+
 function refreshPartyRows() {
   partyRows = document.querySelectorAll('.party-row');
 }
@@ -56,7 +74,7 @@ function initializePartyRow(row, rowIndex) {
       if (buffList) buffList.innerHTML = "";
       if (debuffList) debuffList.innerHTML = "";
       if (missingBuffList) missingBuffList.innerHTML = "";
-      updateBuffs();
+      runUpdateBuffs();
     });
   }
 
@@ -73,7 +91,8 @@ function initializePartyRow(row, rowIndex) {
       const fromSlotIndexStr = e.dataTransfer.getData('fromSlotIndex');
       const fromRowIndexVal = fromRowIndexStr !== "" && fromRowIndexStr !== null ? parseInt(fromRowIndexStr, 10) : null;
       const fromSlotIndexVal = fromSlotIndexStr !== "" && fromSlotIndexStr !== null ? parseInt(fromSlotIndexStr, 10) : null;
-      const targetRow = partyRows[rowIndex];
+      const targetRow = slot.closest('.party-row') || partyRows[rowIndex];
+      const currentRowIndex = [...document.querySelectorAll('.party-row')].indexOf(targetRow);
       const targetImg = slot.querySelector('img');
 
       if (fromRowIndexVal !== null && !isNaN(fromRowIndexVal) && partyRows[fromRowIndexVal]) {
@@ -101,8 +120,9 @@ function initializePartyRow(row, rowIndex) {
           slot.appendChild(sourceImg);
           setupDragStart(sourceImg, sourceImg.src, targetRow);
         }
-        if (!document.querySelector('.party-row.party-selected')) setRowSelected(targetRow);
-        updateBuffs();
+        runSetRowSelected(targetRow);
+        activeRowIndex = currentRowIndex >= 0 ? currentRowIndex : rowIndex;
+        runUpdateBuffs();
         return;
       }
 
@@ -114,11 +134,12 @@ function initializePartyRow(row, rowIndex) {
       imgEl.addEventListener('contextmenu', (ev) => {
         ev.preventDefault();
         imgEl.remove();
-        updateBuffs();
+        runUpdateBuffs();
       });
       slot.appendChild(imgEl);
-      if (!document.querySelector('.party-row.party-selected')) setRowSelected(targetRow);
-      updateBuffs();
+      runSetRowSelected(targetRow);
+      activeRowIndex = currentRowIndex >= 0 ? currentRowIndex : rowIndex;
+      runUpdateBuffs();
     });
   });
 }
@@ -371,7 +392,7 @@ document.addEventListener("DOMContentLoaded", () => {
       refreshPartyRows();
       activeRowIndex = null;
       clearRowSelection();
-      updateBuffs();
+      runUpdateBuffs();
     }, true);
 
     partyRowsContainer.addEventListener('click', (e) => {
@@ -570,11 +591,12 @@ document.addEventListener("DOMContentLoaded", () => {
     newImg.addEventListener("contextmenu", (e) => {
       e.preventDefault();
       newImg.remove();
-      updateBuffs();
+      runUpdateBuffs();
     });
 
     emptySlot.appendChild(newImg);
-    updateBuffs();
+    runSetRowSelected(selectedRow);
+    runUpdateBuffs();
   });
 
   // ---------- กันลากไฟล์เข้า text ----------
@@ -616,7 +638,7 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   }
 
-  updateBuffs();
+  runUpdateBuffs();
 });
 
   // ---------- BuffGroup Toggle Buttons Handler ----------
@@ -656,7 +678,7 @@ document.addEventListener("DOMContentLoaded", () => {
       
       window.__SHOW_BUFF_NUMBERS = buffGroupSelections["Show_buff"] === 'open';
 
-      updateBuffs();
+      runUpdateBuffs();
     }, true);
   });
 
@@ -1240,7 +1262,7 @@ function updateBuffsForRow(rowIndex) {
     }
   });
 
-  updateBuffs();
+  runUpdateBuffs();
 }
 
 // ---------- Highlight ----------
@@ -1514,6 +1536,8 @@ async function showCompareModal(selectedIndex) {
   const languageBtn = document.getElementById('language-btn');
   const languageDropdown = document.getElementById('language-dropdown');
   const languageOptions = document.querySelectorAll('.language-option');
+  window.updateBuffs = updateBuffs;
+  window.setRowSelected = setRowSelected;
 
   const updateLanguageMarks = () => {
     languageOptions.forEach((option) => {
@@ -1547,7 +1571,7 @@ async function showCompareModal(selectedIndex) {
       updateLanguageMarks();
       languageDropdown?.classList.add('hidden');
       languageBtn?.setAttribute('aria-label', `Language: ${lang.toUpperCase()}`);
-      updateBuffs();
+      runUpdateBuffs();
       setTimeout(() => {
         updateUILanguage();
       }, 100);
