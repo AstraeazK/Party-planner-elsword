@@ -193,19 +193,46 @@ main .flex-1 {
     scrollbar-width: thin;
   }
 
-  /* Floating Sparkles */
+  /* Floating Sakura / Galaxy Sparkles */
   .sparkle {
     position: absolute;
-    width: 6px;
-    height: 6px;
-    background-color: #ffb6ff;
+    width: var(--sparkle-size, 10px);
+    height: var(--sparkle-size, 10px);
+    background: radial-gradient(circle at 50% 50%, rgba(255, 235, 255, 0.95), rgba(255, 134, 214, 0.55) 45%, rgba(195, 123, 255, 0.15) 70%, transparent 85%);
+    border-radius: 999px;
+    filter: drop-shadow(0 0 12px rgba(255, 98, 190, 0.45));
+    opacity: 0.95;
+    transform-origin: center;
+    animation: sparkleFloat 4s infinite ease-in-out, sparkleGlow 2.8s infinite ease-in-out;
+  }
+  .sparkle::before,
+  .sparkle::after {
+    content: "";
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    width: var(--sparkle-size, 10px);
+    height: var(--sparkle-size, 10px);
+    transform: translate(-50%, -50%);
     border-radius: 50%;
-    opacity: 0.8;
-    animation: sparkleFloat 3s infinite ease-in-out;
+    background: radial-gradient(circle at 50% 50%, rgba(255, 255, 255, 0.9), rgba(255, 177, 213, 0.2) 40%, transparent 60%);
+    filter: blur(0.3px);
+  }
+  .sparkle::before {
+    transform: translate(-50%, -50%) rotate(25deg);
+  }
+  .sparkle::after {
+    transform: translate(-50%, -50%) rotate(-25deg);
   }
   @keyframes sparkleFloat {
-    0%, 100% { transform: translateY(0); opacity: 0.8; }
-    50% { transform: translateY(-10px); opacity: 0.3; }
+    0%, 100% { transform: translateY(0) scale(1); opacity: 0.95; }
+    25% { transform: translateY(-6px) scale(1.05); opacity: 0.9; }
+    50% { transform: translateY(-12px) scale(0.96); opacity: 0.75; }
+    75% { transform: translateY(-8px) scale(1.02); opacity: 0.85; }
+  }
+  @keyframes sparkleGlow {
+    0%, 100% { box-shadow: 0 0 8px rgba(205, 90, 255, 0.35); }
+    50% { box-shadow: 0 0 16px rgba(255, 168, 235, 0.55); }
   }
 
 /* Container: scroll เฉพาะตอนสูงเกิน viewport */

@@ -330,6 +330,27 @@ document.addEventListener("DOMContentLoaded", () => {
     document.addEventListener("mousemove", onDrag);
     document.addEventListener("mouseup", stopDrag);
   }
+  createSparkles(26);
+
+  function createSparkles(count = 24) {
+    const layer = document.getElementById("sparkle-layer");
+    if (!layer) return;
+    layer.innerHTML = "";
+
+    for (let i = 0; i < count; i++) {
+      const sparkle = document.createElement("div");
+      sparkle.className = "sparkle";
+      const size = 6 + Math.random() * 10;
+      sparkle.style.setProperty("--sparkle-size", `${size}px`);
+      sparkle.style.left = `${Math.random() * 95}%`;
+      sparkle.style.top = `${Math.random() * 90}%`;
+      sparkle.style.animationDuration = `${3 + Math.random() * 2.5}s, ${2 + Math.random() * 1.5}s`;
+      sparkle.style.animationDelay = `${Math.random() * 3}s, ${Math.random() * 2}s`;
+      sparkle.style.opacity = `${0.65 + Math.random() * 0.25}`;
+      sparkle.style.transform = `translate(-50%, -50%) rotate(${Math.random() * 360}deg)`;
+      layer.appendChild(sparkle);
+    }
+  }
 
   Object.keys(charData).forEach(srcKey => {
     const info = charData[srcKey];
