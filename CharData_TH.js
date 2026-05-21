@@ -206,7 +206,7 @@ export const Char_TH = {
     no_missing_buffs: "ไม่มี Missing Buffs",
     compare_result_title: "ผลการเปรียบเทียบ",
     duplicate_char: "⚠️มีตัวละครซ้ำกัน",
-    multiple_support_char: "⚠️มี Support มากกว่า 1",
+    multiple_support_char: "⚠️มี SUP มากกว่า 1",
 
     card_select_title: "เลือกการ์ดสำหรับตัวละคร",
     card_select_limit: "(เลือกได้สูงสุด 2 ใบ)",
