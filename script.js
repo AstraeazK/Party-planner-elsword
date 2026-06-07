@@ -6,15 +6,15 @@ import { charData } from "./charData.js";
 import { pics } from "./pics.js";
 import { buildCompareMap } from './buffDebuff.js';
 import { initCompareTable } from './compareTable.js';
-import { Char_TH } from './CharData_TH.js';
-import { Char_EN } from './CharData_EN.js';
+import { Char_TH } from './charData_languages/CharData_TH.js';
+import { Char_EN } from './charData_languages/CharData_EN.js';
 import { setupCardSelection, getSelectedCardEffects } from './Card_Select.js';
 import { renderPartyRows, appendPartyRow  } from './partyRowsTemplate.js';
 
 let activeRowIndex = null;
 let partyRows = null;
 let buffGroupSelections = {};
-let currentLanguage = 'th';
+let currentLanguage = 'en';
 let nextPartyNumber = 1;
 
 function runUpdateBuffs() {
@@ -767,7 +767,7 @@ function updateBuffs() {
 
   const uniqueCharSources = new Set();
   imgs.forEach(img => {
-    const srcKey = Object.keys(charData).find(k => img.src.includes(k.replace("pics/", "")));
+    const srcKey = Object.keys(charData).find(k => img.src.includes(k.replace("pics_characters/", "")));
     if (srcKey) {
       uniqueCharSources.add(srcKey);
     }
@@ -809,7 +809,7 @@ function updateBuffs() {
           }
         });
       }
-      if (srcKey === "pics/Noah/Icon_-_Celestia.png") {
+      if (srcKey === "pics_characters/Noah/Icon_-_Celestia.png") {
         getSelectedCardEffects().forEach((buffCode) => {
           const translatedBuff = translateBuff(buffCode, 'buff');
           if (translatedBuff) allBuffs.push({ buff: translatedBuff, code: buffCode, charName: srcKey, role: info.role });
@@ -1291,7 +1291,7 @@ function updateBuffsForRow(rowIndex) {
   const debuffList = [];
 
   imgs.forEach((img) => {
-    const srcKey = Object.keys(charData).find(k => img.src.includes(k.replace("pics/", "")));
+    const srcKey = Object.keys(charData).find(k => img.src.includes(k.replace("pics_characters/", "")));
     const info = srcKey ? charData[srcKey] : null;
     if (info) {
       info.buffs.forEach(b => buffList.push({ buff: b, charName: srcKey }));
@@ -1347,7 +1347,7 @@ function getMergedForRowElement(rowEl) {
   
   const uniqueCharSources = new Set();
   imgs.forEach(img => {
-    const srcKey = Object.keys(charData).find(k => img.src.includes(k.replace('pics/', '')));
+    const srcKey = Object.keys(charData).find(k => img.src.includes(k.replace('pics_characters/', '')));
     if (srcKey) {
       uniqueCharSources.add(srcKey);
     }

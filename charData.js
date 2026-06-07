@@ -1,47 +1,47 @@
 export const charData = {
-  "pics/Elsword/Icon_-_Knight_Emperor.png": {
+  "pics_characters/Elsword/Icon_-_Knight_Emperor.png": {
     role: "physical",
     buffs: ["damage_reduction_20","Super_Armor"],
     debuffs: ["ignore_def_20", "damage_taken_up_12"]
   },
 
-  "pics/Elsword/Icon_-_Rune_Master.png": {
+  "pics_characters/Elsword/Icon_-_Rune_Master.png": {
     role: "magical",
     buffs: ["move_jump_speed_20"],
     debuffs: ["elemental_res_down_250", "ignore_def_20", "speed_down_50", "damage_taken_up_12"]
   },
 
-  "pics/Elsword/Icon_-_Immortal.png": {
+  "pics_characters/Elsword/Icon_-_Immortal.png": {
     role: "physical",
     buffs: ["move_speed_30"],
     debuffs: ["damage_taken_up_20"]
   },
 
-  "pics/Elsword/Icon_-_Genesis.png": {
+  "pics_characters/Elsword/Icon_-_Genesis.png": {
     role: "magical",
     buffs: ["damage_reduction_8"],
     debuffs: ["ignore_def_20", "damage_taken_up_12", "elemental_res_down_130"]
   },
 
-  "pics/Aisha/Icon_-_Aether_Sage.png": {
+  "pics_characters/Aisha/Icon_-_Aether_Sage.png": {
     role: "magical",
     buffs: ["atk_mag_up_20"],
     debuffs: []
   },
 
-  "pics/Aisha/Icon_-_Oz_Sorcerer.png": {
+  "pics_characters/Aisha/Icon_-_Oz_Sorcerer.png": {
     role: "magical",
     buffs: ["atk_mag_up_12", "all_speed_10"],
     debuffs: ["elemental_res_down_195", "ignore_def_20", "damage_reduction_down_20", "speed_down_40"]
   },
 
-  "pics/Aisha/Icon_-_Metamorphy.png": {
+  "pics_characters/Aisha/Icon_-_Metamorphy.png": {
     role: "physical",
     buffs: ["atk_mag_up_12"],
     debuffs: ["ignore_def_21"]
   },
 
-  "pics/Aisha/Icon_-_Lord_Azoth.png": {
+  "pics_characters/Aisha/Icon_-_Lord_Azoth.png": {
     role: "physical",
     buffs: [
       "all_speed_5",
@@ -57,25 +57,25 @@ export const charData = {
     debuffs: ["damage_taken_up_5", "ignore_def_15"]
   },
 
-  "pics/Rena/Icon_-_Anemos.png": {
+  "pics_characters/Rena/Icon_-_Anemos.png": {
     role: "physical",
     buffs: ["atk_mag_up_12", "all_speed_15"],
     debuffs: ["ignore_def_19_5"]
   },
 
-  "pics/Rena/Icon_-_Daybreaker.png": {
+  "pics_characters/Rena/Icon_-_Daybreaker.png": {
     role: "magical",
     buffs: [],
     debuffs: ["damage_taken_up_15", "crit_damage_taken_up_20"]
   },
 
-  "pics/Rena/Icon_-_Twilight.png": {
+  "pics_characters/Rena/Icon_-_Twilight.png": {
     role: "physical",
     buffs: ["damage_reduction_20"],
     debuffs: ["damage_taken_up_12", "ignore_def_20"]
   },
 
-  "pics/Rena/Icon_-_Prophetess.png": {
+  "pics_characters/Rena/Icon_-_Prophetess.png": {
     role: "magical",
     buffs: [
       "atk_mag_up_10",
@@ -92,25 +92,25 @@ export const charData = {
     debuffs: ["ignore_def_10"]
   },
 
-  "pics/Raven/Icon_-_Furious_Blade.png": {
+  "pics_characters/Raven/Icon_-_Furious_Blade.png": {
     role: "physical",
     buffs: [],
     debuffs: ["damage_taken_up_12", "ignore_def_19_5"]
   },
 
-  "pics/Raven/Icon_-_Rage_Hearts.png": {
+  "pics_characters/Raven/Icon_-_Rage_Hearts.png": {
     role: "magical",
     buffs: [],
     debuffs: ["crit_damage_taken_up_12", "ignore_def_20", "elemental_res_down_150", "damage_reduction_down_15"]
   },
 
-  "pics/Raven/Icon_-_Nova_Imperator.png": {
+  "pics_characters/Raven/Icon_-_Nova_Imperator.png": {
     role: "magical",
     buffs: ["atk_mag_up_10", "def_up_12"],
     debuffs: ["damage_taken_up_12", "elemental_res_down_150"]
   },
 
-  "pics/Raven/Icon_-_Revenant.png": {
+  "pics_characters/Raven/Icon_-_Revenant.png": {
     role: "physical",
     buffs: [
       "low_hp_damage_8_over_50",
@@ -122,7 +122,7 @@ export const charData = {
     debuffs: ["crit_damage_taken_up_6", "damage_taken_up_8", "ignore_def_10", "elemental_res_down_150"]
   },
 
-  "pics/Eve/Icon_-_Code_Ultimate.png": {
+  "pics_characters/Eve/Icon_-_Code_Ultimate.png": {
     role: "magical",
     buffs: ["damage_reduction_30"],
     debuffs: [
@@ -132,31 +132,31 @@ export const charData = {
     ]
   },
 
-  "pics/Eve/Icon_-_Code_Esencia.png": {
+  "pics_characters/Eve/Icon_-_Code_Esencia.png": {
     role: "physical",
     buffs: ["special_active_damage_up_12", "damage_reduction_20"],
     debuffs: ["damage_taken_up_12", "elemental_res_down_150"]
   },
 
-  "pics/Eve/Icon_-_Code_Sariel.png": {
+  "pics_characters/Eve/Icon_-_Code_Sariel.png": {
     role: "magical",
     buffs: [],
     debuffs: ["crit_damage_taken_up_12", "ignore_def_20"]
   },
 
-  "pics/Eve/Icon_-_Code_Antithese.png": {
+  "pics_characters/Eve/Icon_-_Code_Antithese.png": {
     role: "physical",
     buffs: ["damage_block_99_9"],
     debuffs: ["ignore_def_20", "damage_taken_up_12"]
   },
 
-  "pics/Chung/Icon_-_Comet_Crusader.png": {
+  "pics_characters/Chung/Icon_-_Comet_Crusader.png": {
     role: "physical",
     buffs: ["damage_reduction_30","Super_Armor"],
     debuffs: ["ignore_def_20", "damage_taken_up_18", "damage_reduction_down_50"]
   },
 
-  "pics/Chung/Icon_-_Fatal_Phantom.png": {
+  "pics_characters/Chung/Icon_-_Fatal_Phantom.png": {
     role: "magical",
     buffs: ["atk_mag_up_20"],
     buffGroups: [
@@ -170,13 +170,13 @@ export const charData = {
     debuffs: []
   },
 
-  "pics/Chung/Icon_-_Centurion.png": {
+  "pics_characters/Chung/Icon_-_Centurion.png": {
     role: "magical",
     buffs: ["damage_reduction_20","Super_Armor"],
     debuffs: ["ignore_def_20", "damage_taken_up_12"]
   },
 
-  "pics/Chung/Icon_-_Dius_Aer.png": {
+  "pics_characters/Chung/Icon_-_Dius_Aer.png": {
     role: "support",
     buffs: [
       "atk_mag_up_12",
@@ -191,25 +191,25 @@ export const charData = {
     debuffs: ["elemental_res_down_150", "ignore_def_15"]
   },
 
-  "pics/Ara/Icon_-_Apsara.png": {
+  "pics_characters/Ara/Icon_-_Apsara.png": {
     role: "physical",
     buffs: ["non_boss_damage_10", "action_speed_up_10"],
     debuffs: ["damage_taken_up_12", "elemental_res_down_150", "ignore_def_54"]
   },
 
-  "pics/Ara/Icon_-_Devi.png": {
+  "pics_characters/Ara/Icon_-_Devi.png": {
     role: "magical",
     buffs: [],
     debuffs: ["damage_taken_up_12", "ignore_def_20"]
   },
 
-  "pics/Ara/Icon_-_Shakti.png": {
+  "pics_characters/Ara/Icon_-_Shakti.png": {
     role: "physical",
     buffs: ["strength_bravery_damage_6"],
     debuffs: ["damage_taken_up_7", "ignore_def_20"]
   },
 
-  "pics/Ara/Icon_-_Surya.png": {
+  "pics_characters/Ara/Icon_-_Surya.png": {
     role: "support",
     buffs: [
       "atk_mag_up_12",
@@ -225,49 +225,49 @@ export const charData = {
     debuffs: ["ignore_def_15", "elemental_res_down_150"]
   },
 
-  "pics/Elesis/Icon_-_Empire_Sword.png": {
+  "pics_characters/Elesis/Icon_-_Empire_Sword.png": {
     role: "physical",
     buffs: ["damage_reduction_15", "action_speed_up_6", "special_active_damage_up_10", "critical_6", "maximize_6"],
     debuffs: ["damage_taken_up_8", "ignore_def_20", "elemental_res_down_100"]
   },
 
-  "pics/Elesis/Icon_-_Flame_Lord.png": {
+  "pics_characters/Elesis/Icon_-_Flame_Lord.png": {
     role: "magical",
     buffs: [],
     debuffs: ["damage_taken_up_12", "ignore_def_20"]
   },
 
-  "pics/Elesis/Icon_-_Bloody_Queen.png": {
+  "pics_characters/Elesis/Icon_-_Bloody_Queen.png": {
     role: "physical",
     buffs: [],
     debuffs: ["elemental_res_down_300", "crit_damage_taken_up_10_76", "crit_damage_taken_up_20_51_75", "crit_damage_taken_up_25_under_50"]
   },
 
-  "pics/Elesis/Icon_-_Adrestia.png": {
+  "pics_characters/Elesis/Icon_-_Adrestia.png": {
     role: "magical",
     buffs: ["atk_mag_up_10", "damage_reduction_20", "action_speed_up_10", "boss_damage_10"],
     debuffs: ["damage_taken_up_7", "ignore_def_25"]
   },
 
-  "pics/Add/Icon_-_Doom_Bringer.png": {
+  "pics_characters/Add/Icon_-_Doom_Bringer.png": {
     role: "magical",
     buffs: ["all_speed_20"],
     debuffs: ["crit_damage_taken_up_20"]
   },
 
-  "pics/Add/Icon_-_Dominator.png": {
+  "pics_characters/Add/Icon_-_Dominator.png": {
     role: "physical",
     buffs: ["atk_mag_up_9_2", "crit_damage_up_11_5"],
     debuffs: ["damage_taken_up_5_07", "ignore_def_10"]
   },
 
-  "pics/Add/Icon_-_Mad_Paradox.png": {
+  "pics_characters/Add/Icon_-_Mad_Paradox.png": {
     role: "magical",
     buffs: ["sot"],
     debuffs: ["damage_taken_up_12", "ignore_def_19_6"]
   },
 
-  "pics/Add/Icon_-_Overmind.png": {
+  "pics_characters/Add/Icon_-_Overmind.png": {
     role: "support",
     buffs: [
       "action_speed_up_15",
@@ -291,25 +291,25 @@ export const charData = {
     debuffs: ["ignore_def_15", "elemental_res_down_150", "damage_reduction_down_20"]
   },
 
-  "pics/LuCiel/Icon_-_Catastrophe.png": {
+  "pics_characters/LuCiel/Icon_-_Catastrophe.png": {
     role: "physical",
     buffs: [],
     debuffs: ["damage_taken_up_12", "crit_damage_taken_up_8", "damage_reduction_down_10"]
   },
 
-  "pics/LuCiel/Icon_-_Innocent.png": {
+  "pics_characters/LuCiel/Icon_-_Innocent.png": {
     role: "magical",
     buffs: [],
     debuffs: ["ignore_def_20", "crit_damage_taken_up_12"]
   },
 
-  "pics/LuCiel/Icon_-_Diangelion.png": {
+  "pics_characters/LuCiel/Icon_-_Diangelion.png": {
     role: "physical",
     buffs: [],
     debuffs: ["damage_taken_up_12", "ignore_def_20"]
   },
 
-  "pics/LuCiel/Icon_-_Demersio.png": {
+  "pics_characters/LuCiel/Icon_-_Demersio.png": {
     role: "support",
     buffs: [
       "max_hp_10",
@@ -325,37 +325,37 @@ export const charData = {
     debuffs: ["ignore_def_15", "elemental_res_down_150"]
   },
 
-  "pics/Rose/Icon_-_Tempest_Burster.png": {
+  "pics_characters/Rose/Icon_-_Tempest_Burster.png": {
     role: "physical",
     buffs: ["atk_mag_up_10"],
     debuffs: ["damage_taken_up_8", "ignore_def_10", "elemental_res_down_100"]
   },
 
-  "pics/Rose/Icon_-_Black_Massacre.png": {
+  "pics_characters/Rose/Icon_-_Black_Massacre.png": {
     role: "physical",
     buffs: [],
     debuffs: ["ignore_def_20", "crit_damage_taken_up_12"]
   },
 
-  "pics/Rose/Icon_-_Minerva.png": {
+  "pics_characters/Rose/Icon_-_Minerva.png": {
     role: "magical",
     buffs: [],
     debuffs: ["damage_taken_up_12", "ignore_def_20", "elemental_res_down_120"]
   },
 
-  "pics/Rose/Icon_-_Prime_Operator.png": {
+  "pics_characters/Rose/Icon_-_Prime_Operator.png": {
     role: "magical",
     buffs: ["atk_mag_up_8", "damage_reduction_10"],
     debuffs: ["damage_taken_up_8", "ignore_def_20"]
   },
 
-  "pics/Ain/Icon_-_Richter.png": {
+  "pics_characters/Ain/Icon_-_Richter.png": {
     role: "physical",
     buffs: ["atk_mag_up_20", "max_mp_60", "move_speed_1_3x"],
     debuffs: []
   },
 
-  "pics/Ain/Icon_-_Bluhen.png": {
+  "pics_characters/Ain/Icon_-_Bluhen.png": {
     role: "support",
     buffs: [
       "white_shield_10",
@@ -372,25 +372,25 @@ export const charData = {
     debuffs: ["ignore_def_15", "elemental_res_down_150"]
   },
 
-  "pics/Ain/Icon_-_Herrscher.png": {
+  "pics_characters/Ain/Icon_-_Herrscher.png": {
     role: "magical",
     buffs: ["crit_damage_up_16"],
     debuffs: ["ignore_def_20", "elemental_res_down_100"]
   },
 
-  "pics/Ain/Icon_-_Opferung.png": {
+  "pics_characters/Ain/Icon_-_Opferung.png": {
     role: "physical",
     buffs: ["atk_mag_up_7_8", "special_active_damage_up_5", "mana_cost_down_10"],
     debuffs: ["ignore_def_20", "damage_reduction_down_13"]
   },
 
-  "pics/Laby/Icon_-_Eternity_Winner.png": {
+  "pics_characters/Laby/Icon_-_Eternity_Winner.png": {
     role: "physical",
     buffs: [],
     debuffs: ["damage_taken_up_12", "ignore_def_20", "elemental_res_down_100"]
   },
 
-  "pics/Laby/Icon_-_Radiant_Soul.png": {
+  "pics_characters/Laby/Icon_-_Radiant_Soul.png": {
     role: "support",
     buffs: [
       "mana_regen_50",
@@ -405,31 +405,31 @@ export const charData = {
     debuffs: ["ignore_def_15", "elemental_res_down_150", "damage_reduction_down_15"]
   },
 
-  "pics/Laby/Icon_-_Nisha_Labyrinth.png": {
+  "pics_characters/Laby/Icon_-_Nisha_Labyrinth.png": {
     role: "physical",
     buffs: ["atk_mag_up_20"],
     debuffs: ["ignore_def_10"]
   },
 
-  "pics/Laby/Icon_-_Twins_Picaro.png": {
+  "pics_characters/Laby/Icon_-_Twins_Picaro.png": {
     role: "magical",
     buffs: ["ha_accel_2x"],
     debuffs: ["ignore_def_20"]
   },
 
-  "pics/Noah/Icon_-_Liberator.png": {
+  "pics_characters/Noah/Icon_-_Liberator.png": {
     role: "physical",
     buffs: ["boss_damage_8"],
     debuffs: ["ignore_def_22", "crit_damage_taken_up_12"]
   },
 
-  "pics/Noah/Icon_-_Celestia.png": {
+  "pics_characters/Noah/Icon_-_Celestia.png": {
     role: "magical",
     buffs: ["fill_gauge_20", "damage_up_8"],
     debuffs: ["ignore_def_15", "crit_damage_taken_up_4"]
   },
 
-  "pics/Noah/Icon_-_Nyx_Pieta.png": {
+  "pics_characters/Noah/Icon_-_Nyx_Pieta.png": {
     role: "support",
     buffs: [
       "ha_master_accel_1_5x",
@@ -445,19 +445,19 @@ export const charData = {
     debuffs: ["ignore_def_15", "elemental_res_down_150"]
   },
 
-  "pics/Noah/Icon_-_Morpheus.png": {
+  "pics_characters/Noah/Icon_-_Morpheus.png": {
     role: "magical",
     buffs: ["atk_mag_up_20"],
     debuffs: ["elemental_res_down_100"]
   },
 
-  "pics/Lithia/Icon_-_Gembliss.png": {
+  "pics_characters/Lithia/Icon_-_Gembliss.png": {
     role: "physical",
     buffs: ["atk_mag_up_20", "fill_gauge_20", "damage_reduction_20"],
     debuffs: []
   },
 
-  "pics/Lithia/Icon_-_Avarice.png": {
+  "pics_characters/Lithia/Icon_-_Avarice.png": {
     role: "support",
     buffs: [
       "action_speed_up_15",
@@ -475,13 +475,13 @@ export const charData = {
     debuffs: ["ignore_def_15", "elemental_res_down_150"]
   },
 
-  "pics/Lithia/Icon_-_Achlys.png": {
+  "pics_characters/Lithia/Icon_-_Achlys.png": {
     role: "magical",
     buffs: [],
     debuffs: ["damage_taken_up_12", "ignore_def_20"]
   },
 
-  "pics/Lithia/Icon_-_Mischief.png": {
+  "pics_characters/Lithia/Icon_-_Mischief.png": {
     role: "magical",
     buffs: [],
     debuffs: ["ignore_def_20", "crit_damage_taken_up_12_5", "elemental_res_down_125"]
