@@ -845,7 +845,6 @@ function updateDuplicateWarnings() {
     if (hasDup || hasMultipleSupport) {
       if (!warningStack) {
         warningStack = document.createElement('div');
-        warningStack.className = 'warning-stack ml-1 self-center flex flex-col gap-1 w-[140px] min-w-[140px]';
         const slots = row.querySelectorAll('[data-slot]');
         const lastSlot = slots[slots.length - 1];
         if (lastSlot && lastSlot.parentNode) {
@@ -854,6 +853,7 @@ function updateDuplicateWarnings() {
           row.appendChild(warningStack);
         }
       }
+      warningStack.className = 'warning-stack';
       const messages = [];
       if (hasDup) {
         messages.push({
@@ -871,7 +871,7 @@ function updateDuplicateWarnings() {
       warningStack.innerHTML = '';
       messages.forEach(({ className, text }) => {
         const badge = document.createElement('div');
-        badge.className = `${className} bg-yellow-400 text-black text-[12px] leading-tight font-semibold px-1.5 py-0.5 rounded text-center whitespace-normal break-words`;
+        badge.className = `${className} warning-badge bg-yellow-400 text-black text-[12px] leading-tight font-semibold px-1.5 py-0.5 rounded text-center whitespace-normal break-words`;
         badge.innerText = text;
         warningStack.appendChild(badge);
       });

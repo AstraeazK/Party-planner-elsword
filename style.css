@@ -138,6 +138,13 @@ main .flex-1 {
   flex: 1;
   height: 100%;
   overflow-y: auto;
+  scrollbar-gutter: stable;
+}
+
+@supports not (scrollbar-gutter: stable) {
+  #party-rows-scroll {
+    overflow-y: scroll;
+  }
 }
 
 #buff-section {
@@ -174,7 +181,21 @@ main .flex-1 {
   #buff-entries-tooltip.visible { opacity: 1; transform: translateY(0); }
 
   /* Slot badge small tweak */
-  .duplicate-warning, .support-warning { display: flex; align-items: center; justify-content: center; min-height: 26px; }
+  .duplicate-warning, .support-warning { display: flex; align-items: center; justify-content: center; min-height: 22px; }
+
+  .warning-stack {
+    flex: 0 0 6.75rem;
+    align-self: center;
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+    pointer-events: none;
+  }
+
+  .warning-badge {
+    width: 100%;
+    box-shadow: 0 0 10px rgba(250, 204, 21, 0.35);
+  }
 
   /* Custom scrollbar for sidebar and char container */
   #buff-section::-webkit-scrollbar, #char-container::-webkit-scrollbar, #char-popout::-webkit-scrollbar { width: 10px; height: 10px; }
