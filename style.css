@@ -750,6 +750,7 @@ main .flex-1 {
 .header-wand-right::before { left: 5rem; }
 .header-wand-right::after { right: 2.5rem; }
 
+#paint-btn,
 #language-btn,
 #help-btn {
   width: 3.55rem !important;
@@ -760,6 +761,7 @@ main .flex-1 {
 }
 
 /* Hover / Interaction for header buttons */
+#paint-btn:hover,
 #language-btn:hover,
 #help-btn:hover {
   transform: translateY(-3px) scale(1.06);
@@ -767,12 +769,14 @@ main .flex-1 {
   filter: saturate(1.05) brightness(1.06);
 }
 
+#paint-btn:active,
 #language-btn:active,
 #help-btn:active {
   transform: translateY(-1px) scale(0.98);
 }
 
 /* Language dropdown option hover */
+#paint-dropdown .language-option:hover,
 #language-dropdown .language-option:hover {
   background: linear-gradient(90deg, rgba(255,79,194,0.12), rgba(255,20,147,0.06));
   color: #fff;
@@ -810,13 +814,27 @@ main .flex-1 {
     0 0 28px rgba(255, 65, 198, 0.45) !important;
 }
 
-.party-panel::before,
-.buff-panel::before {
+.party-panel::before {
   content: "";
   position: absolute;
   inset: 0.9rem;
   pointer-events: none;
   border-radius: 1.25rem;
+}
+
+.buff-panel::before {
+  content: "";
+  position: absolute;
+  inset: 0.9rem;
+  border-radius: 1.25rem;
+  pointer-events: none;
+
+  background:
+    url("../assets/HQ_CutIn_Eve_CASH_32.png")
+    bottom right / 250px auto
+    no-repeat;
+
+  opacity: 0.45;
 }
 
 .party-row {
