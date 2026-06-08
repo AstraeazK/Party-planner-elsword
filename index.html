@@ -35,8 +35,8 @@
 
   <link rel="stylesheet" href="style.css">
 </head>
-<body class="bg-gray-900 text-white">
-  <header class="relative overflow-hidden text-center py-8 border-b border-pink-500 bg-gray-950 shadow-[0_0_25px_rgba(255,20,147,0.4)]">
+<body class="bg-gray-900 text-white kawaii-app">
+  <header class="app-header relative overflow-hidden text-center py-8 border-b border-pink-500 bg-gray-950 shadow-[0_0_25px_rgba(255,20,147,0.4)]">
     <div class="absolute inset-0 bg-gradient-to-r from-pink-700/20 via-fuchsia-600/20 to-pink-700/20 blur-2xl"></div>
 
     <!-- Help + Language Buttons -->
@@ -50,7 +50,7 @@
                 shadow-lg shadow-pink-500/40
                 transition"
           aria-label="Language selector">
-          <img src="assets/language.png" class="w-5 h-5" alt="Language">
+          <img src="assets/language.png" class="w-8 h-8" alt="Language">
         </button>
 
 
@@ -71,7 +71,7 @@
               hover:bg-pink-400
               shadow-lg shadow-pink-500/40
               transition">
-        <img src="assets/setting.png" class="w-5 h-5" alt="Setting">
+        <img src="assets/setting.png" class="w-8 h-8" alt="Setting">
       </button>
     </div>
     </div>
@@ -318,27 +318,29 @@
 
     <!-- Sparkles -->
     <div id="sparkle-layer" class="absolute inset-0 pointer-events-none overflow-hidden"></div>
-    <h1 class="relative text-4xl md:text-5xl font-extrabold text-pink-400 glow-text tracking-wide inline-flex items-center justify-center gap-3">
+    <div class="header-wand header-wand-left" aria-hidden="true"></div>
+    <div class="header-wand header-wand-right" aria-hidden="true"></div>
+    <h1 class="app-title relative text-4xl md:text-5xl font-extrabold text-pink-400 glow-text tracking-wide inline-flex items-center justify-center gap-3">
       <span data-i18n="ui.web_title">จัดตี้กินหมูกระทะ</span> ✨
     </h1>
   </header>
 
 <!-- Main Content -->
-<main class="flex-1 flex flex-col p-4 gap-4 overflow-hidden">
+<main class="app-main flex-1 flex flex-col p-4 gap-4 overflow-hidden">
     <div id="click-area"></div>
-    <div class="flex flex-1 gap-4">
+    <div class="app-layout flex flex-1 gap-4">
 
     <!-- Left Main Area -->
-    <div class="flex-1 flex flex-col">
+    <div class="planner-stage flex-1 flex flex-col">
 
       <!-- Party Slots from partyRowsTemplate.js -->
       <div id="party-rows-panel" class="flex-1 min-h-0 flex flex-col gap-3">
-        <div id="party-rows-wrapper" class="flex-1 min-h-0 overflow-hidden rounded-3xl border border-pink-500/20 bg-gray-950/80 p-3">
+        <div id="party-rows-wrapper" class="party-panel flex-1 min-h-0 overflow-hidden rounded-3xl border border-pink-500/20 bg-gray-950/80 p-3">
           <div id="party-rows-scroll" class="h-full min-h-0 overflow-y-auto pr-2">
-            <div id="party-rows-container"></div>
+              <div id="party-rows-container"></div>
+            </div>
           </div>
         </div>
-      </div>
 
        <div id="char-popout" class="char-popout">
         <!-- Bottom: Characters -->
@@ -353,7 +355,6 @@
           </button>
         </div>
 
-<div id="char-container" class="bg-gray-800 p-1 flex flex-wrap gap-x-1 gap-y-0.5"></div>
         <!-- Bottom: Characters -->
         <div id="char-container" class="bg-gray-800 p-1 flex flex-wrap gap-x-1 gap-y-0.5"></div>
         <div id="char-popout-collapsed" class="hidden items-center justify-center py-2">
@@ -365,24 +366,24 @@
 
     <!-- Right Sidebar: Buff / Debuff -->
         <div id="buff-section" 
-            class="w-[28rem] h-full flex-shrink-0 bg-gray-900/70 p-4 rounded-2xl 
+            class="buff-panel w-[28rem] h-full flex-shrink-0 bg-gray-900/70 p-4 rounded-2xl
                   border border-pink-500/40 shadow-[0_0_15px_rgba(255,20,147,0.25)]
                   overflow-y-auto">
 
-          <h2 class="text-xl font-bold text-pink-300 mb-3 text-center tracking-wide">✨ Buff/Debuff ✨</h2>
+          <h2 class="buff-title text-xl font-bold text-pink-300 mb-3 text-center tracking-wide">✨ Buff/Debuff ✨</h2>
 
-          <div class="space-y-4">
-            <div>
+          <div class="buff-card-list space-y-4">
+            <div class="buff-card buff-card-good">
               <h3 class="text-green-400 font-semibold mb-2">💚 Buffs</h3>
               <ul id="buff-list" class="hover:text-green-300 transition list-disc list-inside space-y-1"></ul>
             </div>
 
-            <div>
+            <div class="buff-card buff-card-bad">
               <h3 class="text-red-400 font-semibold mb-2">🔻 Debuffs</h3>
               <ul id="debuff-list" class="hover:text-red-300 transition list-disc list-inside text-pink-100 space-y-1"></ul>
             </div>
 
-            <div>
+            <div class="buff-card buff-card-missing">
               <h3 class="text-yellow-400 font-semibold mb-2" data-i18n="ui.missing_buffs_debuffs">⚠️ Missing Buffs/Debuffs</h3>
               <ul id="missing-buff-list" class="hover:text-yellow-300 transition list-disc list-inside space-y-1"></ul>
             </div>
