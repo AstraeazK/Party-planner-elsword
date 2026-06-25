@@ -1550,6 +1550,8 @@ async function showCompareModal(selectedIndex) {
     );
     const isInsideTopControls = e.composedPath().some(
       (el) =>
+        el?.id === "paint-btn" ||
+        el?.id === "theme-dropdown" ||
         el?.id === "language-btn" ||
         el?.id === "language-dropdown" ||
         el?.id === "help-btn" ||
@@ -1618,6 +1620,55 @@ async function showCompareModal(selectedIndex) {
 
   updateLanguageMarks();
 
+  const themeBtn = document.getElementById('paint-btn');
+  const themeDropdown = document.getElementById('theme-dropdown');
+  const themeOptions = document.querySelectorAll('.theme-option');
+  const themeLink = document.getElementById('theme-stylesheet');
+  const themeMeta = document.querySelector('meta[name="theme-color"]');
+
+  const themeList = {
+    neon_pink: { label: 'Neon Pink', color: '#ff8fc7' },
+    ocean_blue: { label: 'Ocean Blue', color: '#1e4b7a' },
+    moonlight_red: { label: 'Moonlight Red', color: '#7a1329' },
+    forest_green: { label: 'Forest Green', color: '#2b5c29' }
+  };
+
+  const applyThemeSelection = (themeKey) => {
+    const theme = themeList[themeKey] ? themeKey : 'neon_pink';
+    if (themeLink) {
+      themeLink.href = `style_theme/${theme}.css`;
+    }
+    localStorage.setItem('appTheme', theme);
+    if (themeMeta) {
+      themeMeta.content = themeList[theme].color;
+    }
+    themeOptions.forEach((option) => {
+      const isActive = option.dataset.theme === theme;
+      option.classList.toggle('active', isActive);
+      option.textContent = isActive ? `✓ ${option.dataset.label || option.dataset.theme}` : option.dataset.label || option.dataset.theme.replace(/_/g, ' ');
+    });
+    if (themeBtn) {
+      themeBtn.setAttribute('aria-label', `Theme selector: ${themeList[theme].label}`);
+    }
+  };
+
+  applyThemeSelection(localStorage.getItem('appTheme') || 'neon_pink');
+
+  themeBtn?.addEventListener('click', (e) => {
+    e.stopPropagation();
+    themeDropdown?.classList.toggle('hidden');
+  });
+
+  themeOptions.forEach((option) => {
+    option.addEventListener('click', (e) => {
+      e.stopPropagation();
+      const theme = option.dataset.theme;
+      if (!theme) return;
+      applyThemeSelection(theme);
+      themeDropdown?.classList.add('hidden');
+    });
+  });
+
   // Setup help modal buttons
   const helpBtn = document.getElementById('help-btn');
   const helpModal = document.getElementById('help-modal');
@@ -1640,8 +1691,14 @@ async function showCompareModal(selectedIndex) {
 
   document.addEventListener('click', (e) => {
     if (!languageDropdown || !languageBtn) return;
-    if (!languageDropdown.contains(e.target) && e.target !== languageBtn) {
+    if (
+      !languageDropdown.contains(e.target) &&
+      e.target !== languageBtn &&
+      !themeDropdown?.contains(e.target) &&
+      e.target !== themeBtn
+    ) {
       languageDropdown.classList.add('hidden');
+      themeDropdown?.classList.add('hidden');
     }
   });
 
@@ -1649,6 +1706,7 @@ async function showCompareModal(selectedIndex) {
     if (e.key === 'Escape') {
       helpModal?.classList.add('hidden');
       languageDropdown?.classList.add('hidden');
+      themeDropdown?.classList.add('hidden');
     }
   });
 

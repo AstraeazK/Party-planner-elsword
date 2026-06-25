@@ -13,14 +13,10 @@
   <meta property="og:type" content="website">
   <meta property="og:url" content="https://astraeazk.github.io/Party-planner-elsword/">
 
-  <!-- เปลี่ยนเป็น URL รูปจริงของคุณ -->
   <meta property="og:image" content="https://astraeazk.github.io/Party-planner-elsword/Party_planner_embed.png">
 
-  <!-- ขนาดรูป -->
   <meta property="og:image:width" content="1200">
   <meta property="og:image:height" content="630">
-
-  <!-- Discord / Twitter -->
   <meta name="twitter:card" content="summary_large_image">
 
   <meta name="theme-color" content="#ff8fc7">
@@ -34,13 +30,35 @@
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11.10.5/dist/sweetalert2.min.css">
 
   <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" id="theme-stylesheet" href="style_theme/neon_pink.css">
 </head>
 <body class="bg-gray-900 text-white kawaii-app">
   <header class="app-header relative overflow-hidden text-center py-8 border-b border-pink-500 bg-gray-950 shadow-[0_0_25px_rgba(255,20,147,0.4)]">
-    <div class="absolute inset-0 bg-gradient-to-r from-pink-700/20 via-fuchsia-600/20 to-pink-700/20 blur-2xl"></div>
+    <div class="header-glow absolute inset-0 blur-2xl"></div>
 
     <!-- Help + Language Buttons -->
     <div class="fixed top-4 right-4 z-50 flex items-start gap-2">
+      
+      <div class="relative">
+        <button id="paint-btn"
+          class="w-10 h-10 rounded-full
+                bg-pink-500 text-white
+                flex items-center justify-center
+                hover:bg-pink-400
+                shadow-lg shadow-pink-500/40
+                transition"
+          aria-label="Theme selector">
+          <img src="assets/paint.png" class="w-8 h-8" alt="Theme">
+        </button>
+        <div id="theme-dropdown"
+          class="hidden absolute top-full right-0 mt-2 w-40 overflow-hidden rounded-xl border border-pink-500/40 bg-gray-900 text-left shadow-lg shadow-pink-500/30">
+          <button type="button" class="theme-option w-full px-3 py-2 text-sm text-white text-left" data-theme="neon_pink" data-label="Neon Pink">Neon Pink</button>
+          <button type="button" class="theme-option w-full px-3 py-2 text-sm text-white text-left" data-theme="ocean_blue" data-label="Ocean Blue">Ocean Blue</button>
+          <button type="button" class="theme-option w-full px-3 py-2 text-sm text-white text-left" data-theme="moonlight_red" data-label="Moonlight Red">Moonlight Red</button>
+          <button type="button" class="theme-option w-full px-3 py-2 text-sm text-white text-left" data-theme="forest_green" data-label="Forest Green">Forest Green</button>
+        </div>
+      </div>
+
       <div class="relative">
         <button id="language-btn"
           class="w-10 h-10 rounded-full
@@ -52,8 +70,6 @@
           aria-label="Language selector">
           <img src="assets/language.png" class="w-8 h-8" alt="Language">
         </button>
-
-
 
         <div id="language-dropdown"
           class="hidden absolute top-full right-0 mt-2 w-28 overflow-hidden rounded-xl border border-pink-500/40 bg-gray-900 text-left shadow-lg shadow-pink-500/30">
@@ -73,7 +89,6 @@
               transition">
         <img src="assets/setting.png" class="w-8 h-8" alt="Setting">
       </button>
-    </div>
     </div>
 
     <!-- Help Modal Overlay -->
