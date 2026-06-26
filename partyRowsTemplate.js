@@ -2,7 +2,7 @@ const PARTY_COLORS = ['var(--party-row-color-1)', 'var(--party-row-color-2)', 'v
 
 function buildSlotMarkup() {
   return Array.from({ length: 8 }, (_, i) => (
-    `<div class="party-slot w-[90px] h-[90px] bg-gray-700 border-2 flex items-center justify-center" data-slot="${i}"></div>`
+    `<div class="party-slot bg-gray-700 border-2 flex items-center justify-center" data-slot="${i}"></div>`
   )).join('');
 }
 
@@ -26,21 +26,21 @@ function buildRowMarkup(rowIndex, partyNumber = rowIndex + 1) {
   return `
      <div class="party-row relative rounded-lg p-2 ${rowPaddingClass} flex gap-2 overflow-visible mb-4 mx-4 border border-pink-500/20 shadow-[0_0_10px_rgba(255,20,147,0.12)]">
       ${deleteButton}
-      <div class="custom-text-slot party-label w-[90px] h-[90px] text-black font-bold text-center p-2 flex items-center justify-center rounded-md cursor-text break-all whitespace-pre-wrap"
+      <div class="custom-text-slot party-label text-black font-bold text-center p-2 flex items-center justify-center rounded-md cursor-text break-all whitespace-pre-wrap"
           style="background:${getRowColor(rowIndex)}" contenteditable="true">Party ${partyNumber}</div>
       <div class="party-slot-grid flex gap-2">${buildSlotMarkup()}</div>
       <div class="row-actions ml-auto flex gap-2">
-        <div class="row-action-btn w-[90px] h-[90px] bg-gray-800 flex items-center justify-center cursor-pointer clear-btn relative group" title="Clear Entire Row">
+        <div class="row-action-btn bg-gray-800 flex items-center justify-center cursor-pointer clear-btn relative group" title="Clear Entire Row">
           <i data-lucide="brush-cleaning" class="w-10 h-10 transition-transform active:scale-90"></i>
           <span class="row-action-label">Clear</span>
           <span class="pointer-events-none absolute -top-8 left-1/2 -translate-x-1/2 whitespace-nowrap rounded bg-gray-900 px-2 py-1 text-xs text-white opacity-0 group-hover:opacity-100 transition-opacity z-20">Clear Entire Row</span>
         </div>
-        <div class="row-action-btn w-[90px] h-[90px] bg-gray-800 flex items-center justify-center cursor-pointer compare-btn relative group" title="Compare with other rows">
+        <div class="row-action-btn bg-gray-800 flex items-center justify-center cursor-pointer compare-btn relative group" title="Compare with other rows">
           <i data-lucide="columns" class="w-10 h-10 transition-transform active:scale-90"></i>
           <span class="row-action-label">Compare</span>
           <span class="pointer-events-none absolute -top-8 left-1/2 -translate-x-1/2 whitespace-nowrap rounded bg-gray-900 px-2 py-1 text-xs text-white opacity-0 group-hover:opacity-100 transition-opacity z-20">Compare with other rows</span>
         </div>
-        <div class="row-action-btn w-[90px] h-[90px] bg-gray-800 flex items-center justify-center cursor-pointer scroll-btn relative group" title="Scroll Buffs">
+        <div class="row-action-btn bg-gray-800 flex items-center justify-center cursor-pointer scroll-btn relative group" title="Scroll Buffs">
           <i data-lucide="scroll-text" class="w-10 h-10 transition-transform active:scale-90"></i>
           <span class="row-action-label">Info</span>
           <span class="pointer-events-none absolute -top-8 left-1/2 -translate-x-1/2 whitespace-nowrap rounded bg-gray-900 px-2 py-1 text-xs text-white opacity-0 group-hover:opacity-100 transition-opacity z-20">Scroll Buffs</span>

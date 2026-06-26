@@ -17,6 +17,65 @@
 }
 
 /* SLOT BASE */
+.party-row .party-slot,
+.party-row .party-label,
+.party-row .row-action-btn {
+    flex: 0 0 auto;
+}
+
+.party-row {
+    gap: clamp(0.35rem, 0.9vw, 0.6rem);
+    align-items: center;
+}
+
+.party-row .party-slot {
+    width: clamp(48px, 6.8vw, 84px);
+    height: clamp(48px, 6.8vw, 84px);
+    min-width: clamp(48px, 6.8vw, 84px);
+    min-height: clamp(48px, 6.8vw, 84px);
+    border-radius: clamp(10px, 1.2vw, 14px);
+}
+
+.party-row .party-label {
+    width: clamp(48px, 6.8vw, 84px);
+    height: clamp(48px, 6.8vw, 84px);
+    min-width: clamp(48px, 6.8vw, 84px);
+    min-height: clamp(48px, 6.8vw, 84px);
+    font-size: clamp(0.7rem, 1vw, 0.95rem);
+    padding: clamp(0.2rem, 0.45vw, 0.45rem);
+}
+
+.party-row .party-slot-grid {
+    gap: clamp(0.25rem, 0.7vw, 0.5rem);
+    min-width: 0;
+    overflow: hidden;
+}
+
+.party-row .row-action-btn {
+    width: clamp(48px, 6.8vw, 84px);
+    height: clamp(48px, 6.8vw, 84px);
+    min-width: clamp(48px, 6.8vw, 84px);
+    min-height: clamp(48px, 6.8vw, 84px);
+    border-radius: 0.8rem;
+}
+
+.party-row .row-action-btn i,
+.party-row .row-action-btn svg {
+    width: clamp(18px, 2.2vw, 28px) !important;
+    height: clamp(18px, 2.2vw, 28px) !important;
+}
+
+.party-row .row-action-btn .row-action-label {
+    font-size: clamp(0.6rem, 0.9vw, 0.75rem);
+    line-height: 1.1;
+}
+
+.party-row .party-slot img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+}
+
 [data-slot] {
     width: 90px;
     height: 90px;
@@ -101,17 +160,18 @@ body {
   display: flex;
   flex-direction: column;
   font-family: 'Fredoka', sans-serif;
-  min-height: 100%;
+  min-height: 100dvh;
+  height: 100dvh;
   background: var(--body-bg);
   color: var(--text-color);
 }
 
 main {
-  flex: 1;
+  flex: 1 1 auto;
   min-height: 0;
+  height: calc(var(--app-viewport-height, 100dvh) - var(--app-header-height, 0px));
   overflow: hidden;
 }
-
 
 main .flex-1 {
   min-height: 0;
@@ -136,12 +196,14 @@ main .flex-1 {
   border: none;
   box-shadow: none;
   backdrop-filter: none;
+  overflow: hidden;
 }
 
 #party-rows-scroll {
-  flex: 1;
+  flex: 1 1 auto;
   height: 100%;
   overflow-y: auto;
+  overflow-x: hidden;
   scrollbar-gutter: stable;
   background: transparent;
   border: none;
@@ -158,8 +220,13 @@ main .flex-1 {
 }
 
 #buff-section {
+  width: min(28rem, 100%);
+  max-width: 100%;
+  min-width: min(28rem, 100%);
   height: 100%;
   max-height: 100%;
+  overflow-y: auto;
+  overflow-x: hidden;
   background: linear-gradient(180deg, var(--surface-base), var(--surface-strong));
   border: 1px solid var(--panel-border);
   box-shadow: 0 0 30px var(--panel-shadow);
@@ -256,6 +323,70 @@ main .flex-1 {
   #buff-section, #char-container, #char-popout {
     scrollbar-color: var(--accent) rgba(255, 255, 255, 0.08);
     scrollbar-width: thin;
+  }
+
+  @media (max-width: 1200px) {
+    .app-layout {
+      flex-direction: column;
+      height: auto;
+    }
+
+    .planner-stage,
+    .buff-panel {
+      width: 100%;
+      min-width: 0;
+      max-height: none;
+      height: auto;
+    }
+
+    .buff-panel {
+      min-height: 24rem;
+    }
+  }
+
+  @media (max-width: 720px) {
+    .app-main {
+      padding: 0 0.65rem 0.65rem !important;
+    }
+
+    .app-header {
+      min-height: auto;
+      padding-top: 4.4rem !important;
+    }
+
+    .app-title {
+      font-size: clamp(1.8rem, 7vw, 2.7rem) !important;
+      padding: 0 3rem;
+    }
+
+    .party-row {
+      padding-right: 0.35rem;
+    }
+
+    .party-row .row-actions {
+      width: 100%;
+      justify-content: flex-start;
+      margin-left: 0;
+    }
+
+    .party-label {
+      width: 72px;
+      height: 72px;
+      flex: 0 0 72px;
+    }
+
+    [data-slot] {
+      width: clamp(62px, 12vw, 90px);
+      height: clamp(62px, 12vw, 90px);
+    }
+
+    #char-filter-buttons {
+      flex-wrap: wrap;
+    }
+
+    #char-filter-buttons .char-filter-group {
+      flex-wrap: wrap;
+    }
   }
 
   /* Floating Sakura / Galaxy Sparkles */
@@ -588,9 +719,12 @@ main .flex-1 {
 .char-popout {
   position: fixed;
   left: 1rem;
+  right: 1rem;
   bottom: 1rem;
   z-index: 40;
-  max-width: calc(100vw - 2rem);
+  max-width: min(100vw - 2rem, 100%);
+  max-height: min(calc(var(--app-viewport-height, 100dvh) - 2rem), 100%);
+  width: auto;
   background: rgba(31, 41, 55, 0.95);
   border: 1px solid rgba(236, 72, 153, 0.5);
   border-radius: 10px;
@@ -598,8 +732,8 @@ main .flex-1 {
   box-shadow: 0 0 18px rgba(255, 20, 147, 0.25);
   cursor: move;
   resize: both;
-  overflow: hidden;
-  min-width: 300px;
+  overflow: auto;
+  min-width: min(300px, calc(100vw - 2rem));
   min-height: 160px;
   display: flex;
   flex-direction: column;
@@ -691,6 +825,7 @@ main .flex-1 {
   flex: 1 1 auto;
   min-height: 0;
   overflow-y: auto;
+  overflow-x: hidden;
 }
 
 #party-rows-scroll::-webkit-scrollbar { width: 10px; }
@@ -950,11 +1085,25 @@ main .flex-1 {
 
 .app-main {
   padding: 0 1rem 1rem !important;
+  min-height: 0;
+  height: 100%;
+  overflow: hidden;
 }
 
 .app-layout {
   min-height: 0;
+  height: 100%;
   align-items: stretch;
+  display: flex;
+  gap: 1rem;
+  flex-wrap: nowrap;
+}
+
+.planner-stage {
+  flex: 1 1 auto;
+  min-width: 0;
+  min-height: 0;
+  height: 100%;
 }
 
 .party-panel,
@@ -992,11 +1141,34 @@ main .flex-1 {
 
 .party-row {
   align-items: center;
-  min-width: max-content;
+  min-width: 0;
+  width: 100%;
+  max-width: 100%;
+  flex-wrap: wrap;
+  row-gap: 0.5rem;
   border-radius: 1.15rem !important;
   border: 1px solid var(--panel-border) !important;
   background: linear-gradient(90deg, rgba(255, 255, 255, 0.04), rgba(0, 0, 0, 0.2)) !important;
   box-shadow: inset 0 0 22px var(--panel-shadow), 0 0 18px rgba(0, 0, 0, 0.25) !important;
+}
+
+.party-row .row-actions {
+  display: flex;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  margin-left: auto;
+}
+
+.party-row .row-action-btn {
+  width: clamp(72px, 8vw, 90px);
+  height: clamp(72px, 8vw, 90px);
+}
+
+.party-slot-grid {
+  flex: 1 1 auto;
+  min-width: 0;
+  flex-wrap: wrap;
 }
 
 .party-row.party-selected {
