@@ -22,7 +22,7 @@
   --button-hover: #ff79db;
   --button-hover-shadow: 0 10px 30px rgba(255, 20, 147, 0.45);
   --app-overlay: rgba(255, 255, 255, 0.04);
-  --buff-panel-overlay: url("../assets/HQ_CutIn_Eve_CASH_32.png") bottom right / 250px auto no-repeat;
+  --buff-panel-overlay: url("/Party-planner-elsword/assets/HQ_CutIn_Eve_CASH_32.png") bottom right / 250px auto no-repeat;
   --party-row-color-1: #ffd6f0;
   --party-row-color-2: #ffc4ea;
   --party-row-color-3: #f5b8ff;
