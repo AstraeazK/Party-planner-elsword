@@ -2,20 +2,25 @@ import {  calculateMissingBuffs, essentialBuffs, essentialBuffs_EN,
           essentialDebuffs, essentialDebuffs_EN, BUFF_DISPLAY_ORDER, DEBUFF_DISPLAY_ORDER, 
           normalizeKey, stripNumbersAndPercents, BUFF_DISPLAY_ORDER_EN, DEBUFF_DISPLAY_ORDER_EN
         } from "./buffDebuff.js";
-import { charData } from "./charData.js";
-import { pics } from "./pics.js";
-import { buildCompareMap } from './buffDebuff.js';
-import { initCompareTable } from './compareTable.js';
-import { Char_TH } from './charData_languages/CharData_TH.js';
-import { Char_EN } from './charData_languages/CharData_EN.js';
-import { setupCardSelection, getSelectedCardEffects } from './Card_Select.js';
-import { renderPartyRows, appendPartyRow  } from './partyRowsTemplate.js';
+import { charData } from "../js/charData.js";
+import { pics } from "../js/pics.js";
+import { buildCompareMap } from '../js/buffDebuff.js';
+import { initCompareTable } from '../js/compareTable.js';
+import { Char_TH } from '../charData_languages/CharData_TH.js';
+import { Char_EN } from '../charData_languages/CharData_EN.js';
+import { setupCardSelection, getSelectedCardEffects } from '../js/Card_Select.js';
+import { renderPartyRows, appendPartyRow  } from '../js/partyRowsTemplate.js';
+import { analytics } from "../database/analytics.js";
 
 let activeRowIndex = null;
 let partyRows = null;
 let buffGroupSelections = {};
 let currentLanguage = 'en';
 let nextPartyNumber = 1;
+
+const sessionId = crypto.randomUUID();
+const startTime = Date.now();
+analytics.startSession();
 
 function runUpdateBuffs() {
   if (typeof window.updateBuffs === 'function') {

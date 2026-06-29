@@ -26,10 +26,11 @@
   <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@500;600;700&display=swap" rel="stylesheet">
 
   <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.10.5/dist/sweetalert2.all.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11.10.5/dist/sweetalert2.min.css">
 
-  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="style_theme/style.css">
   <link rel="stylesheet" id="theme-stylesheet" href="style_theme/neon_pink.css">
 </head>
 <body class="bg-gray-900 text-white kawaii-app">
@@ -409,16 +410,16 @@
 
 </main>
 
-  <script src="./viewport-fix.js"></script>
+  <script src="./js/viewport-fix.js"></script>
   <script type="module">
     import { createIcons, icons } from "https://cdn.jsdelivr.net/npm/lucide@latest/+esm";
-    import { calculateMissingBuffs } from "./buffDebuff.js";
-    import { pics } from "./pics.js";
-    import "./script.js";
+    import { calculateMissingBuffs } from "./js/buffDebuff.js";
+    import { pics } from "./js/pics.js";
+    import "./js/script.js";
 
     document.addEventListener("DOMContentLoaded", async () => {
       createIcons({ icons });
-      const { charData } = await import(`./charData.js?v=${Date.now()}`);
+      const { charData } = await import(`./js/charData.js?v=${Date.now()}`);
       window.charData = charData; 
     });
   </script>
