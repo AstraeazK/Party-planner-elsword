@@ -19,7 +19,6 @@ let nextPartyNumber = 1;
 
 const sessionId = crypto.randomUUID();
 const startTime = Date.now();
-analytics.startSession();
 
 function runUpdateBuffs() {
   if (typeof window.updateBuffs === 'function') {
