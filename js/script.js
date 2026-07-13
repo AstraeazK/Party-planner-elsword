@@ -10,7 +10,6 @@ import { Char_TH } from '../charData_languages/CharData_TH.js';
 import { Char_EN } from '../charData_languages/CharData_EN.js';
 import { setupCardSelection, getSelectedCardEffects } from '../js/Card_Select.js';
 import { renderPartyRows, appendPartyRow  } from '../js/partyRowsTemplate.js';
-import { analytics } from "../database/analytics.js";
 
 let activeRowIndex = null;
 let partyRows = null;
