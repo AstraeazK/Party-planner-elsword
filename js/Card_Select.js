@@ -1,3 +1,5 @@
+import { Analytics } from "../database/analytics.js";
+
 const CARD_EFFECTS = {
   aquarius: ['atk_mag_up_10'],
   gemini: ['damage_block_80'],
@@ -23,6 +25,7 @@ export function setupCardSelection(onSelectionChange) {
       }
 
       applyCardSelectionUI();
+      Analytics.trackCharacter(cardName);
       if (typeof onSelectionChange === 'function') onSelectionChange();
     });
   });

@@ -10,6 +10,7 @@ import { Char_TH } from '../charData_languages/CharData_TH.js';
 import { Char_EN } from '../charData_languages/CharData_EN.js';
 import { setupCardSelection, getSelectedCardEffects } from '../js/Card_Select.js';
 import { renderPartyRows, appendPartyRow  } from '../js/partyRowsTemplate.js';
+import { Analytics } from '../database/analytics.js';
 
 let activeRowIndex = null;
 let partyRows = null;
@@ -70,6 +71,7 @@ function initializePartyRow(row, rowIndex) {
   if (clearBtn) {
     clearBtn.addEventListener("click", (e) => {
       e.stopPropagation();
+      Analytics.trackEvent("clear_team", { category: "team", action: "clear" });
       slots.forEach((s) => (s.innerHTML = ""));
       const buffList = document.getElementById("buff-list");
       const debuffList = document.getElementById("debuff-list");
@@ -110,17 +112,32 @@ function initializePartyRow(row, rowIndex) {
 
         if (fromRowIndexVal === rowIndex) {
           if (targetImg) {
+            const replacedCharacter = targetImg.dataset.character || "";
+            const newCharacter = sourceImg.dataset.character || "";
             slot.removeChild(targetImg);
             slot.appendChild(sourceImg);
             sourceSlot.appendChild(targetImg);
             setupDragStart(targetImg, targetImg.src, targetRow);
+            if (newCharacter && replacedCharacter) {
+              Analytics.trackReplace(newCharacter, replacedCharacter, { slot: slot.getAttribute('data-slot') || '' });
+            }
           } else {
             slot.appendChild(sourceImg);
           }
           setupDragStart(sourceImg, sourceImg.src, targetRow);
         } else {
-          if (targetImg) slot.removeChild(targetImg);
-          slot.appendChild(sourceImg);
+          if (targetImg) {
+            const replacedCharacter = targetImg.dataset.character || "";
+            const newCharacter = sourceImg.dataset.character || "";
+            slot.removeChild(targetImg);
+            slot.appendChild(sourceImg);
+            setupDragStart(sourceImg, sourceImg.src, targetRow);
+            if (newCharacter && replacedCharacter) {
+              Analytics.trackReplace(newCharacter, replacedCharacter, { slot: slot.getAttribute('data-slot') || '' });
+            }
+          } else {
+            slot.appendChild(sourceImg);
+          }
           setupDragStart(sourceImg, sourceImg.src, targetRow);
         }
         runSetRowSelected(targetRow);
@@ -129,17 +146,12 @@ function initializePartyRow(row, rowIndex) {
         return;
       }
 
+      const replacedCharacter = targetImg?.dataset?.character || "";
       slot.innerHTML = '';
-      const imgEl = document.createElement('img');
-      imgEl.src = src;
-      imgEl.className = 'w-full h-full object-contain';
-      setupDragStart(imgEl, src, targetRow);
-      imgEl.addEventListener('contextmenu', (ev) => {
-        ev.preventDefault();
-        imgEl.remove();
-        runUpdateBuffs();
-      });
-      slot.appendChild(imgEl);
+      const addedImg = addCharacterToSlot(slot, src, targetRow);
+      if (targetImg && addedImg?.dataset?.character && replacedCharacter) {
+        Analytics.trackReplace(addedImg.dataset.character, replacedCharacter, { slot: slot.getAttribute('data-slot') || '' });
+      }
       runSetRowSelected(targetRow);
       activeRowIndex = currentRowIndex >= 0 ? currentRowIndex : rowIndex;
       runUpdateBuffs();
@@ -268,6 +280,7 @@ function setupDragStart(imgEl, src, rowElement) {
   imgEl.draggable = true;
   imgEl.addEventListener("dragstart", (e) => {
     e.dataTransfer.setData("text/plain", src);
+    e.dataTransfer.setData("character", imgEl.dataset.character || getCharacterNameFromSrc(src));
     const rowSlots = Array.from(rowElement.querySelectorAll('[data-slot]'));
     const slotIndex = rowSlots.findIndex(slot => slot.contains(imgEl));
     const rowIndex = Array.from(partyRows).indexOf(rowElement);
@@ -278,6 +291,7 @@ function setupDragStart(imgEl, src, rowElement) {
 }
 
 document.addEventListener("DOMContentLoaded", () => {
+  Analytics.init();
   const charPopout = document.getElementById("char-popout");
   if (charPopout) {
     let dragging = false;
@@ -555,16 +569,54 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   // ---------- สร้าง <img> ตัวละคร ----------
+  function getCharacterNameFromSrc(src) {
+    if (!src) return "";
+    const safeSrc = String(src);
+    const key = Object.keys(charData).find((k) => safeSrc.endsWith(k) || safeSrc.endsWith(k.split("/").pop()));
+    const filename = key ? key.split("/").pop() : safeSrc.split("/").pop();
+    if (!filename) return "";
+    return filename.replace(/\.[^.]+$/, "").replace(/^Icon_-_/i, "").replace(/_/g, " ").trim();
+  }
+
+  function setupSlotCharacterImage(imgEl, src, rowElement) {
+    const characterName = getCharacterNameFromSrc(src);
+    imgEl.src = src;
+    imgEl.alt = characterName || src.split("/").pop();
+    imgEl.className = "w-full h-full object-contain";
+    if (characterName) {
+      imgEl.dataset.character = characterName;
+    }
+    setupDragStart(imgEl, src, rowElement);
+    imgEl.addEventListener("contextmenu", (e) => {
+      e.preventDefault();
+      imgEl.remove();
+      runUpdateBuffs();
+    });
+    return imgEl;
+  }
+
+  function addCharacterToSlot(slot, src, rowElement, { shouldTrack = true } = {}) {
+    if (!slot || !src) return null;
+    const imgEl = document.createElement("img");
+    setupSlotCharacterImage(imgEl, src, rowElement);
+    slot.appendChild(imgEl);
+    if (shouldTrack && imgEl.dataset.character) {
+      Analytics.trackCharacter(imgEl.dataset.character, { slot: slot.getAttribute("data-slot") || "" });
+    }
+    return imgEl;
+  }
+
   function createCharImage(src) {
     const img = document.createElement("img");
     img.src = src;
-    img.alt = src.split("/").pop();
+    img.alt = getCharacterNameFromSrc(src);
 
     img.className = "w-[65px] h-[65px] object-contain bg-gray-700 cursor-pointer";
     img.draggable = true;
     if (charData[src]) {
       img.dataset.role = charData[src].role;
     }
+    img.dataset.character = getCharacterNameFromSrc(src);
 
     img.addEventListener("dragstart", (e) => {
       e.dataTransfer.setData("text/plain", src);
@@ -620,21 +672,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
     if (!emptySlot) return;
 
-    const src = imgEl.src;
-    const newImg = document.createElement("img");
-    newImg.src = src;
-    newImg.className = "w-full h-full object-contain";
-
-    setupDragStart(newImg, src, selectedRow);
-
-    // คลิกขวาลบตัวละคร
-    newImg.addEventListener("contextmenu", (e) => {
-      e.preventDefault();
-      newImg.remove();
-      runUpdateBuffs();
-    });
-
-    emptySlot.appendChild(newImg);
+    addCharacterToSlot(emptySlot, imgEl.src, selectedRow);
     runSetRowSelected(selectedRow);
     runUpdateBuffs();
   });
@@ -1638,6 +1676,7 @@ async function showCompareModal(selectedIndex) {
 
   const applyThemeSelection = (themeKey) => {
     const theme = themeList[themeKey] ? themeKey : 'neon_pink';
+    Analytics.trackEvent("theme_change", { category: "ui", action: "theme_change", value: theme });
     if (themeLink) {
       themeLink.href = `style_theme/${theme}.css`;
     }
@@ -1678,11 +1717,13 @@ async function showCompareModal(selectedIndex) {
   const helpClose = document.getElementById('help-close');
 
   helpBtn?.addEventListener('click', () => {
+    Analytics.trackEvent("help_open", { category: "help", action: "open" });
     helpModal?.classList.remove('hidden');
   });
 
   helpClose?.addEventListener('click', (e) => {
     e.stopPropagation();
+    Analytics.trackEvent("help_close", { category: "help", action: "close" });
     helpModal?.classList.add('hidden');
   });
 
