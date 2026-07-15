@@ -43,6 +43,7 @@ export const Char_EN = {
     all_speed_20: "All Speed 20%",
 
     all_skill_damage_12: "All Skill Damage 12%",
+    all_damage_7: "All Damage 7%",
     all_damage_10: "All Damage 10%",
 
     boss_damage_8: "Boss Damage 8%",
@@ -95,6 +96,7 @@ export const Char_EN = {
 
     non_boss_damage_10: "Damage to NonBoss/MidBoss Monsters 10%",
 
+    damage_up_6: "Damage 6%",
     damage_up_8: "Damage 8%",
     low_hp_damage_8_over_50: "Low HP Damage 8% (>50% HP)",
     low_hp_damage_10_over_10: "Low HP Damage 10% (>10% HP)",
@@ -104,6 +106,8 @@ export const Char_EN = {
     sot: "SoT",
     strength_bravery_damage_6: "Strength & Bravery Skill Damage 6%",
 
+    linked_critical_5: "Critical (Vow) 5%",
+    linked_maximize_5: "Maximize (Vow) 5%",
     linked_move_jump_speed_15: "Movement/Jump Speed (Vow) 15%",
     linked_awaken_speed_10: "Awakening Speed (Vow) 10%"
   },

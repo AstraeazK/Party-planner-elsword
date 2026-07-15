@@ -1,4 +1,4 @@
-// รวมกายเวทย์แล้ว ปรับเนิฟเอาแจกเร่ง CD ออกหมดทุกตัวละคร แล้วแจกให้ตัวเองแทน
+//แยกกายเวทย์ แพทช์ https://cobodex.eu/en/balance/2026-07-16 ซับให้ตัวแดงทุกตัว+ลดสปีดของตัวซับที่แจก
 export const charData = {
   "pics_characters/Elsword/Icon_-_Knight_Emperor.png": {
     role: "physical",
@@ -81,7 +81,7 @@ export const charData = {
     buffs: [
       "atk_mag_up_10",
       "boss_damage_reduction_15",
-      "all_damage_10",
+      "all_damage_7",
       "white_shield_10",
       "boss_damage_20",
       "fill_gauge_20",
@@ -185,7 +185,7 @@ export const charData = {
       "damage_reduction_20",
       "Super_Armor",
       "all_skill_damage_12",
-      "all_speed_15",
+      "all_speed_10",
       "fill_gauge_20",
       "mana_regen_40"
     ],
@@ -217,7 +217,7 @@ export const charData = {
       "cooldown_accel_1_2x",
       "damage_reduction_20",
       "all_skill_damage_12",
-      "all_speed_15",
+      "all_speed_10",
       "max_hp_10",
       "mana_cost_down_6",
       "Super_Armor",
@@ -228,7 +228,7 @@ export const charData = {
 
   "pics_characters/Elesis/Icon_-_Empire_Sword.png": {
     role: "physical",
-    buffs: ["damage_reduction_15", "action_speed_up_6", "special_active_damage_up_10", "critical_6", "maximize_6"],
+    buffs: ["damage_reduction_15", "action_speed_up_3", "special_active_damage_up_5", "critical_3", "maximize_3"],
     debuffs: ["damage_taken_up_8", "ignore_def_20", "elemental_res_down_100"]
   },
 
@@ -271,7 +271,8 @@ export const charData = {
   "pics_characters/Add/Icon_-_Overmind.png": {
     role: "support",
     buffs: [
-      "action_speed_up_15",
+      "all_speed_10",
+      "Super_Armor",
       "atk_mag_up_22",
       "damage_reduction_20",
       "all_skill_damage_12",
@@ -318,8 +319,8 @@ export const charData = {
       "cooldown_accel_1_2x",
       "damage_reduction_20",
       "all_skill_damage_12",
-      "move_speed_15",
-      "action_speed_up_15",
+      "all_speed_10",
+      "Super_Armor",
       "damage_block_70",
       "sot"
     ],
@@ -360,14 +361,13 @@ export const charData = {
     role: "support",
     buffs: [
       "white_shield_10",
-      "mana_regen_40",
-      "move_jump_speed_5",
-      "mana_regen_5",
+      "mana_regen_45",
       "atk_mag_up_12",
       "all_skill_damage_12",
       "cooldown_accel_1_2x",
       "damage_reduction_20",
-      "all_speed_15",
+      "all_speed_10",
+      "Super_Armor",
       "fill_gauge_20"
     ],
     debuffs: ["ignore_def_15", "elemental_res_down_150"]
@@ -399,8 +399,8 @@ export const charData = {
       "all_skill_damage_12",
       "atk_mag_up_12",
       "damage_reduction_20",
-      "move_jump_speed_20",
-      "action_speed_up_15",
+      "all_speed_10",
+      "Super_Armor",
       "reset_skill_cd"
     ],
     debuffs: ["ignore_def_15", "elemental_res_down_150", "damage_reduction_down_15"]
@@ -426,7 +426,7 @@ export const charData = {
 
   "pics_characters/Noah/Icon_-_Celestia.png": {
     role: "magical",
-    buffs: ["fill_gauge_20", "damage_up_8"],
+    buffs: ["fill_gauge_20", "damage_up_6"],
     debuffs: ["ignore_def_15", "crit_damage_taken_up_4"]
   },
 
@@ -440,7 +440,9 @@ export const charData = {
       "fill_gauge",
       "all_skill_damage_12",
       "def_up_20",
-      "action_speed_up_15",
+      "Super_Armor",
+      "all_speed_10",
+      "mana_regen_40",
       "sot"
     ],
     debuffs: ["ignore_def_15", "elemental_res_down_150"]
@@ -461,7 +463,8 @@ export const charData = {
   "pics_characters/Lithia/Icon_-_Avarice.png": {
     role: "support",
     buffs: [
-      "action_speed_up_15",
+      "all_speed_10",
+      "Super_Armor",
       "atk_mag_up_12",
       "cooldown_accel_1_2x",
       "all_skill_damage_12",
@@ -469,9 +472,9 @@ export const charData = {
       "damage_reduction_20",
       "def_up_20",
       "sot",
-      "linked_move_jump_speed_15",
+      "linked_critical_5",
+      "linked_maximize_5",
       "linked_awaken_speed_10",
-      "linked_Super_Armor"
     ],
     debuffs: ["ignore_def_15", "elemental_res_down_150"]
   },

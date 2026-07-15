@@ -43,6 +43,7 @@ export const Char_TH = {
     all_speed_20: "All Speed 20%",
 
     all_skill_damage_12: "All Skill Damage 12%",
+    all_damage_7: "All Damage 7%",
     all_damage_10: "All Damage 10%",
 
     boss_damage_8: "ดาเมจต่อบอส 8%",
@@ -95,6 +96,7 @@ export const Char_TH = {
 
     non_boss_damage_10: "ดาเมจต่อมอนสเตอร์ที่ไม่ใช่บอสหรือมิดบอสเพิ่มขึ้น 10%",
 
+    damage_up_6: "ดาเมจเพิ่มขึ้น 6%",
     damage_up_8: "ดาเมจเพิ่มขึ้น 8%",
     low_hp_damage_8_over_50: "ดาเมจเลือดต่ำ 8% (>50% HP)",
     low_hp_damage_10_over_10: "ดาเมจเลือดต่ำ 10% (>10% HP)",
@@ -104,6 +106,8 @@ export const Char_TH = {
     sot: "SoT",
     strength_bravery_damage_6: "Strength and Bravery Skill Damage 6%",
 
+    linked_critical_5: "Critical เพิ่มขึ้น (เฉพาะคนผูก) 5%",
+    linked_maximize_5: "maximize เพิ่มขึ้น (เฉพาะคนผูก) 5%",
     linked_move_jump_speed_15: "วิ่ง/กระโดดเพิ่มขึ้น (เฉพาะคนผูก) 15%",
     linked_awaken_speed_10: "อเวคไว (เฉพาะคนผูก) 10%"
   },
