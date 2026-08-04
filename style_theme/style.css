@@ -273,23 +273,23 @@ main .flex-1 {
   .smooth-transition { transition: all 180ms cubic-bezier(.2,.9,.2,1); }
   /* Slot hover */
   .party-row [data-slot] { transition: transform 180ms ease, box-shadow 180ms ease, filter 180ms ease, opacity 180ms ease; }
-  .party-row [data-slot]:hover { transform: translateY(-4px) scale(1.03); box-shadow: 0 6px 18px rgba(0,0,0,0.5); }
-  .party-row [data-slot] img { transition: transform 220ms ease, filter 220ms ease; }
-  .party-row [data-slot]:hover img { transform: scale(1.04); }
+  .party-row [data-slot]:hover { transform: none; box-shadow: none; }
+  .party-row [data-slot] img { transition: none; }
+  .party-row [data-slot]:hover img { transform: none; }
 
   /* Character thumbnails */
-  #char-container img { transition: transform 220ms ease, box-shadow 220ms ease, filter 220ms ease; border-radius: 8px; border: 1px solid var(--panel-border); box-shadow: 0 0 18px rgba(255, 255, 255, 0.06); }
-  #char-container img:hover { transform: translateY(-6px) scale(1.08); box-shadow: 0 16px 34px rgba(255, 255, 255, 0.12); filter: drop-shadow(0 6px 18px var(--accent)); }
+  #char-container img { transition: none; border-radius: 8px; border: 1px solid var(--panel-border); box-shadow: none; }
+  #char-container img:hover { transform: none; box-shadow: none; filter: none; }
 
   /* Buff/Debuff list hover */
-  #buff-list li, #debuff-list li, #missing-buff-list li { padding: 6px 8px; border-radius: 8px; transition: background-color 160ms ease, transform 160ms ease; }
-  #buff-list li:hover { background: linear-gradient(90deg, rgba(16,185,129,0.06), rgba(16,185,129,0.02)); transform: translateX(4px); }
-  #debuff-list li:hover { background: linear-gradient(90deg, rgba(236,72,153,0.06), rgba(236,72,153,0.02)); transform: translateX(4px); }
-  #missing-buff-list li:hover { background: linear-gradient(90deg, rgba(250,204,21,0.06), rgba(250,204,21,0.02)); transform: translateX(4px); }
+  #buff-list li, #debuff-list li, #missing-buff-list li { padding: 6px 8px; border-radius: 8px; transition: none; }
+  #buff-list li:hover,
+  #debuff-list li:hover,
+  #missing-buff-list li:hover { background: transparent; transform: none; }
 
   /* Tooltip fade */
-  #buff-entries-tooltip { opacity: 0; transform: translateY(-6px); transition: opacity 160ms ease, transform 160ms ease; }
-  #buff-entries-tooltip.visible { opacity: 1; transform: translateY(0); }
+  #buff-entries-tooltip { opacity: 0; transform: none; transition: none; }
+  #buff-entries-tooltip.visible { opacity: 1; transform: none; }
 
   /* Slot badge small tweak */
   .duplicate-warning, .support-warning { display: flex; align-items: center; justify-content: center; min-height: 22px; }
@@ -391,15 +391,7 @@ main .flex-1 {
 
   /* Floating Sakura / Galaxy Sparkles */
   .sparkle {
-    position: absolute;
-    width: var(--sparkle-size, 10px);
-    height: var(--sparkle-size, 10px);
-    background: radial-gradient(circle at 50% 50%, rgba(255, 235, 255, 0.95), rgba(255, 134, 214, 0.55) 45%, rgba(195, 123, 255, 0.15) 70%, transparent 85%);
-    border-radius: 999px;
-    filter: drop-shadow(0 0 12px rgba(255, 98, 190, 0.45));
-    opacity: 0.95;
-    transform-origin: center;
-    animation: sparkleFloat 4s infinite ease-in-out, sparkleGlow 2.8s infinite ease-in-out;
+    display: none;
   }
   .sparkle::before,
   .sparkle::after {
@@ -680,13 +672,13 @@ main .flex-1 {
 }
 
 @keyframes expand {
-  from { width: 0; opacity: 0; }
+  from { width: 96px; opacity: 1; }
   to   { width: 96px; opacity: 1; }
 }
 
 @keyframes collapse {
   from { width: 96px; opacity: 1; }
-  to   { width: 0; opacity: 0; }
+  to   { width: 96px; opacity: 1; }
 }
 
 @keyframes fadeIn {
@@ -704,16 +696,10 @@ main .flex-1 {
   100% { box-shadow: 0 0 0 rgba(255,255,255,0); }
 }
 
-.animate-expand {
-  animation: expand 0.4s ease-out forwards;
-}
-
-.animate-collapse {
-  animation: collapse 0.4s ease-in forwards;
-}
-
+.animate-expand,
+.animate-collapse,
 .animate-sparkle {
-  animation: sparkle 1s ease-in-out infinite;
+  animation: none !important;
 }
 
 .char-popout {

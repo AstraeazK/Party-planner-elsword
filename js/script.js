@@ -17,6 +17,7 @@ let partyRows = null;
 let buffGroupSelections = {};
 let currentLanguage = 'en';
 let nextPartyNumber = 1;
+const PERFORMANCE_MODE = true; // Set true to reduce animations and visual effects for smoother rendering
 
 const sessionId = crypto.randomUUID();
 const startTime = Date.now();
@@ -191,6 +192,77 @@ function renderAddRowPlaceholder() {
   container.appendChild(placeholder);
 }
 
+function getCharacterNameFromSrc(src) {
+  if (!src) return "";
+  const safeSrc = String(src);
+  const key = Object.keys(charData).find((k) => safeSrc.endsWith(k) || safeSrc.endsWith(k.split("/").pop()));
+  const filename = key ? key.split("/").pop() : safeSrc.split("/").pop();
+  if (!filename) return "";
+  return filename.replace(/\.[^.]+$/, "").replace(/^Icon_-_/i, "").replace(/_/g, " ").trim();
+}
+
+function setupSlotCharacterImage(imgEl, src, rowElement) {
+  const characterName = getCharacterNameFromSrc(src);
+  imgEl.src = src;
+  imgEl.alt = characterName || src.split("/").pop();
+  imgEl.className = "w-full h-full object-contain";
+  if (characterName) {
+    imgEl.dataset.character = characterName;
+  }
+  setupDragStart(imgEl, src, rowElement);
+  imgEl.addEventListener("contextmenu", (e) => {
+    e.preventDefault();
+    imgEl.remove();
+    runUpdateBuffs();
+  });
+  return imgEl;
+}
+
+function addCharacterToSlot(slot, src, rowElement, { shouldTrack = true } = {}) {
+  if (!slot || !src) return null;
+  const imgEl = document.createElement("img");
+  setupSlotCharacterImage(imgEl, src, rowElement);
+  slot.appendChild(imgEl);
+  if (shouldTrack && imgEl.dataset.character) {
+    Analytics.trackCharacter(imgEl.dataset.character, { slot: slot.getAttribute("data-slot") || "" });
+  }
+  return imgEl;
+}
+
+function createCharImage(src) {
+  const img = document.createElement("img");
+  img.src = src;
+  img.alt = getCharacterNameFromSrc(src);
+
+  img.className = "w-[65px] h-[65px] object-contain bg-gray-700 cursor-pointer";
+  img.draggable = true;
+  if (charData[src]) {
+    img.dataset.role = charData[src].role;
+  }
+  img.dataset.character = getCharacterNameFromSrc(src);
+
+  img.addEventListener("dragstart", (e) => {
+    e.dataTransfer.setData("text/plain", src);
+    e.dataTransfer.effectAllowed = "copy";
+  });
+
+  return img;
+}
+
+function filterCharacters(role) {
+  const chars = document.querySelectorAll("#char-container img");
+
+  chars.forEach(img => {
+    const imgRole = img.dataset.role;
+
+    if (role === "all" || imgRole === role) {
+      img.classList.remove("hidden");
+    } else {
+      img.classList.add("hidden");
+    }
+  }, true);
+}
+
 const translations = {
   th: Char_TH,
   en: Char_EN
@@ -347,7 +419,10 @@ document.addEventListener("DOMContentLoaded", () => {
     document.addEventListener("mousemove", onDrag);
     document.addEventListener("mouseup", stopDrag);
   }
-  createSparkles(26);
+  document.documentElement.classList.toggle('performance-mode', PERFORMANCE_MODE);
+  if (!PERFORMANCE_MODE) {
+    createSparkles(26);
+  }
 
   function createSparkles(count = 24) {
     const layer = document.getElementById("sparkle-layer");
@@ -568,65 +643,6 @@ document.addEventListener("DOMContentLoaded", () => {
     }, true);
   }
 
-  // ---------- สร้าง <img> ตัวละคร ----------
-  function getCharacterNameFromSrc(src) {
-    if (!src) return "";
-    const safeSrc = String(src);
-    const key = Object.keys(charData).find((k) => safeSrc.endsWith(k) || safeSrc.endsWith(k.split("/").pop()));
-    const filename = key ? key.split("/").pop() : safeSrc.split("/").pop();
-    if (!filename) return "";
-    return filename.replace(/\.[^.]+$/, "").replace(/^Icon_-_/i, "").replace(/_/g, " ").trim();
-  }
-
-  function setupSlotCharacterImage(imgEl, src, rowElement) {
-    const characterName = getCharacterNameFromSrc(src);
-    imgEl.src = src;
-    imgEl.alt = characterName || src.split("/").pop();
-    imgEl.className = "w-full h-full object-contain";
-    if (characterName) {
-      imgEl.dataset.character = characterName;
-    }
-    setupDragStart(imgEl, src, rowElement);
-    imgEl.addEventListener("contextmenu", (e) => {
-      e.preventDefault();
-      imgEl.remove();
-      runUpdateBuffs();
-    });
-    return imgEl;
-  }
-
-  function addCharacterToSlot(slot, src, rowElement, { shouldTrack = true } = {}) {
-    if (!slot || !src) return null;
-    const imgEl = document.createElement("img");
-    setupSlotCharacterImage(imgEl, src, rowElement);
-    slot.appendChild(imgEl);
-    if (shouldTrack && imgEl.dataset.character) {
-      Analytics.trackCharacter(imgEl.dataset.character, { slot: slot.getAttribute("data-slot") || "" });
-    }
-    return imgEl;
-  }
-
-  function createCharImage(src) {
-    const img = document.createElement("img");
-    img.src = src;
-    img.alt = getCharacterNameFromSrc(src);
-
-    img.className = "w-[65px] h-[65px] object-contain bg-gray-700 cursor-pointer";
-    img.draggable = true;
-    if (charData[src]) {
-      img.dataset.role = charData[src].role;
-    }
-    img.dataset.character = getCharacterNameFromSrc(src);
-
-    img.addEventListener("dragstart", (e) => {
-      e.dataTransfer.setData("text/plain", src);
-      e.dataTransfer.effectAllowed = "copy";
-    });
-
-    return img;
-  }
-
-
   pics.forEach((src) => charContainer.appendChild(createCharImage(src)));
   // ---------- FILTER BUTTONS ----------
   const filterBtns = document.querySelectorAll("#char-filter-buttons .filter-btn");
@@ -643,20 +659,6 @@ document.addEventListener("DOMContentLoaded", () => {
       btn.classList.add("bg-pink-600");
      }, true);
   });
-
-  function filterCharacters(role) {
-    const chars = document.querySelectorAll("#char-container img");
-
-    chars.forEach(img => {
-      const imgRole = img.dataset.role;
-
-      if (role === "all" || imgRole === role) {
-        img.classList.remove("hidden");
-      } else {
-        img.classList.add("hidden");
-      }
-     }, true);
-  }
 
 
   charContainer.addEventListener("contextmenu", (e) => {
@@ -1757,6 +1759,7 @@ async function showCompareModal(selectedIndex) {
 });
 
 function createClickEffect(e) {
+  if (PERFORMANCE_MODE) return;
   const effect = document.createElement("div");
   effect.className = "click-effect";
 
