@@ -278,14 +278,45 @@ main .flex-1 {
   .party-row [data-slot]:hover img { transform: none; }
 
   /* Character thumbnails */
-  #char-container img { transition: none; border-radius: 8px; border: 1px solid var(--panel-border); box-shadow: none; }
-  #char-container img:hover { transform: none; box-shadow: none; filter: none; }
+  #char-container img {
+    position: relative;
+    z-index: 0;
+    border-radius: 8px;
+    border: 1px solid var(--panel-border);
+    box-shadow: none;
+    transition: transform 180ms ease, filter 180ms ease, box-shadow 180ms ease, border-color 180ms ease;
+  }
+
+  #char-container img:hover {
+    position: relative;
+    z-index: 1;
+    transform: scale(1.06);
+    border-color: var(--accent-soft);
+    box-shadow: 0 0 10px color-mix(in srgb, var(--accent) 45%, transparent);
+    filter: brightness(1.08) saturate(1.08);
+  }
 
   /* Buff/Debuff list hover */
-  #buff-list li, #debuff-list li, #missing-buff-list li { padding: 6px 8px; border-radius: 8px; transition: none; }
-  #buff-list li:hover,
-  #debuff-list li:hover,
-  #missing-buff-list li:hover { background: transparent; transform: none; }
+  #buff-section .buff-effect-row {
+    padding: 6px 8px;
+    border-radius: 8px;
+    transition: background-color 180ms ease, text-shadow 180ms ease;
+  }
+
+  #buff-section .buff-effect-row-buff:hover {
+    background: rgba(74, 222, 128, 0.08);
+    text-shadow: 0 0 5px rgba(74, 222, 128, 0.65);
+  }
+
+  #buff-section .buff-effect-row-debuff:hover {
+    background: rgba(251, 113, 133, 0.08);
+    text-shadow: 0 0 5px rgba(251, 113, 133, 0.65);
+  }
+
+  #buff-section .buff-effect-row-missing:hover {
+    background: rgba(253, 224, 71, 0.08);
+    text-shadow: 0 0 5px rgba(253, 224, 71, 0.65);
+  }
 
   /* Tooltip fade */
   #buff-entries-tooltip { opacity: 0; transform: none; transition: none; }

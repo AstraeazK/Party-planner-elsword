@@ -1031,7 +1031,7 @@ function renderBuffLists(mergedBuffs, mergedDebuffs, missingBuffs, missingDebuff
     const sortedBuffs = sortByDisplayOrder(mergedBuffs, buffDisplayOrder);
     sortedBuffs.forEach(b => {
       const li = document.createElement('li');
-      li.className = 'text-green-200 relative cursor-default';
+      li.className = 'buff-effect-row buff-effect-row-buff text-green-200 relative cursor-default';
       li.innerText = window.__SHOW_BUFF_NUMBERS ? b.name : stripNumbersAndPercents(b.name);
       li.dataset.entries = encodeURIComponent(JSON.stringify(b.entries || []));
 
@@ -1055,7 +1055,7 @@ function renderBuffLists(mergedBuffs, mergedDebuffs, missingBuffs, missingDebuff
     const sortedDebuffs = sortByDisplayOrder(mergedDebuffs, debuffDisplayOrder);
     sortedDebuffs.forEach(d => {
       const li = document.createElement('li');
-      li.className = 'text-pink-200 relative cursor-default';
+      li.className = 'buff-effect-row buff-effect-row-debuff text-pink-200 relative cursor-default';
       li.innerText = window.__SHOW_BUFF_NUMBERS ? d.name : stripNumbersAndPercents(d.name);
       li.dataset.entries = encodeURIComponent(JSON.stringify(d.entries || []));
 
@@ -1079,7 +1079,7 @@ function renderBuffLists(mergedBuffs, mergedDebuffs, missingBuffs, missingDebuff
     
     if (!allMissing || allMissing.length === 0) {
       const li = document.createElement('li');
-      li.className = 'text-yellow-300';
+      li.className = 'buff-effect-row buff-effect-row-missing text-yellow-300';
       const noMissingText = translations[currentLanguage]?.ui?.no_missing_buffs || 'ไม่มี Missing Buffs';
       li.innerText = noMissingText;
       missingListEl.appendChild(li);
@@ -1097,7 +1097,7 @@ function renderBuffLists(mergedBuffs, mergedDebuffs, missingBuffs, missingDebuff
       
       // Translate missing
       const translatedMissing = allMissing.map(m => thToCurrentLang[m] || m);
-      missingListEl.innerHTML = translatedMissing.map(m => `<li class="text-yellow-300">${escapeHtml(m)}</li>`).join('');
+      missingListEl.innerHTML = translatedMissing.map(m => `<li class="buff-effect-row buff-effect-row-missing text-yellow-300">${escapeHtml(m)}</li>`).join('');
       missingListEl.querySelectorAll('li').forEach(li => {
         li.addEventListener('mouseenter', () => {
           const entries = getMissingEffectProviders(li.textContent || '');
